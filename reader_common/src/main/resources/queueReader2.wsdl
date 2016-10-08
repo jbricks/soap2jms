@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ebiscus" 
+	xmlns:cls="http://com.github.gcontini.soap2jms/reader_common"
+	xmlns:tns="http://com.github.gcontini.soap2jms/reader"
+	targetNamespace="http://com.github.gcontini.soap2jms/reader">
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://com.github.gcontini.soap2jms/reader_common">
+			<xsd:element name="sendMessages">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="queueName" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="sendMessageResponse">
+				<xsd:complexType>
+					<xsd:sequence maxOccurs="unbounded" minOccurs="1">
+						<xsd:element name="out" type="cls:StatusMessage" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="retrieveMessages">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="in" type="xsd:string"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="retrieveMessagesResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="out" type="xsd:string"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="acknowledgeMessages">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="in" type="xsd:string"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="acknowledgeMessagesResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="out" type="xsd:string"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:complexType name="StatusMessage">
+				<xsd:sequence>
+					<xsd:element name="messageId" type="xsd:string"></xsd:element>
+					<xsd:element name="status">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="OK" />
+								<xsd:enumeration value="ERROR" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="failureReason" type="xsd:string"
+						maxOccurs="1" minOccurs="0"></xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="sendMessagesRequest">
+		<wsdl:part element="cls:sendMessages" name="messages" />
+	</wsdl:message>
+	<wsdl:message name="sendMessagesResponse">
+		<wsdl:part element="cls:sendMessageResponse" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="retrieveMessagesRequest">
+		<wsdl:part name="parameters" element="cls:retrieveMessages"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="retrieveMessagesResponse">
+		<wsdl:part name="parameters" element="cls:retrieveMessagesResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="acknowledgeMessagesRequest">
+		<wsdl:part name="parameters" element="cls:acknowledgeMessages"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="acknowledgeMessagesResponse">
+		<wsdl:part name="parameters" element="cls:acknowledgeMessagesResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="ebiscus">
+		<wsdl:operation name="sendMessages">
+			<wsdl:input message="tns:sendMessagesRequest" />
+			<wsdl:output message="tns:sendMessagesResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="retrieveMessages">
+			<wsdl:input message="tns:retrieveMessagesRequest"></wsdl:input>
+			<wsdl:output message="tns:retrieveMessagesResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="acknowledgeMessages">
+			<wsdl:input message="tns:acknowledgeMessagesRequest"></wsdl:input>
+			<wsdl:output message="tns:acknowledgeMessagesResponse"></wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="ebiscusSOAP" type="tns:ebiscus">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="sendMessages">
+			<soap:operation soapAction="http://www.atos.com/ebiscus/sendMessages" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="retrieveMessages">
+			<soap:operation soapAction="http://www.atos.com/ebiscus/acknowledgeMessages" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="acknowledgeMessages">
+			<soap:operation soapAction="http://www.atos.com/ebiscus/sendMessage" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="ebiscus">
+		<wsdl:port binding="tns:ebiscusSOAP" name="ebiscusSOAP">
+			<soap:address location="http://www.example.org/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

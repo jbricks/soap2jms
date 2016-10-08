@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:cls="http://soap2jms.github.com/reader_common" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://soap2jms.github.com/reader" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ebiscus" targetNamespace="http://soap2jms.github.com/reader">
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://soap2jms.github.com/reader_common">
+			<xsd:element name="retrieveMessages">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="filter" type="xsd:string">
+						</xsd:element>
+						<xsd:element name="maxItems" type="xsd:int">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="retrieveMessagesResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="retrieveMessagesResponse" nillable="false" type="cls:retrieveMessageResponseType"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="acknowledgeMessages">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="unbounded" minOccurs="1" name="messageId" nillable="false" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="acknowledgeMessagesResponse">
+				<xsd:complexType>
+					<xsd:sequence maxOccurs="1" minOccurs="1">
+						<xsd:element maxOccurs="unbounded" minOccurs="1" name="messageIdAndStatus" nillable="false" type="cls:messageIdAndStatus"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:complexType name="messageIdAndStatus">
+				<xsd:sequence maxOccurs="unbounded" minOccurs="1">
+					<xsd:element name="messageId" type="xsd:string"/>
+					<xsd:element name="status" type="cls:acknowledgeStatus">
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="retrieveMessageResponseType">
+				<xsd:sequence maxOccurs="1" minOccurs="1">
+					<xsd:element maxOccurs="unbounded" minOccurs="1" name="jmsMessages" type="cls:jmsMessage"/>
+					<xsd:element maxOccurs="1" minOccurs="1" name="complete" type="xsd:boolean"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="acknowledgeStatus">
+				<xsd:sequence>
+					<xsd:element name="code">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="OK">
+								</xsd:enumeration>
+								<xsd:enumeration value="MESSAGE_NOT_FOUND">
+								</xsd:enumeration>
+								<xsd:enumeration value="ERROR">
+								</xsd:enumeration>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="success" type="xsd:boolean">
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="Reason" type="xsd:string">
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="jmsMessage">
+				<xsd:sequence maxOccurs="1" minOccurs="1">
+					<xsd:element maxOccurs="1" minOccurs="1" name="messageId" type="xsd:string">
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="1" name="timestamp" type="xsd:int">
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="1" name="type" type="xsd:string">
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="0" name="correlationId" type="xsd:string">
+					</xsd:element>
+					<xsd:element maxOccurs="1" minOccurs="1" name="messageType">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="TEXT"/>
+								<xsd:enumeration value="MAP"/>
+								<xsd:enumeration value="BYTES"/>
+								<xsd:enumeration value="STREAM"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="body" type="xsd:base64Binary">
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="retrieveMessagesRequest">
+		<wsdl:part element="cls:retrieveMessages" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="retrieveMessagesResponse">
+		<wsdl:part element="cls:retrieveMessagesResponse" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="acknowledgeMessagesRequest">
+		<wsdl:part element="cls:acknowledgeMessages" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="acknowledgeMessagesResponse">
+		<wsdl:part element="cls:acknowledgeMessagesResponse" name="parameters"/>
+	</wsdl:message>
+	<wsdl:portType name="reader.soap2jms.github.com">
+		<wsdl:operation name="retrieveMessages">
+			<wsdl:input message="tns:retrieveMessagesRequest"/>
+			<wsdl:output message="tns:retrieveMessagesResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="acknowledgeMessages">
+			<wsdl:input message="tns:acknowledgeMessagesRequest"/>
+			<wsdl:output message="tns:acknowledgeMessagesResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="readerSOAP" type="tns:reader.soap2jms.github.com">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="acknowledgeMessages">
+			<soap:operation soapAction="http://soap2jms.github.com/acknowledgeMessages"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="retrieveMessages">
+			<soap:operation soapAction="http://soap2jms.github.com/retrieveMessages"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="jmsReaderSoap">
+		<wsdl:port binding="tns:readerSOAP" name="readerSOAP">
+			<soap:address location="http://www.example.org/"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

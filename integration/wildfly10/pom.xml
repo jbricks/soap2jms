@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>soap2jms-integration</artifactId>
+		<groupId>com.github.gcontini.soap2jms.integration</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>soap2jms-integration-wildfly10</artifactId>
+	<groupId>com.github.gcontini.soap2jms.integration</groupId>
+
+	<name>Soap2Jms integration wildfly10</name>
+	<description></description>
+	<packaging>ear</packaging>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>com.github.gcontini.soap2jms</groupId>
+			<artifactId>reader_server</artifactId>
+			<type>war</type>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.19.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-ear-plugin</artifactId>
+				<version>2.10.1</version>
+				<configuration>
+					<!-- defaultLibBundleDir>APP-INF/lib</defaultLibBundleDir -->
+					<modules>
+						<webModule>
+							<groupId>com.github.gcontini.soap2jms</groupId>
+							<artifactId>reader_server</artifactId>
+							<contextRoot>/reader_server</contextRoot>
+						</webModule>
+					</modules>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<version>1.6.0</version>
+				<configuration>
+					<container>
+						<containerId>wildfly10x</containerId>
+						<zipUrlInstaller>
+							<url>http://download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.zip</url>
+							<downloadDir>${project.basedir}/.cargo/downloads</downloadDir>
+							<extractDir>${project.basedir}/.cargo/extracts</extractDir>
+						</zipUrlInstaller>
+						<log>${basedir}/target/cargo.log</log>
+						<output>${basedir}/target/wildfly.log</output>
+						<!--dependencies> <dependency> <groupId>postgresql</groupId> <artifactId>postgresql</artifactId> 
+							</dependency> </dependencies -->
+					</container>
+
+					<configuration>
+						<properties>
+							<cargo.jboss.configuration>standalone-full</cargo.jboss.configuration>
+							<cargo.servlet.port>8080</cargo.servlet.port>
+							<cargo.logging>high</cargo.logging>
+							<cargo.jvmargs>-Denv=test</cargo.jvmargs>
+							<cargo.resource.resource.jms.queue.reader>
+								cargo.resource.name=java:/jms/soap2jms.reader|
+								cargo.resource.type=javax.jms.Queue|
+								cargo.resource.id=soap2jms.reader
+							</cargo.resource.resource.jms.queue.reader>
+							<cargo.resource.resource.jms.connectionFactory>
+								cargo.resource.name=java:/jms/soap2jmsCf|
+								cargo.resource.type=javax.jms.ConnectionFactory|
+								cargo.resource.id=soap2jmsCf
+							</cargo.resource.resource.jms.connectionFactory>
+						</properties>
+					</configuration>
+
+					<deployables>
+						<deployable>
+							<pingURL>http://localhost:8080/application/index</pingURL>
+							<pingTimeout>120000</pingTimeout> <!-- 2 min -->
+						</deployable>
+					</deployables>
+				</configuration>
+				<executions>
+					<execution>
+						<id>start-cargo</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>start</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>stop-cargo</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
