@@ -5,18 +5,42 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<artifactId>soap2jms-integration</artifactId>
-		<groupId>com.github.gcontini.soap2jms.integration</groupId>
+		<groupId>com.github.gcontini.soap2jms.integration-tests</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>soap2jms-integration-wildfly10</artifactId>
-	<groupId>com.github.gcontini.soap2jms.integration</groupId>
 
 	<name>Soap2Jms integration wildfly10</name>
 	<description></description>
-	<packaging>ear</packaging>
+	<packaging>jar</packaging>
 
 
 	<dependencies>
+		<dependency>
+			<groupId>com.github.gcontini.soap2jms</groupId>
+			<artifactId>reader_client</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.wildfly</groupId>
+			<artifactId>wildfly-jms-client-bom</artifactId>
+			<scope>test</scope>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.github.gcontini.soap2jms</groupId>
 			<artifactId>reader_server</artifactId>
@@ -28,7 +52,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>2.19.1</version>
 				<executions>
 					<execution>
 						<goals>
@@ -38,25 +61,14 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-ear-plugin</artifactId>
-				<version>2.10.1</version>
-				<configuration>
-					<!-- defaultLibBundleDir>APP-INF/lib</defaultLibBundleDir -->
-					<modules>
-						<webModule>
-							<groupId>com.github.gcontini.soap2jms</groupId>
-							<artifactId>reader_server</artifactId>
-							<contextRoot>/reader_server</contextRoot>
-						</webModule>
-					</modules>
-				</configuration>
-			</plugin>
+			<!-- plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-ear-plugin</artifactId> 
+				<version>2.10.1</version> <configuration> <defaultLibBundleDir>APP-INF/lib</defaultLibBundleDir> 
+				<modules> <webModule> <groupId>com.github.gcontini.soap2jms</groupId> <artifactId>reader_server</artifactId> 
+				<contextRoot>/reader_server</contextRoot> </webModule> </modules> </configuration> 
+				</plugin -->
 			<plugin>
 				<groupId>org.codehaus.cargo</groupId>
 				<artifactId>cargo-maven2-plugin</artifactId>
-				<version>1.6.0</version>
 				<configuration>
 					<container>
 						<containerId>wildfly10x</containerId>
@@ -78,22 +90,25 @@
 							<cargo.logging>high</cargo.logging>
 							<cargo.jvmargs>-Denv=test</cargo.jvmargs>
 							<cargo.resource.resource.jms.queue.reader>
-								cargo.resource.name=java:/jms/soap2jms.reader|
+								cargo.resource.name=jboss/exported/jms/soap2jms.reader|
 								cargo.resource.type=javax.jms.Queue|
 								cargo.resource.id=soap2jms.reader
 							</cargo.resource.resource.jms.queue.reader>
-							<cargo.resource.resource.jms.connectionFactory>
-								cargo.resource.name=java:/jms/soap2jmsCf|
-								cargo.resource.type=javax.jms.ConnectionFactory|
-								cargo.resource.id=soap2jmsCf
-							</cargo.resource.resource.jms.connectionFactory>
+							<!-- cargo.resource.resource.jms.connectionFactory> cargo.resource.name=java:/jms/soap2jmsCf| 
+								cargo.resource.type=javax.jms.ConnectionFactory| cargo.resource.id=soap2jmsCf 
+								</cargo.resource.resource.jms.connectionFactory -->
+							<!-- they're also jms users -->
+							<cargo.servlet.users>test:test1:guest</cargo.servlet.users>
 						</properties>
 					</configuration>
 
 					<deployables>
 						<deployable>
-							<pingURL>http://localhost:8080/application/index</pingURL>
+							<pingURL>http://localhost:8080/reader_server/jmsReaderSoap?wsdl</pingURL> 
 							<pingTimeout>120000</pingTimeout> <!-- 2 min -->
+							<groupId>com.github.gcontini.soap2jms</groupId>
+							<artifactId>reader_server</artifactId>
+							<type>war</type>
 						</deployable>
 					</deployables>
 				</configuration>
@@ -105,13 +120,13 @@
 							<goal>start</goal>
 						</goals>
 					</execution>
-					<execution>
+					<!-- execution>
 						<id>stop-cargo</id>
 						<phase>post-integration-test</phase>
 						<goals>
 							<goal>stop</goal>
 						</goals>
-					</execution>
+					</execution -->
 				</executions>
 			</plugin>
 		</plugins>

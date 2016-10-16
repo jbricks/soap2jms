@@ -5,7 +5,10 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -18,6 +21,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
+ *         &lt;element name="queueName" type="{http://www.w3.org/2001/XMLSchema}NCName"/&gt;
  *         &lt;element name="filter" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *         &lt;element name="maxItems" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
  *       &lt;/sequence&gt;
@@ -30,6 +34,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
+    "queueName",
     "filter",
     "maxItems"
 })
@@ -37,10 +42,38 @@ import javax.xml.bind.annotation.XmlType;
 public class RetrieveMessages {
 
     @XmlElement(required = true)
+    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+    @XmlSchemaType(name = "NCName")
+    protected String queueName;
+	@XmlElement(required = true)
     protected String filter;
     protected int maxItems;
 
     /**
+     * Gets the value of the queueName property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getQueueName() {
+        return queueName;
+    }
+
+	/**
+     * Sets the value of the queueName property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setQueueName(String value) {
+        this.queueName = value;
+    }
+
+	/**
      * Gets the value of the filter property.
      * 
      * @return
@@ -79,6 +112,5 @@ public class RetrieveMessages {
     public void setMaxItems(int value) {
         this.maxItems = value;
     }
-
 
 }

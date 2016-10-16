@@ -8,10 +8,9 @@
 			<xsd:element name="retrieveMessages">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="filter" type="xsd:string">
-						</xsd:element>
-						<xsd:element name="maxItems" type="xsd:int">
-						</xsd:element>
+						<xsd:element name="queueName" type="xsd:NCName" />						
+						<xsd:element name="filter" type="xsd:string" />
+						<xsd:element name="maxItems" type="xsd:int" />
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -116,7 +115,7 @@
 	<wsdl:message name="acknowledgeMessagesResponse">
 		<wsdl:part name="parameters" element="cls:acknowledgeMessagesResponse"></wsdl:part>
 	</wsdl:message>
-	<wsdl:portType name="reader.soap2jms.github.com">
+	<wsdl:portType name="reader.soap2jms">
 		<wsdl:operation name="retrieveMessages">
 			<wsdl:input message="tns:retrieveMessagesRequest"></wsdl:input>
 			<wsdl:output message="tns:retrieveMessagesResponse"></wsdl:output>
@@ -126,7 +125,7 @@
 			<wsdl:output message="tns:acknowledgeMessagesResponse"></wsdl:output>
 		</wsdl:operation>
 	</wsdl:portType>
-	<wsdl:binding name="readerSOAP" type="tns:reader.soap2jms.github.com">
+	<wsdl:binding name="readerSOAP" type="tns:reader.soap2jms">
 		<soap:binding style="document"
 			transport="http://schemas.xmlsoap.org/soap/http" />
 		<wsdl:operation name="acknowledgeMessages">

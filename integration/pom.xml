@@ -9,7 +9,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>soap2jms-integration</artifactId>
-	<groupId>com.github.gcontini.soap2jms.integration</groupId>
+	<groupId>com.github.gcontini.soap2jms.integration-tests</groupId>
 
 	<name>Soap2Jms Integration</name>
 	<description></description>
@@ -17,6 +17,7 @@
 
 	<modules>
 		<module>wildfly10</module>
+		<module>project-customization</module>
 	</modules>
 
 	<dependencyManagement>

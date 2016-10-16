@@ -61,8 +61,14 @@
 			</dependency>
 			<dependency>
 				<groupId>javax.jms</groupId>
-				<artifactId>jms-api</artifactId>
-				<version>1.1-rev-1</version>
+				<artifactId>javax.jms-api</artifactId>
+				<version>2.0</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.inject</groupId>
+				<artifactId>javax.inject</artifactId>
+				<version>1</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -70,7 +76,25 @@
 				<artifactId>commons-lang3</artifactId>
 				<version>3.4</version>
 			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.12</version>
+				<scope>test</scope>
+			</dependency>
+			<!-- for jboss integration tests -->
+			<dependency>
+				<groupId>org.wildfly</groupId>
+				<artifactId>wildfly-jms-client-bom</artifactId>
+				<version>10.1.0.Final</version>
+				<type>pom</type>
+			</dependency>
 
+			<dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>1.9.2</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<build>
@@ -81,9 +105,20 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.5.1</version>
 					<configuration>
-						<source>1.7</source>
-						<target>1.7</target>
+						<!-- required for wildfly installation -->
+						<source>1.8</source>
+						<target>1.8</target>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.cargo</groupId>
+					<artifactId>cargo-maven2-plugin</artifactId>
+					<version>1.6.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>2.19.1</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
