@@ -17,20 +17,7 @@
 
 	<modules>
 		<module>wildfly10</module>
-		<module>project-customization</module>
 	</modules>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>com.github.gcontini.soap2jms</groupId>
-				<artifactId>reader_common</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
-			</dependency>
-
-
-		</dependencies>
-	</dependencyManagement>
 	<build>
 		<pluginManagement>
 			<plugins>

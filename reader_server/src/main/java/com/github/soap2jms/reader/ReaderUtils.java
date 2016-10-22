@@ -32,9 +32,9 @@ final class ReaderUtils {
 				messageType = entry.getValue();
 			}
 		}
-		
+
 		JmsMessage result = new JmsMessage(message.getJMSMessageID(), message.getJMSTimestamp(), message.getJMSType(),
-				message.getJMSCorrelationID(), messageType.name(), body);
+				message.getJMSCorrelationID(), messageType.name(), null, body);
 		return result;
 
 	}

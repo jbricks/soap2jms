@@ -1,12 +1,15 @@
 package com.github.soap2jms.reader;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+
 import java.util.List;
 import java.util.Properties;
-import static org.junit.Assert.*;
+
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
-import javax.jms.JMSConsumer;
 import javax.jms.JMSContext;
+import javax.jms.Queue;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -16,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.soap2jms.reader_common.JmsMessage;
+import com.github.soap2jms.reader_common.JmsMessageAndStatus;
 import com.github.soap2jms.reader_common.RetrieveMessageResponseType;
 
 public class ITReaderConsumeMessage {
@@ -29,21 +33,25 @@ public class ITReaderConsumeMessage {
 	private static final String DEFAULT_PASSWORD = "test1";
 	private static final String INITIAL_CONTEXT_FACTORY = "org.jboss.naming.remote.client.InitialContextFactory";
 	private static final String PROVIDER_URL = "http-remoting://127.0.0.1:8080";
-	private static final String WSDL_LOCATION = "http://localhost:8080/reader_server/jmsReaderSoap?wsdl";
+	private static final String WSDL_LOCATION = "http://localhost:8080/soap2jms-integration-wildfly10/jmsReaderSoap?wsdl";
 
 	@Test
-	public void testReadMessage() throws Exception {
+	public void testReadTextMessage() throws Exception {
 		// send a message to a queue.
 		sendMessage(1);
 		// read the message with webservice
 		JmsReaderSoap wsClient = new JmsReaderSoap(WSDL_LOCATION);
-		ReaderSoap2JmsGithubCom reader = wsClient.getReaderSOAP();
-		//TODO: map jms/soap2jms.reader to jara:/comp/env/soap2jms in project project_customization (web.xml).
+		ReaderSoap2Jms reader = wsClient.getReaderSOAP();
+
+		// TODO: map jms/soap2jms.reader to java:/comp/env/soap2jms in project
+		// project_customization (web.xml).
 		RetrieveMessageResponseType messages = reader.retrieveMessages("soap2jms", null, 100);
 		assertTrue("complete response", messages.isComplete());
-		List<JmsMessage> jmsMessages = messages.getJmsMessages();
+		List<JmsMessageAndStatus> jmsMessages = messages.getJmsMessageAndStatus();
 		assertEquals("Messages retrieved", 1, jmsMessages.size());
-		assertEquals("message content", DEFAULT_CONTENT, new String(jmsMessages.get(0).getBody()));
+		final byte[] messageBody = jmsMessages.get(0).getJmsMessage().getBody();
+		assertNotNull("Message body deserialized", messageBody);
+		assertEquals("message content", DEFAULT_CONTENT, new String(messageBody));
 		// acknowlege the message
 
 		// the message is not in the queue
@@ -51,6 +59,26 @@ public class ITReaderConsumeMessage {
 
 	@Test
 	public void testAcknowledgeMessage2Times() {
+		// send a message to a queue.
+		// read the message with webservice
+
+		// acknowlege the message
+
+		// acknowledge the message OK
+	}
+
+	@Test
+	public void testReadObjectMessage() {
+		// send a message to a queue.
+		// read the message with webservice
+
+		// acknowlege the message
+
+		// acknowledge the message OK
+	}
+
+	@Test
+	public void testReadMapMessage() {
 		// send a message to a queue.
 		// read the message with webservice
 

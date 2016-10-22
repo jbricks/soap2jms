@@ -12,8 +12,7 @@
 
 	<name>Soap2Jms integration wildfly10</name>
 	<description></description>
-	<packaging>jar</packaging>
-
+	<packaging>war</packaging>
 
 	<dependencies>
 		<dependency>
@@ -61,6 +60,22 @@
 					</execution>
 				</executions>
 			</plugin>
+			      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.0.0</version>
+        <!--configuration>
+          <overlays>
+            <overlay>
+              <groupId>com.example.projects</groupId>
+              <artifactId>my-webapp</artifactId>
+            </overlay>
+            <overlay>
+              
+            </overlay>
+          </overlays>
+        </configuration -->
+      </plugin>
 			<!-- plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-ear-plugin</artifactId> 
 				<version>2.10.1</version> <configuration> <defaultLibBundleDir>APP-INF/lib</defaultLibBundleDir> 
 				<modules> <webModule> <groupId>com.github.gcontini.soap2jms</groupId> <artifactId>reader_server</artifactId> 
@@ -104,11 +119,11 @@
 
 					<deployables>
 						<deployable>
-							<pingURL>http://localhost:8080/reader_server/jmsReaderSoap?wsdl</pingURL> 
-							<pingTimeout>120000</pingTimeout> <!-- 2 min -->
+							<!-- pingURL>http://localhost:8080/reader_server/jmsReaderSoap?wsdl</pingURL> 
+							<pingTimeout>120000</pingTimeout> 
 							<groupId>com.github.gcontini.soap2jms</groupId>
 							<artifactId>reader_server</artifactId>
-							<type>war</type>
+							<type>war</type -->
 						</deployable>
 					</deployables>
 				</configuration>
@@ -120,13 +135,13 @@
 							<goal>start</goal>
 						</goals>
 					</execution>
-					<!-- execution>
+					<execution>
 						<id>stop-cargo</id>
 						<phase>post-integration-test</phase>
 						<goals>
 							<goal>stop</goal>
 						</goals>
-					</execution -->
+					</execution>
 				</executions>
 			</plugin>
 		</plugins>

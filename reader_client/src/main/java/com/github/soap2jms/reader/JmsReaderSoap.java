@@ -41,8 +41,8 @@ public class JmsReaderSoap extends Service {
 	 * @return returns ReaderSoap2JmsGithubCom
 	 */
 	@WebEndpoint(name = "readerSOAP")
-	public ReaderSoap2JmsGithubCom getReaderSOAP() {
-		return super.getPort(ReaderSOAP, ReaderSoap2JmsGithubCom.class);
+	public ReaderSoap2Jms getReaderSOAP() {
+		return super.getPort(ReaderSOAP, ReaderSoap2Jms.class);
 	}
 
 	/**
@@ -55,8 +55,8 @@ public class JmsReaderSoap extends Service {
 	 * @return returns ReaderSoap2JmsGithubCom
 	 */
 	@WebEndpoint(name = "readerSOAP")
-	public ReaderSoap2JmsGithubCom getReaderSOAP(WebServiceFeature... features) {
-		return super.getPort(ReaderSOAP, ReaderSoap2JmsGithubCom.class, features);
+	public ReaderSoap2Jms getReaderSOAP(WebServiceFeature... features) {
+		return super.getPort(ReaderSOAP, ReaderSoap2Jms.class, features);
 	}
 
 }

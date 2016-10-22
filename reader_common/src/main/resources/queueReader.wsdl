@@ -8,13 +8,13 @@
 			<xsd:element name="retrieveMessages">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="queueName" type="xsd:NCName" />						
+						<xsd:element name="queueName" type="xsd:NCName" />
 						<xsd:element name="filter" type="xsd:string" />
 						<xsd:element name="maxItems" type="xsd:int" />
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
-			<xsd:element name="retrieveMessagesResponse" >
+			<xsd:element name="retrieveMessagesResponse">
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="retrieveMessagesResponse" type="cls:retrieveMessageResponseType"
@@ -39,66 +39,77 @@
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:complexType name="messageIdAndStatus">
-				<xsd:sequence maxOccurs="unbounded" minOccurs="1">
+				<xsd:sequence maxOccurs="1" minOccurs="1">
 					<xsd:element name="messageId" type="xsd:string" />
-					<xsd:element name="status" type="cls:acknowledgeStatus" />
+					<xsd:element name="status" type="cls:responseStatus" />
 				</xsd:sequence>
 			</xsd:complexType>
 			<xsd:complexType name="retrieveMessageResponseType">
 				<xsd:sequence minOccurs="1" maxOccurs="1">
-					<xsd:element maxOccurs="unbounded" name="jmsMessages"
-						type="cls:jmsMessage" minOccurs="1" />
-					<xsd:element name="complete" type="xsd:boolean"
-						maxOccurs="1" minOccurs="1" />
+					<xsd:element name="responseStatus" type="cls:responseStatus" maxOccurs="1" minOccurs="1" />
+					<xsd:element maxOccurs="unbounded"
+						name="jmsMessageAndStatus" type="cls:jmsMessageAndStatus" minOccurs="0" />
+					<xsd:element name="complete" type="xsd:boolean" maxOccurs="1" minOccurs="1" />
 				</xsd:sequence>
 			</xsd:complexType>
-			<xsd:complexType name="acknowledgeStatus">
-				<xsd:sequence>
+			<xsd:complexType name="responseStatus">
+				<xsd:sequence maxOccurs="1" minOccurs="1">
 					<xsd:element name="code">
 						<xsd:simpleType>
 							<xsd:restriction base="xsd:string">
-								<xsd:enumeration value="OK">
-								</xsd:enumeration>
-								<xsd:enumeration value="MESSAGE_NOT_FOUND">
-								</xsd:enumeration>
-								<xsd:enumeration value="ERROR">
-								</xsd:enumeration>
+								<xsd:enumeration value="OK" />
+								<xsd:enumeration value="WARN" />
+								<xsd:enumeration value="TEMPORARY_ERROR" />
+								<xsd:enumeration value="PERMANENT_ERROR" />
 							</xsd:restriction>
 						</xsd:simpleType>
 					</xsd:element>
-					<xsd:element name="success" type="xsd:boolean">
-					</xsd:element>
-					<xsd:element name="Reason" type="xsd:string" maxOccurs="1"
-						minOccurs="0">
-					</xsd:element>
+					<xsd:element name="Reason" type="xsd:string" maxOccurs="1" minOccurs="0" />
 				</xsd:sequence>
 			</xsd:complexType>
 			<xsd:complexType name="jmsMessage">
 				<xsd:sequence minOccurs="1" maxOccurs="1">
-					<xsd:element minOccurs="1" maxOccurs="1" name="messageId"
-						type="xsd:string">
+					<xsd:element minOccurs="1" maxOccurs="1"
+						name="messageId" type="xsd:string">
 					</xsd:element>
-					<xsd:element minOccurs="1" maxOccurs="1" name="timestamp"
-						type="xsd:long">
+					<xsd:element minOccurs="1" maxOccurs="1"
+						name="timestamp" type="xsd:long">
 					</xsd:element>
 					<xsd:element minOccurs="1" maxOccurs="1" name="type"
 						type="xsd:string">
 					</xsd:element>
-					<xsd:element minOccurs="0" maxOccurs="1" name="correlationId"
-						type="xsd:string">
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="correlationId" type="xsd:string">
 					</xsd:element>
-					<xsd:element minOccurs="1" maxOccurs="1" name="messageType">
+					<xsd:element minOccurs="1" maxOccurs="1"
+						name="messageType">
 						<xsd:simpleType>
 							<xsd:restriction base="xsd:string">
 								<xsd:enumeration value="TEXT"></xsd:enumeration>
 								<xsd:enumeration value="MAP"></xsd:enumeration>
 								<xsd:enumeration value="BYTES"></xsd:enumeration>
 								<xsd:enumeration value="STREAM"></xsd:enumeration>
+								<xsd:enumeration value="OBJECT"></xsd:enumeration>
 							</xsd:restriction>
 						</xsd:simpleType>
 					</xsd:element>
+					<xsd:element name="headers" maxOccurs="unbounded">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element minOccurs="1" maxOccurs="1" name="key" type="xsd:string" />
+								<xsd:element minOccurs="1" maxOccurs="1" name="value" type="xsd:string"/>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
 					<xsd:element name="body" type="xsd:base64Binary">
 					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="jmsMessageAndStatus">
+				<xsd:sequence minOccurs="1" maxOccurs="1">
+					<xsd:element  name="jmsMessage" type="cls:jmsMessage"  />
+					<xsd:element name="messageStatus" type="cls:responseStatus" />
 				</xsd:sequence>
 			</xsd:complexType>
 		</xsd:schema>

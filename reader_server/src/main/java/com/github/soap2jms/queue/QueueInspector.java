@@ -16,43 +16,42 @@ import javax.naming.NamingException;
 import org.apache.commons.lang3.StringUtils;
 
 public class QueueInspector {
+	private static final String JNDI_LOCAL = "java:comp/env/";
 
 	@Inject
 	private JMSContext ctx;
-
-	public static class GetMessagesResult {
-		public GetMessagesResult(Message[] result, boolean moreMessages) {
-			this.result = result;
-			this.moreMessages = moreMessages;
-		}
-
-		public final Message[] result;
-		public final boolean moreMessages;
-	}
 
 	public GetMessagesResult getMessages(String queueName, int msgMax, String filter)
 			throws JMSException, NamingException {
 		List<Message> result = new ArrayList<>();
 		boolean moreMessages;
-		InitialContext ictx = new InitialContext();
-		Queue queue = (Queue) ictx.lookup("java:/comp/env/" + queueName);
+		InitialContext ictx = null;
 		QueueBrowser browser = null;
-		if (StringUtils.isNotBlank(filter)) {
-			browser = ctx.createBrowser(queue, filter);
-		} else {
-			browser = ctx.createBrowser(queue);
+		final GetMessagesResult messageResult;
+		try {
+			ictx = new InitialContext();
+			Queue queue = (Queue) ictx.lookup(JNDI_LOCAL + queueName);
+			if (StringUtils.isNotBlank(filter)) {
+				browser = ctx.createBrowser(queue, filter);
+			} else {
+				browser = ctx.createBrowser(queue);
+			}
+			@SuppressWarnings("unchecked")
+			Enumeration<Message> msgs = browser.getEnumeration();
+			int i = 0;
+			while (msgs.hasMoreElements() && i < msgMax) {
+				Message tempMsg = msgs.nextElement();
+				result.add(tempMsg);
+				i++;
+			}
+			moreMessages = msgs.hasMoreElements();
+			messageResult = new GetMessagesResult(
+					(Message[]) result.toArray(new Message[result.size()]), moreMessages);
+		} finally {
+			browser.close();
+			ictx.close();
 		}
-		@SuppressWarnings("unchecked")
-		Enumeration<Message> msgs = browser.getEnumeration();
-		int i = 0;
-		while (msgs.hasMoreElements() && i < msgMax) {
-			Message tempMsg = msgs.nextElement();
-			result.add(tempMsg);
-			i++;
-		}
-		moreMessages = msgs.hasMoreElements();
-
-		return new GetMessagesResult((Message[]) result.toArray(new Message[result.size()]), moreMessages);
+		return messageResult;
 
 	}
 }

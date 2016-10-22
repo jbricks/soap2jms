@@ -40,7 +40,7 @@ public final class ReaderSoap2JmsGithubCom_ReaderSOAP_Client {
         }
       
         JmsReaderSoap ss = new JmsReaderSoap(wsdlURL, SERVICE_NAME);
-        ReaderSoap2JmsGithubCom port = ss.getReaderSOAP();  
+        ReaderSoap2Jms port = ss.getReaderSOAP();  
         
         {
         System.out.println("Invoking retrieveMessages...");
