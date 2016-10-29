@@ -1,4 +1,6 @@
-# soap2jms
+[![Build Status](https://travis-ci.org/gcontini/soap2jms.svg?branch=master)](https://travis-ci.org/gcontini/soap2jms)
+
+# Soap2Jms
 
 This project expose a jms queue through a standard SOAP over HTTP web service.
 It allows to read and send messages from/to a JMS queue. Clients doesn't have dependency on any JMS libraries. They are simple JAX-WS web service client, that can be used with any implementation (Apache CXF for instance).

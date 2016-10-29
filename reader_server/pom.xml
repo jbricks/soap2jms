@@ -16,7 +16,6 @@
 	<packaging>war</packaging>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>com.github.gcontini.soap2jms</groupId>
 			<artifactId>reader_common</artifactId>

@@ -1,5 +1,5 @@
 
-package com.github.soap2jms.reader_common;
+package com.github.soap2jms.reader.common.ws;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -48,7 +48,16 @@ public class ResponseStatus {
     @XmlElement(name = "Reason")
     protected String reason;
 
-    /**
+    public ResponseStatus() {
+
+	}
+
+	public ResponseStatus(String code, String reason) {
+		this.code = code;
+		this.reason = reason;
+	}
+
+	/**
      * Gets the value of the code property.
      * 
      * @return

@@ -1,8 +1,10 @@
 
-package com.github.soap2jms.reader_common;
+package com.github.soap2jms.reader.common.ws;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.activation.DataHandler;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -10,30 +12,16 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for jmsMessage complex type.
+ * <p>Java class for s2jMessage complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="jmsMessage">
+ * &lt;complexType name="s2jMessage">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="messageId" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="timestamp" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="correlationId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="messageType">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;enumeration value="TEXT"/>
- *               &lt;enumeration value="MAP"/>
- *               &lt;enumeration value="BYTES"/>
- *               &lt;enumeration value="STREAM"/>
- *               &lt;enumeration value="OBJECT"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
  *         &lt;element name="headers" maxOccurs="unbounded">
  *           &lt;complexType>
  *             &lt;complexContent>
@@ -46,6 +34,21 @@ import javax.xml.bind.annotation.XmlType;
  *             &lt;/complexContent>
  *           &lt;/complexType>
  *         &lt;/element>
+ *         &lt;element name="messageId" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="messageType">
+ *           &lt;simpleType>
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *               &lt;enumeration value="TEXT"/>
+ *               &lt;enumeration value="MAP"/>
+ *               &lt;enumeration value="BYTES"/>
+ *               &lt;enumeration value="STREAM"/>
+ *               &lt;enumeration value="OBJECT"/>
+ *             &lt;/restriction>
+ *           &lt;/simpleType>
+ *         &lt;/element>
+ *         &lt;element name="priority" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
+ *         &lt;element name="timestamp" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="body" type="{http://www.w3.org/2001/XMLSchema}base64Binary"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -56,32 +59,34 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "jmsMessage", propOrder = {
+@XmlType(name = "s2jMessage", propOrder = {
+    "correlationId",
+    "headers",
     "messageId",
+    "messageType",
+    "priority",
     "timestamp",
     "type",
-    "correlationId",
-    "messageType",
-    "headers",
     "body"
 })
-public class JmsMessage {
+public class S2JMessage {
 
+    protected String correlationId;
+    @XmlElement(required = true)
+    protected List<S2JMessage.Headers> headers;
     @XmlElement(required = true)
     protected String messageId;
+    @XmlElement(required = true)
+    protected String messageType;
+    protected Integer priority;
     protected long timestamp;
     @XmlElement(required = true)
     protected String type;
-    protected String correlationId;
     @XmlElement(required = true)
-    protected String messageType;
-    @XmlElement(required = true)
-    protected List<JmsMessage.Headers> headers;
-    @XmlElement(required = true)
-    protected byte[] body;
+    protected DataHandler body;
 
-    public JmsMessage(String messageId, long timestamp, String type, String correlationId, 
-    		String messageType, List<Headers> headers, byte[] body) {
+    public S2JMessage(String messageId, long timestamp, String type, String correlationId, 
+    		String messageType, List<Headers> headers, DataHandler body) {
 		this.messageId = messageId;
 		this.timestamp = timestamp;
 		this.type = type;
@@ -91,10 +96,62 @@ public class JmsMessage {
 		this.body = body;
 	}
 
-	public JmsMessage() {
+	public S2JMessage() {
 	}
+    /**
+     * Gets the value of the correlationId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getCorrelationId() {
+        return correlationId;
+    }
 
-	/**
+    /**
+     * Sets the value of the correlationId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setCorrelationId(String value) {
+        this.correlationId = value;
+    }
+
+    /**
+     * Gets the value of the headers property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the headers property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getHeaders().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link S2JMessage.Headers }
+     * 
+     * 
+     */
+    public List<S2JMessage.Headers> getHeaders() {
+        if (headers == null) {
+            headers = new ArrayList<S2JMessage.Headers>();
+        }
+        return this.headers;
+    }
+
+    /**
      * Gets the value of the messageId property.
      * 
      * @return
@@ -116,6 +173,54 @@ public class JmsMessage {
      */
     public void setMessageId(String value) {
         this.messageId = value;
+    }
+
+    /**
+     * Gets the value of the messageType property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getMessageType() {
+        return messageType;
+    }
+
+    /**
+     * Sets the value of the messageType property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setMessageType(String value) {
+        this.messageType = value;
+    }
+
+    /**
+     * Gets the value of the priority property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Integer }
+     *     
+     */
+    public Integer getPriority() {
+        return priority;
+    }
+
+    /**
+     * Sets the value of the priority property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Integer }
+     *     
+     */
+    public void setPriority(Integer value) {
+        this.priority = value;
     }
 
     /**
@@ -159,90 +264,13 @@ public class JmsMessage {
     }
 
     /**
-     * Gets the value of the correlationId property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getCorrelationId() {
-        return correlationId;
-    }
-
-    /**
-     * Sets the value of the correlationId property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setCorrelationId(String value) {
-        this.correlationId = value;
-    }
-
-    /**
-     * Gets the value of the messageType property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getMessageType() {
-        return messageType;
-    }
-
-    /**
-     * Sets the value of the messageType property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setMessageType(String value) {
-        this.messageType = value;
-    }
-
-    /**
-     * Gets the value of the headers property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the headers property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getHeaders().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link JmsMessage.Headers }
-     * 
-     * 
-     */
-    public List<JmsMessage.Headers> getHeaders() {
-        if (headers == null) {
-            headers = new ArrayList<JmsMessage.Headers>();
-        }
-        return this.headers;
-    }
-
-    /**
      * Gets the value of the body property.
      * 
      * @return
      *     possible object is
      *     byte[]
      */
-    public byte[] getBody() {
+    public DataHandler getBody() {
         return body;
     }
 
@@ -253,7 +281,7 @@ public class JmsMessage {
      *     allowed object is
      *     byte[]
      */
-    public void setBody(byte[] value) {
+    public void setBody(DataHandler value) {
         this.body = value;
     }
 

@@ -1,4 +1,4 @@
-package com.github.soap2jms.reader;
+package com.github.soap2jms.reader.common;
 
 public enum JMSMessageTypeEnum {
 	BYTE,

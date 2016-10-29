@@ -1,26 +1,29 @@
-package com.github.soap2jms.reader;
+package com.github.soap2jms.reader.it;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.Properties;
 
+import javax.activation.DataHandler;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSContext;
-import javax.jms.Queue;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.soap2jms.reader_common.JmsMessage;
-import com.github.soap2jms.reader_common.JmsMessageAndStatus;
-import com.github.soap2jms.reader_common.RetrieveMessageResponseType;
+import com.github.soap2jms.reader.JmsReaderSoap;
+import com.github.soap2jms.reader.ReaderSoap2Jms;
+import com.github.soap2jms.reader.common.ws.RetrieveMessageResponseType;
+import com.github.soap2jms.reader.common.ws.S2JMessageAndStatus;
 
 public class ITReaderConsumeMessage {
 	private static final Logger log = LoggerFactory.getLogger(ITReaderConsumeMessage.class);
@@ -47,11 +50,11 @@ public class ITReaderConsumeMessage {
 		// project_customization (web.xml).
 		RetrieveMessageResponseType messages = reader.retrieveMessages("soap2jms", null, 100);
 		assertTrue("complete response", messages.isComplete());
-		List<JmsMessageAndStatus> jmsMessages = messages.getJmsMessageAndStatus();
+		List<S2JMessageAndStatus> jmsMessages = messages.getS2JMessageAndStatus();
 		assertEquals("Messages retrieved", 1, jmsMessages.size());
-		final byte[] messageBody = jmsMessages.get(0).getJmsMessage().getBody();
+		final DataHandler messageBody = jmsMessages.get(0).getS2JMessage().getBody();
 		assertNotNull("Message body deserialized", messageBody);
-		assertEquals("message content", DEFAULT_CONTENT, new String(messageBody));
+		assertEquals("message content", DEFAULT_CONTENT, IOUtils.toString(messageBody.getInputStream(), "UTF-8"));
 		// acknowlege the message
 
 		// the message is not in the queue

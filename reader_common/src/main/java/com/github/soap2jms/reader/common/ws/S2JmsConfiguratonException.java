@@ -1,5 +1,5 @@
 
-package com.github.soap2jms.reader_common;
+package com.github.soap2jms.reader.common.ws;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="retrieveMessagesResponse" type="{http://soap2jms.github.com/reader_common}retrieveMessageResponseType"/>
+ *         &lt;element ref="{http://soap2jms.github.com/reader/common/ws}s2jmsException"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -29,36 +29,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "retrieveMessagesResponse"
+    "s2JmsException"
 })
-@XmlRootElement(name = "retrieveMessagesResponse")
-public class RetrieveMessagesResponse {
+@XmlRootElement(name = "s2jmsConfiguratonException")
+public class S2JmsConfiguratonException {
 
-    @XmlElement(required = true)
-    protected RetrieveMessageResponseType retrieveMessagesResponse;
+    @XmlElement(name = "s2jmsException", namespace = "http://soap2jms.github.com/reader/common/ws", required = true)
+    protected S2JmsExceptionType s2JmsException;
 
     /**
-     * Gets the value of the retrieveMessagesResponse property.
+     * Gets the value of the s2JmsException property.
      * 
      * @return
      *     possible object is
-     *     {@link RetrieveMessageResponseType }
+     *     {@link S2JmsExceptionType }
      *     
      */
-    public RetrieveMessageResponseType getRetrieveMessagesResponse() {
-        return retrieveMessagesResponse;
+    public S2JmsExceptionType getS2JmsException() {
+        return s2JmsException;
     }
 
     /**
-     * Sets the value of the retrieveMessagesResponse property.
+     * Sets the value of the s2JmsException property.
      * 
      * @param value
      *     allowed object is
-     *     {@link RetrieveMessageResponseType }
+     *     {@link S2JmsExceptionType }
      *     
      */
-    public void setRetrieveMessagesResponse(RetrieveMessageResponseType value) {
-        this.retrieveMessagesResponse = value;
+    public void setS2JmsException(S2JmsExceptionType value) {
+        this.s2JmsException = value;
     }
 
 }

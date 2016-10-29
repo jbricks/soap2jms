@@ -1,13 +1,16 @@
 
-package com.github.soap2jms.reader_common;
+package com.github.soap2jms.reader.common.ws;
 
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlElementDecl;
 import javax.xml.bind.annotation.XmlRegistry;
+import javax.xml.namespace.QName;
 
 
 /**
  * This object contains factory methods for each 
  * Java content interface and Java element interface 
- * generated in the com.github.soap2jms.reader_common package. 
+ * generated in the com.github.soap2jms.reader.common.ws package. 
  * <p>An ObjectFactory allows you to programatically 
  * construct new instances of the Java representation 
  * for XML content. The Java representation of XML 
@@ -21,20 +24,21 @@ import javax.xml.bind.annotation.XmlRegistry;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _S2JmsException_QNAME = new QName("http://soap2jms.github.com/reader/common/ws", "s2jmsException");
 
     /**
-     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.github.soap2jms.reader_common
+     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.github.soap2jms.reader.common.ws
      * 
      */
     public ObjectFactory() {
     }
 
     /**
-     * Create an instance of {@link JmsMessage }
+     * Create an instance of {@link S2JMessage }
      * 
      */
-    public JmsMessage createJmsMessage() {
-        return new JmsMessage();
+    public S2JMessage createS2JMessage() {
+        return new S2JMessage();
     }
 
     /**
@@ -86,11 +90,27 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JmsMessageAndStatus }
+     * Create an instance of {@link S2JmsExceptionType }
      * 
      */
-    public JmsMessageAndStatus createJmsMessageAndStatus() {
-        return new JmsMessageAndStatus();
+    public S2JmsExceptionType createS2JmsExceptionType() {
+        return new S2JmsExceptionType();
+    }
+
+    /**
+     * Create an instance of {@link S2JmsConfiguratonException }
+     * 
+     */
+    public S2JmsConfiguratonException createS2JmsConfiguratonException() {
+        return new S2JmsConfiguratonException();
+    }
+
+    /**
+     * Create an instance of {@link S2JMessageAndStatus }
+     * 
+     */
+    public S2JMessageAndStatus createS2JMessageAndStatus() {
+        return new S2JMessageAndStatus();
     }
 
     /**
@@ -102,11 +122,20 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JmsMessage.Headers }
+     * Create an instance of {@link S2JMessage.Headers }
      * 
      */
-    public JmsMessage.Headers createJmsMessageHeaders() {
-        return new JmsMessage.Headers();
+    public S2JMessage.Headers createS2JMessageHeaders() {
+        return new S2JMessage.Headers();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link S2JmsExceptionType }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap2jms.github.com/reader/common/ws", name = "s2jmsException")
+    public JAXBElement<S2JmsExceptionType> createS2JmsException(S2JmsExceptionType value) {
+        return new JAXBElement<S2JmsExceptionType>(_S2JmsException_QNAME, S2JmsExceptionType.class, null, value);
     }
 
 }

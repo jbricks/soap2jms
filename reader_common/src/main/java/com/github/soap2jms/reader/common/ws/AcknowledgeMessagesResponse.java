@@ -1,5 +1,5 @@
 
-package com.github.soap2jms.reader_common;
+package com.github.soap2jms.reader.common.ws;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="messageId" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
+ *         &lt;element name="messageIdAndStatus" type="{http://soap2jms.github.com/reader/common/ws}messageIdAndStatus" maxOccurs="unbounded"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -31,41 +31,41 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "messageId"
+    "messageIdAndStatus"
 })
-@XmlRootElement(name = "acknowledgeMessages")
-public class AcknowledgeMessages {
+@XmlRootElement(name = "acknowledgeMessagesResponse")
+public class AcknowledgeMessagesResponse {
 
     @XmlElement(required = true)
-    protected List<String> messageId;
+    protected List<MessageIdAndStatus> messageIdAndStatus;
 
     /**
-     * Gets the value of the messageId property.
+     * Gets the value of the messageIdAndStatus property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the messageId property.
+     * This is why there is not a <CODE>set</CODE> method for the messageIdAndStatus property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getMessageId().add(newItem);
+     *    getMessageIdAndStatus().add(newItem);
      * </pre>
      * 
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link String }
+     * {@link MessageIdAndStatus }
      * 
      * 
      */
-    public List<String> getMessageId() {
-        if (messageId == null) {
-            messageId = new ArrayList<String>();
+    public List<MessageIdAndStatus> getMessageIdAndStatus() {
+        if (messageIdAndStatus == null) {
+            messageIdAndStatus = new ArrayList<MessageIdAndStatus>();
         }
-        return this.messageId;
+        return this.messageIdAndStatus;
     }
 
 }
