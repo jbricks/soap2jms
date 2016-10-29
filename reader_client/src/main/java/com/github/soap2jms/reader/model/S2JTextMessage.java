@@ -8,11 +8,9 @@ import javax.jms.TextMessage;
 
 import org.apache.commons.io.IOUtils;
 
-import com.github.soap2jms.reader_common.JmsMessage;
-
 public class S2JTextMessage extends S2JMessage implements TextMessage {
 
-	public S2JTextMessage(JmsMessage message) {
+	public S2JTextMessage(com.github.soap2jms.reader.common.ws.S2JMessage message) {
 		super(message);
 	}
 

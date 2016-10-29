@@ -1,23 +1,18 @@
 package com.github.soap2jms.reader.model;
 
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 
-import com.github.soap2jms.reader_common.JmsMessage;
-
 public abstract class S2JMessage implements Message {
 
-	protected final JmsMessage message;
+	protected final com.github.soap2jms.reader.common.ws.S2JMessage message;
 	private final Map<String, Object> headers;
 	
-	public S2JMessage(JmsMessage message) {
+	public S2JMessage(com.github.soap2jms.reader.common.ws.S2JMessage message) {
 		this.message = message;
 		headers = ClientSerializationUtils.convertHeaders(message.getHeaders());
 	}
