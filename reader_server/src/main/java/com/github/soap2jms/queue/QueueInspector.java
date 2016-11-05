@@ -21,32 +21,31 @@ public class QueueInspector {
 	@Inject
 	private JMSContext ctx;
 
-	public GetMessagesResult getMessages(String queueName, int msgMax, String filter)
+	public GetMessagesResult getMessages(final String queueName, final int msgMax, final String filter)
 			throws JMSException, NamingException {
-		List<Message> result = new ArrayList<>();
+		final List<Message> result = new ArrayList<>();
 		boolean moreMessages;
 		InitialContext ictx = null;
 		QueueBrowser browser = null;
 		final GetMessagesResult messageResult;
 		try {
 			ictx = new InitialContext();
-			Queue queue = (Queue) ictx.lookup(JNDI_LOCAL + queueName);
+			final Queue queue = (Queue) ictx.lookup(JNDI_LOCAL + queueName);
 			if (StringUtils.isNotBlank(filter)) {
-				browser = ctx.createBrowser(queue, filter);
+				browser = this.ctx.createBrowser(queue, filter);
 			} else {
-				browser = ctx.createBrowser(queue);
+				browser = this.ctx.createBrowser(queue);
 			}
 			@SuppressWarnings("unchecked")
-			Enumeration<Message> msgs = browser.getEnumeration();
+			final Enumeration<Message> msgs = browser.getEnumeration();
 			int i = 0;
 			while (msgs.hasMoreElements() && i < msgMax) {
-				Message tempMsg = msgs.nextElement();
+				final Message tempMsg = msgs.nextElement();
 				result.add(tempMsg);
 				i++;
 			}
 			moreMessages = msgs.hasMoreElements();
-			messageResult = new GetMessagesResult(
-					(Message[]) result.toArray(new Message[result.size()]), moreMessages);
+			messageResult = new GetMessagesResult(result.toArray(new Message[result.size()]), moreMessages);
 		} finally {
 			browser.close();
 			ictx.close();

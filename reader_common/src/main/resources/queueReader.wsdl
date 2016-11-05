@@ -22,14 +22,7 @@
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
-			<xsd:element name="s2jmsException" type="cls:s2jmsExceptionType" />
-			<xsd:element name="s2jmsConfiguratonException">
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsd:element ref="cls:s2jmsException"></xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
+			<xsd:element name="wsJmsException" type="cls:wsJmsExceptionData" />
 			<xsd:element name="acknowledgeMessages">
 				<xsd:complexType>
 					<xsd:sequence>
@@ -127,7 +120,7 @@
 					<xsd:element name="messageStatus" type="cls:responseStatus" />
 				</xsd:sequence>
 			</xsd:complexType>
-			<xsd:complexType name="s2jmsExceptionType">
+			<xsd:complexType name="wsJmsExceptionData">
 				<xsd:sequence>
 					<xsd:element name="message" type="xsd:string" />
 					<xsd:element name="originalException" type="xsd:string" />
@@ -156,20 +149,20 @@
 	<wsdl:message name="acknowledgeMessagesResponse">
 		<wsdl:part name="parameters" element="cls:acknowledgeMessagesResponse"></wsdl:part>
 	</wsdl:message>
-	<wsdl:message name="s2jmsException">
-		<wsdl:part name="parameters" element="cls:s2jmsException" />
+	<wsdl:message name="wsJmsException">
+		<wsdl:part name="parameters" element="cls:wsJmsException" />
 	</wsdl:message>
 	<wsdl:portType name="reader.soap2jms">
 		<wsdl:operation name="retrieveMessages">
 			<wsdl:input message="tns:retrieveMessagesRequest" />
 			<wsdl:output message="tns:retrieveMessagesResponse" />
-			<wsdl:fault name="s2jmsException" message="tns:s2jmsException" />
+			<wsdl:fault name="wsJmsException" message="tns:wsJmsException" />
 
 		</wsdl:operation>
 		<wsdl:operation name="acknowledgeMessages">
 			<wsdl:input message="tns:acknowledgeMessagesRequest" />
 			<wsdl:output message="tns:acknowledgeMessagesResponse" />
-			<wsdl:fault name="s2jmsException" message="tns:s2jmsException" />
+			<wsdl:fault name="wsJmsException" message="tns:wsJmsException" />
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name="readerSOAP" type="tns:reader.soap2jms">
@@ -183,8 +176,8 @@
 			<wsdl:output>
 				<soap:body use="literal" />
 			</wsdl:output>
-			<wsdl:fault name="s2jmsException">
-				<soap:fault name="s2jmsException" use="literal" />
+			<wsdl:fault name="wsJmsException">
+				<soap:fault name="wsJmsException" use="literal" />
 			</wsdl:fault>
 		</wsdl:operation>
 		<wsdl:operation name="retrieveMessages">
@@ -195,8 +188,8 @@
 			<wsdl:output>
 				<soap:body use="literal" />
 			</wsdl:output>
-			<wsdl:fault name="s2jmsException">
-				<soap:fault name="s2jmsException" use="literal" />
+			<wsdl:fault name="wsJmsException">
+				<soap:fault name="wsJmsException" use="literal" />
 			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>

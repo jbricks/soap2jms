@@ -7,43 +7,47 @@ import javax.jms.Message;
 
 import com.github.soap2jms.reader.JmsReaderSoap;
 import com.github.soap2jms.reader.ReaderSoap2Jms;
-import com.github.soap2jms.reader.S2JmsException;
+import com.github.soap2jms.reader.WsJmsException;
 import com.github.soap2jms.reader.common.ws.RetrieveMessageResponseType;
 import com.github.soap2jms.reader.model.ClientSerializationUtils;
 import com.github.soap2jms.reader.model.InternalServerException;
 import com.github.soap2jms.reader.model.NetworkException;
-import com.github.soap2jms.reader.model.S2JProtocolException;
 import com.github.soap2jms.reader.model.S2JMessage;
+import com.github.soap2jms.reader.model.S2JProtocolException;
 
 public class S2JReaderClient {
 	private final JmsReaderSoap readerSoap;
 
-	public S2JReaderClient(String wsdlLocation) {
+	public S2JReaderClient(final String wsdlLocation) {
 		try {
-			readerSoap = new JmsReaderSoap(wsdlLocation);
-		} catch (MalformedURLException e) {
+			this.readerSoap = new JmsReaderSoap(wsdlLocation);
+		} catch (final MalformedURLException e) {
 			throw new IllegalArgumentException("Url " + wsdlLocation + " is malformed.", e);
 		}
 	}
 
-	S2JMessage[] readMessages(String queueName, String filter, int msgMax)
+	public S2JReaderClient(JmsReaderSoap readerSoap) {
+		this.readerSoap = readerSoap;
+	}
+
+	void acknolwedge(final Collection<String> messageId) {
+
+	}
+
+	void acknowledge(final Message[] messages) {
+
+	}
+
+	S2JMessage[] readMessages(final String queueName, final String filter, final int msgMax)
 			throws S2JProtocolException, NetworkException, InternalServerException {
-		ReaderSoap2Jms rs = readerSoap.getReaderSOAP();
+		final ReaderSoap2Jms rs = this.readerSoap.getReaderSOAP();
 		RetrieveMessageResponseType msgType;
 		try {
 			msgType = rs.retrieveMessages(queueName, filter, msgMax);
-		} catch (S2JmsException e) {
-			//FIXME: error handling.
+		} catch (final WsJmsException e) {
+			// FIXME: error handling.
 			throw new InternalServerException("", e);
 		}
 		return ClientSerializationUtils.convertMessages(msgType);
-	}
-
-	void acknowledge(Message[] messages) {
-
-	}
-
-	void acknolwedge(Collection<String> messageId) {
-
 	}
 }

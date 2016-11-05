@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _S2JmsException_QNAME = new QName("http://soap2jms.github.com/reader/common/ws", "s2jmsException");
+    private final static QName _WsJmsException_QNAME = new QName("http://soap2jms.github.com/reader/common/ws", "wsJmsException");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.github.soap2jms.reader.common.ws
@@ -34,11 +34,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link S2JMessage }
+     * Create an instance of {@link WsJmsMessage }
      * 
      */
-    public S2JMessage createS2JMessage() {
-        return new S2JMessage();
+    public WsJmsMessage createWsJmsMessage() {
+        return new WsJmsMessage();
     }
 
     /**
@@ -55,6 +55,14 @@ public class ObjectFactory {
      */
     public MessageIdAndStatus createMessageIdAndStatus() {
         return new MessageIdAndStatus();
+    }
+
+    /**
+     * Create an instance of {@link WsJmsExceptionData }
+     * 
+     */
+    public WsJmsExceptionData createWsJmsExceptionData() {
+        return new WsJmsExceptionData();
     }
 
     /**
@@ -90,30 +98,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link S2JmsExceptionType }
-     * 
-     */
-    public S2JmsExceptionType createS2JmsExceptionType() {
-        return new S2JmsExceptionType();
-    }
-
-    /**
-     * Create an instance of {@link S2JmsConfiguratonException }
-     * 
-     */
-    public S2JmsConfiguratonException createS2JmsConfiguratonException() {
-        return new S2JmsConfiguratonException();
-    }
-
-    /**
-     * Create an instance of {@link S2JMessageAndStatus }
-     * 
-     */
-    public S2JMessageAndStatus createS2JMessageAndStatus() {
-        return new S2JMessageAndStatus();
-    }
-
-    /**
      * Create an instance of {@link ResponseStatus }
      * 
      */
@@ -122,20 +106,28 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link S2JMessage.Headers }
+     * Create an instance of {@link WsJmsMessageAndStatus }
      * 
      */
-    public S2JMessage.Headers createS2JMessageHeaders() {
-        return new S2JMessage.Headers();
+    public WsJmsMessageAndStatus createWsJmsMessageAndStatus() {
+        return new WsJmsMessageAndStatus();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link S2JmsExceptionType }{@code >}}
+     * Create an instance of {@link WsJmsMessage.Headers }
      * 
      */
-    @XmlElementDecl(namespace = "http://soap2jms.github.com/reader/common/ws", name = "s2jmsException")
-    public JAXBElement<S2JmsExceptionType> createS2JmsException(S2JmsExceptionType value) {
-        return new JAXBElement<S2JmsExceptionType>(_S2JmsException_QNAME, S2JmsExceptionType.class, null, value);
+    public WsJmsMessage.Headers createWsJmsMessageHeaders() {
+        return new WsJmsMessage.Headers();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link WsJmsExceptionData }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap2jms.github.com/reader/common/ws", name = "wsJmsException")
+    public JAXBElement<WsJmsExceptionData> createWsJmsException(WsJmsExceptionData value) {
+        return new JAXBElement<WsJmsExceptionData>(_WsJmsException_QNAME, WsJmsExceptionData.class, null, value);
     }
 
 }

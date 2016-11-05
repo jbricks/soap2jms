@@ -27,14 +27,14 @@ public interface ReaderSoap2Jms {
 	 * @param messageId
 	 * @return returns
 	 *         java.util.List<com.github.soap2jms.reader.common.ws.MessageIdAndStatus>
-	 * @throws S2JmsException
+	 * @throws WsJmsException
 	 */
 	@WebMethod(action = "http://soap2jms.github.com/acknowledgeMessages")
 	@WebResult(name = "messageIdAndStatus", targetNamespace = "")
 	@RequestWrapper(localName = "acknowledgeMessages", targetNamespace = "http://soap2jms.github.com/reader/common/ws", className = "com.github.soap2jms.reader.common.ws.AcknowledgeMessages")
 	@ResponseWrapper(localName = "acknowledgeMessagesResponse", targetNamespace = "http://soap2jms.github.com/reader/common/ws", className = "com.github.soap2jms.reader.common.ws.AcknowledgeMessagesResponse")
 	public List<MessageIdAndStatus> acknowledgeMessages(
-			@WebParam(name = "messageId", targetNamespace = "") List<String> messageId) throws S2JmsException;
+			@WebParam(name = "messageId", targetNamespace = "") List<String> messageId) throws WsJmsException;
 
 	/**
 	 * 
@@ -43,7 +43,7 @@ public interface ReaderSoap2Jms {
 	 * @param queueName
 	 * @return returns
 	 *         com.github.soap2jms.reader.common.ws.RetrieveMessageResponseType
-	 * @throws S2JmsException
+	 * @throws WsJmsException
 	 */
 	@WebMethod(action = "http://soap2jms.github.com/retrieveMessages")
 	@WebResult(name = "retrieveMessagesResponse", targetNamespace = "")
@@ -52,6 +52,6 @@ public interface ReaderSoap2Jms {
 	public RetrieveMessageResponseType retrieveMessages(
 			@WebParam(name = "queueName", targetNamespace = "") String queueName,
 			@WebParam(name = "filter", targetNamespace = "") String filter,
-			@WebParam(name = "maxItems", targetNamespace = "") int maxItems) throws S2JmsException;
+			@WebParam(name = "maxItems", targetNamespace = "") int maxItems) throws WsJmsException;
 
 }

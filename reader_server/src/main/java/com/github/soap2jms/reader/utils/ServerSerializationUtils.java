@@ -15,10 +15,11 @@ import javax.jms.ObjectMessage;
 import javax.jms.StreamMessage;
 import javax.jms.TextMessage;
 
+import com.github.soap2jms.common.ByteArrayDataSource;
 import com.github.soap2jms.reader.common.JMSMessageTypeEnum;
 import com.github.soap2jms.reader.common.ws.ResponseStatus;
-import com.github.soap2jms.reader.common.ws.S2JMessage;
-import com.github.soap2jms.reader.common.ws.S2JMessageAndStatus;
+import com.github.soap2jms.reader.common.ws.WsJmsMessage;
+import com.github.soap2jms.reader.common.ws.WsJmsMessageAndStatus;
 
 public class ServerSerializationUtils {
 
@@ -31,57 +32,59 @@ public class ServerSerializationUtils {
 		ENUM_BY_CLASS.put(TextMessage.class, JMSMessageTypeEnum.TEXT);
 	}
 
-	public static S2JMessageAndStatus jms2soap(Message message) throws JMSException {
-		JMSMessageTypeEnum messageType = JMSMessageTypeEnum.UNSUPPORTED;
-		
-		for (Map.Entry<Class<? extends Message>, JMSMessageTypeEnum> entry : ENUM_BY_CLASS.entrySet()) {
-			if (entry.getKey().isInstance(message)) {
-				messageType = entry.getValue();
-			}
-		}
-
-		DataHandler bodyStream = extractBody(message, messageType);
-		
-		S2JMessage wsmessage = new S2JMessage(message.getJMSMessageID(), message.getJMSTimestamp(), message.getJMSType(),
-				message.getJMSCorrelationID(), messageType.name(), null, bodyStream);
-		
-		return new S2JMessageAndStatus(wsmessage, new ResponseStatus("OK",null));
-
-	}
-
-	private static DataHandler extractBody(Message message, JMSMessageTypeEnum messageType) throws JMSException {
+	private static DataHandler extractBody(final Message message, final JMSMessageTypeEnum messageType)
+			throws JMSException {
 		byte[] body = null;
 		switch (messageType) {
 		case TEXT:
-			TextMessage text = (TextMessage) message;
-			String bodyText = text.getText();
+			final TextMessage text = (TextMessage) message;
+			final String bodyText = text.getText();
 			if (bodyText != null) {
 				body = bodyText.getBytes();
 			}
 			break;
 		case BYTE:
-			BytesMessage bytesMessage = (BytesMessage) message;
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	        byte[] buffer = new byte[4096];
-	        int n = 0;
-	        while (-1 != (n = bytesMessage.readBytes(buffer))) {
-	        	baos.write(buffer, 0, n);
-	        }
+			final BytesMessage bytesMessage = (BytesMessage) message;
+			final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			final byte[] buffer = new byte[4096];
+			int n = 0;
+			while (-1 != (n = bytesMessage.readBytes(buffer))) {
+				baos.write(buffer, 0, n);
+			}
 			body = baos.toByteArray();
 		case OBJECT:
 			throw new UnsupportedOperationException("Type " + messageType + "not supported.");
 		case STREAM:
 			throw new UnsupportedOperationException("Type " + messageType + "not supported.");
 		case MAP:
-			Properties props=new Properties();
-			MapMessage mapMessage = (MapMessage) message;
-			
+			new Properties();
 			throw new UnsupportedOperationException("Type " + messageType + "not supported.");
 		default:
 			throw new UnsupportedOperationException("Type " + messageType + "not supported.");
 		}
-		DataSource ds = new ByteArrayDataSource(body,"text/html");
-		DataHandler dh = new DataHandler(ds);
+		final DataSource ds = new ByteArrayDataSource(body, "text/html");
+		final DataHandler dh = new DataHandler(ds);
 		return dh;
+	}
+
+	public static WsJmsMessageAndStatus jms2soap(final Message message) throws JMSException {
+		JMSMessageTypeEnum messageType = JMSMessageTypeEnum.UNSUPPORTED;
+
+		for (final Map.Entry<Class<? extends Message>, JMSMessageTypeEnum> entry : ENUM_BY_CLASS.entrySet()) {
+			if (entry.getKey().isInstance(message)) {
+				messageType = entry.getValue();
+			}
+		}
+
+		final DataHandler bodyStream = extractBody(message, messageType);
+
+		final WsJmsMessage wsmessage = new WsJmsMessage(message.getJMSCorrelationID(), message.getJMSDeliveryMode(),
+				null, // headers
+				message.getJMSMessageID(), messageType.name(), message.getJMSPriority(), message.getJMSRedelivered(), //
+				message.getJMSTimestamp(), message.getJMSType(), // body
+				bodyStream);
+
+		return new WsJmsMessageAndStatus(wsmessage, new ResponseStatus("OK", null));
+
 	}
 }

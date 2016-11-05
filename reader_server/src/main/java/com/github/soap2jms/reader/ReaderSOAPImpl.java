@@ -23,46 +23,48 @@ public class ReaderSOAPImpl implements ReaderSoap2Jms {
 	@Inject
 	private QueueInspector qi;
 
-	public RetrieveMessageResponseType retrieveMessages(String queueName, String filter, int maxItems)
-			throws S2JmsException {
-
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * com.github.soap2jms.reader.ReaderSoap2JmsGithubCom#acknowledgeMessages(
+	 * java.util.List<java.lang.String> messageId)*
+	 */
+	@Override
+	public java.util.List<com.github.soap2jms.reader.common.ws.MessageIdAndStatus> acknowledgeMessages(
+			final java.util.List<java.lang.String> messageId) throws WsJmsException {
+		LOG.info("Executing operation acknowledgeMessages");
+		System.out.println(messageId);
 		try {
-			GetMessagesResult messages = qi.getMessages(queueName, maxItems, filter);
-
-			com.github.soap2jms.reader.common.ws.RetrieveMessageResponseType result = new RetrieveMessageResponseType();
-			result.setComplete(!messages.moreMessages);
-
-			for (Message msg : messages.result) {
-				result.getS2JMessageAndStatus().add(ServerSerializationUtils.jms2soap(msg));
-			}
-			return result;
-		} catch (java.lang.Exception ex) {
+			final java.util.List<com.github.soap2jms.reader.common.ws.MessageIdAndStatus> _return = new java.util.ArrayList<>();
+			final com.github.soap2jms.reader.common.ws.MessageIdAndStatus _returnVal1 = new com.github.soap2jms.reader.common.ws.MessageIdAndStatus();
+			final java.util.List<java.lang.Object> _returnVal1MessageIdAndStatus = new java.util.ArrayList<>();
+			final java.lang.Object _returnVal1MessageIdAndStatusVal1 = null;
+			_returnVal1MessageIdAndStatus.add(_returnVal1MessageIdAndStatusVal1);
+			// _returnVal1.getMessageIdAndStatus().addAll(_returnVal1MessageIdAndStatus);
+			_return.add(_returnVal1);
+			return _return;
+		} catch (final java.lang.Exception ex) {
 			ex.printStackTrace();
 			throw new RuntimeException(ex);
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.github.soap2jms.reader.ReaderSoap2JmsGithubCom#acknowledgeMessages(
-	 * java.util.List<java.lang.String> messageId)*
-	 */
-	public java.util.List<com.github.soap2jms.reader.common.ws.MessageIdAndStatus> acknowledgeMessages(
-			java.util.List<java.lang.String> messageId) throws S2JmsException {
-		LOG.info("Executing operation acknowledgeMessages");
-		System.out.println(messageId);
+	@Override
+	public RetrieveMessageResponseType retrieveMessages(final String queueName, final String filter, final int maxItems)
+			throws WsJmsException {
+
 		try {
-			java.util.List<com.github.soap2jms.reader.common.ws.MessageIdAndStatus> _return = new java.util.ArrayList<com.github.soap2jms.reader.common.ws.MessageIdAndStatus>();
-			com.github.soap2jms.reader.common.ws.MessageIdAndStatus _returnVal1 = new com.github.soap2jms.reader.common.ws.MessageIdAndStatus();
-			java.util.List<java.lang.Object> _returnVal1MessageIdAndStatus = new java.util.ArrayList<java.lang.Object>();
-			java.lang.Object _returnVal1MessageIdAndStatusVal1 = null;
-			_returnVal1MessageIdAndStatus.add(_returnVal1MessageIdAndStatusVal1);
-			// _returnVal1.getMessageIdAndStatus().addAll(_returnVal1MessageIdAndStatus);
-			_return.add(_returnVal1);
-			return _return;
-		} catch (java.lang.Exception ex) {
+			final GetMessagesResult messages = this.qi.getMessages(queueName, maxItems, filter);
+
+			final com.github.soap2jms.reader.common.ws.RetrieveMessageResponseType result = new RetrieveMessageResponseType();
+			result.setComplete(!messages.moreMessages);
+
+			for (final Message msg : messages.result) {
+				result.getS2JMessageAndStatus().add(ServerSerializationUtils.jms2soap(msg));
+			}
+			return result;
+		} catch (final java.lang.Exception ex) {
 			ex.printStackTrace();
 			throw new RuntimeException(ex);
 		}

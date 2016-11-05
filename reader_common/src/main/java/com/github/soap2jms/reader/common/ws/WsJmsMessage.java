@@ -12,12 +12,12 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for s2jMessage complex type.
+ * <p>Java class for wsJmsMessage complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="s2jMessage">
+ * &lt;complexType name="wsJmsMessage">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlType;
  *           &lt;/complexType>
  *         &lt;/element>
  *         &lt;element name="messageId" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="messageType">
+ *         &lt;element name="messageClass">
  *           &lt;simpleType>
  *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
  *               &lt;enumeration value="TEXT"/>
@@ -61,50 +61,57 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "s2jMessage", propOrder = {
+@XmlType(name = "wsJmsMessage", propOrder = {
     "correlationId",
     "deliveryMode",
     "headers",
     "messageId",
-    "messageType",
+    "messageClass",
     "priority",
     "redelivered",
     "timestamp",
     "type",
     "body"
 })
-public class S2JMessage {
+public class WsJmsMessage {
 
     protected String correlationId;
     protected int deliveryMode;
     @XmlElement(required = true)
-    protected List<S2JMessage.Headers> headers;
+    protected List<WsJmsMessage.Headers> headers;
     @XmlElement(required = true)
     protected String messageId;
     @XmlElement(required = true)
-    protected String messageType;
+    protected String messageClass;
     protected Integer priority;
     protected boolean redelivered;
     protected long timestamp;
     @XmlElement(required = true)
     protected String type;
-    @XmlElement(required = true)
     protected DataHandler body;
 
-    public S2JMessage(String messageId, long timestamp, String type, String correlationId, 
-    		String messageType, List<Headers> headers, DataHandler body) {
+    
+    
+    public WsJmsMessage(String correlationId, int deliveryMode, List<Headers> headers, 
+    		String messageId,
+			String messageClass, Integer priority, boolean redelivered, long timestamp, 
+			String type, DataHandler body) {
+		this.correlationId = correlationId;
+		this.deliveryMode = deliveryMode;
+		this.headers = headers;
 		this.messageId = messageId;
+		this.messageClass = messageClass;
+		this.priority = priority;
+		this.redelivered = redelivered;
 		this.timestamp = timestamp;
 		this.type = type;
-		this.correlationId = correlationId;
-		this.messageType = messageType;
-		this.headers = headers;
 		this.body = body;
 	}
 
-	public S2JMessage() {
+	public WsJmsMessage() {
 	}
-    /**
+
+	/**
      * Gets the value of the correlationId property.
      * 
      * @return
@@ -162,13 +169,13 @@ public class S2JMessage {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link S2JMessage.Headers }
+     * {@link WsJmsMessage.Headers }
      * 
      * 
      */
-    public List<S2JMessage.Headers> getHeaders() {
+    public List<WsJmsMessage.Headers> getHeaders() {
         if (headers == null) {
-            headers = new ArrayList<S2JMessage.Headers>();
+            headers = new ArrayList<WsJmsMessage.Headers>();
         }
         return this.headers;
     }
@@ -198,27 +205,27 @@ public class S2JMessage {
     }
 
     /**
-     * Gets the value of the messageType property.
+     * Gets the value of the messageClass property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getMessageType() {
-        return messageType;
+    public String getMessageClass() {
+        return messageClass;
     }
 
     /**
-     * Sets the value of the messageType property.
+     * Sets the value of the messageClass property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setMessageType(String value) {
-        this.messageType = value;
+    public void setMessageClass(String value) {
+        this.messageClass = value;
     }
 
     /**

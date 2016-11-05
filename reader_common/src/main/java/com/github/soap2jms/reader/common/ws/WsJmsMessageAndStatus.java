@@ -8,16 +8,16 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for s2jMessageAndStatus complex type.
+ * <p>Java class for wsJmsMessageAndStatus complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="s2jMessageAndStatus">
+ * &lt;complexType name="wsJmsMessageAndStatus">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="s2jMessage" type="{http://soap2jms.github.com/reader/common/ws}s2jMessage"/>
+ *         &lt;element name="wsJmsMessage" type="{http://soap2jms.github.com/reader/common/ws}wsJmsMessage"/>
  *         &lt;element name="messageStatus" type="{http://soap2jms.github.com/reader/common/ws}responseStatus"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -28,47 +28,48 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "s2jMessageAndStatus", propOrder = {
-    "s2JMessage",
+@XmlType(name = "wsJmsMessageAndStatus", propOrder = {
+    "wsJmsMessage",
     "messageStatus"
 })
-public class S2JMessageAndStatus {
+public class WsJmsMessageAndStatus {
 
-    @XmlElement(name = "s2jMessage", required = true)
-    protected S2JMessage s2JMessage;
+    @XmlElement(required = true)
+    protected WsJmsMessage wsJmsMessage;
     @XmlElement(required = true)
     protected ResponseStatus messageStatus;
 
-    public S2JMessageAndStatus() {
+    public WsJmsMessageAndStatus() {
+
 	}
 
-	public S2JMessageAndStatus(S2JMessage s2jMessage, ResponseStatus messageStatus) {
-		s2JMessage = s2jMessage;
+	public WsJmsMessageAndStatus(WsJmsMessage wsJmsMessage, ResponseStatus messageStatus) {
+		this.wsJmsMessage = wsJmsMessage;
 		this.messageStatus = messageStatus;
 	}
 
 	/**
-     * Gets the value of the s2JMessage property.
+     * Gets the value of the wsJmsMessage property.
      * 
      * @return
      *     possible object is
-     *     {@link S2JMessage }
+     *     {@link WsJmsMessage }
      *     
      */
-    public S2JMessage getS2JMessage() {
-        return s2JMessage;
+    public WsJmsMessage getWsJmsMessage() {
+        return wsJmsMessage;
     }
 
     /**
-     * Sets the value of the s2JMessage property.
+     * Sets the value of the wsJmsMessage property.
      * 
      * @param value
      *     allowed object is
-     *     {@link S2JMessage }
+     *     {@link WsJmsMessage }
      *     
      */
-    public void setS2JMessage(S2JMessage value) {
-        this.s2JMessage = value;
+    public void setWsJmsMessage(WsJmsMessage value) {
+        this.wsJmsMessage = value;
     }
 
     /**

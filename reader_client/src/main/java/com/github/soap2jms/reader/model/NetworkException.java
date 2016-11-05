@@ -2,22 +2,27 @@ package com.github.soap2jms.reader.model;
 
 public class NetworkException extends S2JException {
 
-	public NetworkException(boolean permanent) {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -2744675911702559397L;
+
+	public NetworkException(final boolean permanent) {
 		super(permanent);
 		// TODO Auto-generated constructor stub
 	}
 
-	public NetworkException(String message, boolean permanent) {
+	public NetworkException(final String message, final boolean permanent) {
 		super(message, permanent);
 		// TODO Auto-generated constructor stub
 	}
 
-	public NetworkException(String message, Throwable cause, boolean permanent) {
+	public NetworkException(final String message, final Throwable cause, final boolean permanent) {
 		super(message, cause, permanent);
 		// TODO Auto-generated constructor stub
 	}
 
-	public NetworkException(Throwable cause, boolean permanent) {
+	public NetworkException(final Throwable cause, final boolean permanent) {
 		super(cause, permanent);
 		// TODO Auto-generated constructor stub
 	}

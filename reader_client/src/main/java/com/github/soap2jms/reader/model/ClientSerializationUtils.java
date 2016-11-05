@@ -7,30 +7,31 @@ import java.util.Map;
 import com.github.soap2jms.reader.common.ErrorType;
 import com.github.soap2jms.reader.common.JMSMessageTypeEnum;
 import com.github.soap2jms.reader.common.ws.RetrieveMessageResponseType;
-import com.github.soap2jms.reader.common.ws.S2JMessage.Headers;
-import com.github.soap2jms.reader.common.ws.S2JMessageAndStatus;
+import com.github.soap2jms.reader.common.ws.WsJmsMessage;
+import com.github.soap2jms.reader.common.ws.WsJmsMessage.Headers;
+import com.github.soap2jms.reader.common.ws.WsJmsMessageAndStatus;
 
 public class ClientSerializationUtils {
-	public static Map<String, Object> convertHeaders(List<Headers> headers) {
-		Map<String, Object> headerMap = new HashMap<>();
-		for (Headers header : headers) {
-			String key = header.getKey();
-			String value = header.getValue();
+	public static Map<String, Object> convertHeaders(final List<Headers> headers) {
+		new HashMap<>();
+		for (final Headers header : headers) {
+			header.getKey();
+			header.getValue();
 
 		}
 		return null;
 	}
 
-	public static S2JMessage[] convertMessages(RetrieveMessageResponseType wsdlResponse) throws S2JProtocolException {
-		S2JMessage[] messages = new S2JMessage[wsdlResponse.getS2JMessageAndStatus().size()];
+	public static S2JMessage[] convertMessages(final RetrieveMessageResponseType wsdlResponse)
+			throws S2JProtocolException {
+		final S2JMessage[] messages = new S2JMessage[wsdlResponse.getS2JMessageAndStatus().size()];
 
 		for (int i = 0; i < wsdlResponse.getS2JMessageAndStatus().size(); i++) {
 			// FIXME status
-			com.github.soap2jms.reader.common.ws.S2JMessageAndStatus messageAndStatus = wsdlResponse
-					.getS2JMessageAndStatus().get(i);
-			com.github.soap2jms.reader.common.ws.S2JMessage message = messageAndStatus.getS2JMessage();
-			String messageType = message.getMessageType();
-			JMSMessageTypeEnum messageTypeEnum = JMSMessageTypeEnum.valueOf(messageType);
+			final WsJmsMessageAndStatus messageAndStatus = wsdlResponse.getS2JMessageAndStatus().get(i);
+			final WsJmsMessage message = messageAndStatus.getWsJmsMessage();
+			final String messageType = message.getMessageClass();
+			final JMSMessageTypeEnum messageTypeEnum = JMSMessageTypeEnum.valueOf(messageType);
 
 			switch (messageTypeEnum) {
 			case TEXT:

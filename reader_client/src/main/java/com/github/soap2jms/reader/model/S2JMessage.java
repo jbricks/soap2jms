@@ -7,268 +7,16 @@ import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 
+import com.github.soap2jms.reader.common.ws.WsJmsMessage;
+
 public abstract class S2JMessage implements Message {
 
-	protected final com.github.soap2jms.reader.common.ws.S2JMessage message;
 	private final Map<String, Object> headers;
-	
-	public S2JMessage(com.github.soap2jms.reader.common.ws.S2JMessage message) {
+	protected final WsJmsMessage message;
+
+	public S2JMessage(final WsJmsMessage message) {
 		this.message = message;
-		headers = ClientSerializationUtils.convertHeaders(message.getHeaders());
-	}
-
-	@Override
-	public String getJMSMessageID() throws JMSException {
-		return message.getMessageId();
-	}
-
-	@Override
-	public void setJMSMessageID(String id) throws JMSException {
-		 message.setMessageId(id);
-	}
-
-	@Override
-	public long getJMSTimestamp() throws JMSException {
-		return message.getTimestamp();
-	}
-
-	@Override
-	public void setJMSTimestamp(long timestamp) throws JMSException {
-		message.setTimestamp(timestamp);
-
-	}
-
-	@Override
-	public byte[] getJMSCorrelationIDAsBytes() throws JMSException {
-		return null;
-	}
-
-	@Override
-	public void setJMSCorrelationIDAsBytes(byte[] correlationID) throws JMSException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setJMSCorrelationID(String correlationID) throws JMSException {
-		message.setCorrelationId(correlationID);
-	}
-
-	@Override
-	public String getJMSCorrelationID() throws JMSException {
-		return message.getCorrelationId();
-	}
-
-	@Override
-	public Destination getJMSReplyTo() throws JMSException {
-		return null;
-	}
-
-	@Override
-	public void setJMSReplyTo(Destination replyTo) throws JMSException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Destination getJMSDestination() throws JMSException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setJMSDestination(Destination destination) throws JMSException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public int getJMSDeliveryMode() throws JMSException {
-		return message.getDeliveryMode();
-	}
-
-	@Override
-	public void setJMSDeliveryMode(int deliveryMode) throws JMSException {
-		message.setDeliveryMode(deliveryMode);
-	}
-
-	@Override
-	public boolean getJMSRedelivered() throws JMSException {
-		return message.isRedelivered();
-	}
-
-	@Override
-	public void setJMSRedelivered(boolean redelivered) throws JMSException {
-		message.setRedelivered(redelivered);
-
-	}
-
-	@Override
-	public String getJMSType() throws JMSException {
-		return message.getType();
-	}
-
-	@Override
-	public void setJMSType(String type) throws JMSException {
-		message.setType(type);
-
-	}
-
-	@Override
-	public long getJMSExpiration() throws JMSException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setJMSExpiration(long expiration) throws JMSException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public long getJMSDeliveryTime() throws JMSException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setJMSDeliveryTime(long deliveryTime) throws JMSException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public int getJMSPriority() throws JMSException {
-		return message.getPriority() == null ? 0 : message.getPriority();
-	}
-
-	@Override
-	public void setJMSPriority(int priority) throws JMSException {
-		message.setPriority(priority);
-	}
-
-	@Override
-	public void clearProperties() throws JMSException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean propertyExists(String name) throws JMSException {
-		return headers.containsKey(name);
-	}
-
-	@Override
-	public boolean getBooleanProperty(String name) throws JMSException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public byte getByteProperty(String name) throws JMSException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public short getShortProperty(String name) throws JMSException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getIntProperty(String name) throws JMSException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public long getLongProperty(String name) throws JMSException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public float getFloatProperty(String name) throws JMSException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public double getDoubleProperty(String name) throws JMSException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public String getStringProperty(String name) throws JMSException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object getObjectProperty(String name) throws JMSException {
-		return headers.get(name);
-	}
-
-	@Override
-	public Enumeration<String> getPropertyNames() throws JMSException {
-		return null;
-	}
-
-	@Override
-	public void setBooleanProperty(String name, boolean value) throws JMSException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setByteProperty(String name, byte value) throws JMSException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setShortProperty(String name, short value) throws JMSException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setIntProperty(String name, int value) throws JMSException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setLongProperty(String name, long value) throws JMSException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setFloatProperty(String name, float value) throws JMSException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setDoubleProperty(String name, double value) throws JMSException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setStringProperty(String name, String value) throws JMSException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setObjectProperty(String name, Object value) throws JMSException {
-		// TODO Auto-generated method stub
-
+		this.headers = ClientSerializationUtils.convertHeaders(message.getHeaders());
 	}
 
 	@Override
@@ -284,15 +32,269 @@ public abstract class S2JMessage implements Message {
 	}
 
 	@Override
-	public <T> T getBody(Class<T> c) throws JMSException {
+	public void clearProperties() throws JMSException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public <T> T getBody(final Class<T> c) throws JMSException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public boolean isBodyAssignableTo(Class c) throws JMSException {
+	public boolean getBooleanProperty(final String name) throws JMSException {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public byte getByteProperty(final String name) throws JMSException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getDoubleProperty(final String name) throws JMSException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public float getFloatProperty(final String name) throws JMSException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getIntProperty(final String name) throws JMSException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String getJMSCorrelationID() throws JMSException {
+		return this.message.getCorrelationId();
+	}
+
+	@Override
+	public byte[] getJMSCorrelationIDAsBytes() throws JMSException {
+		return null;
+	}
+
+	@Override
+	public int getJMSDeliveryMode() throws JMSException {
+		return this.message.getDeliveryMode();
+	}
+
+	@Override
+	public long getJMSDeliveryTime() throws JMSException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Destination getJMSDestination() throws JMSException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public long getJMSExpiration() throws JMSException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String getJMSMessageID() throws JMSException {
+		return this.message.getMessageId();
+	}
+
+	@Override
+	public int getJMSPriority() throws JMSException {
+		return this.message.getPriority() == null ? 0 : this.message.getPriority();
+	}
+
+	@Override
+	public boolean getJMSRedelivered() throws JMSException {
+		return this.message.isRedelivered();
+	}
+
+	@Override
+	public Destination getJMSReplyTo() throws JMSException {
+		return null;
+	}
+
+	@Override
+	public long getJMSTimestamp() throws JMSException {
+		return this.message.getTimestamp();
+	}
+
+	@Override
+	public String getJMSType() throws JMSException {
+		return this.message.getType();
+	}
+
+	@Override
+	public long getLongProperty(final String name) throws JMSException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Object getObjectProperty(final String name) throws JMSException {
+		return this.headers.get(name);
+	}
+
+	@Override
+	public Enumeration<String> getPropertyNames() throws JMSException {
+		return null;
+	}
+
+	@Override
+	public short getShortProperty(final String name) throws JMSException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String getStringProperty(final String name) throws JMSException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isBodyAssignableTo(final Class c) throws JMSException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean propertyExists(final String name) throws JMSException {
+		return this.headers.containsKey(name);
+	}
+
+	@Override
+	public void setBooleanProperty(final String name, final boolean value) throws JMSException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setByteProperty(final String name, final byte value) throws JMSException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setDoubleProperty(final String name, final double value) throws JMSException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setFloatProperty(final String name, final float value) throws JMSException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setIntProperty(final String name, final int value) throws JMSException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setJMSCorrelationID(final String correlationID) throws JMSException {
+		this.message.setCorrelationId(correlationID);
+	}
+
+	@Override
+	public void setJMSCorrelationIDAsBytes(final byte[] correlationID) throws JMSException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setJMSDeliveryMode(final int deliveryMode) throws JMSException {
+		this.message.setDeliveryMode(deliveryMode);
+	}
+
+	@Override
+	public void setJMSDeliveryTime(final long deliveryTime) throws JMSException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setJMSDestination(final Destination destination) throws JMSException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setJMSExpiration(final long expiration) throws JMSException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setJMSMessageID(final String id) throws JMSException {
+		this.message.setMessageId(id);
+	}
+
+	@Override
+	public void setJMSPriority(final int priority) throws JMSException {
+		this.message.setPriority(priority);
+	}
+
+	@Override
+	public void setJMSRedelivered(final boolean redelivered) throws JMSException {
+		this.message.setRedelivered(redelivered);
+
+	}
+
+	@Override
+	public void setJMSReplyTo(final Destination replyTo) throws JMSException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setJMSTimestamp(final long timestamp) throws JMSException {
+		this.message.setTimestamp(timestamp);
+
+	}
+
+	@Override
+	public void setJMSType(final String type) throws JMSException {
+		this.message.setType(type);
+
+	}
+
+	@Override
+	public void setLongProperty(final String name, final long value) throws JMSException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setObjectProperty(final String name, final Object value) throws JMSException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setShortProperty(final String name, final short value) throws JMSException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setStringProperty(final String name, final String value) throws JMSException {
+		// TODO Auto-generated method stub
+
 	}
 
 }

@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 import com.github.soap2jms.reader.JmsReaderSoap;
 import com.github.soap2jms.reader.ReaderSoap2Jms;
 import com.github.soap2jms.reader.common.ws.RetrieveMessageResponseType;
-import com.github.soap2jms.reader.common.ws.S2JMessageAndStatus;
+import com.github.soap2jms.reader.common.ws.WsJmsMessageAndStatus;
 
 public class ITReaderConsumeMessage {
 	private static final Logger log = LoggerFactory.getLogger(ITReaderConsumeMessage.class);
@@ -50,9 +50,9 @@ public class ITReaderConsumeMessage {
 		// project_customization (web.xml).
 		RetrieveMessageResponseType messages = reader.retrieveMessages("soap2jms", null, 100);
 		assertTrue("complete response", messages.isComplete());
-		List<S2JMessageAndStatus> jmsMessages = messages.getS2JMessageAndStatus();
+		List<WsJmsMessageAndStatus> jmsMessages = messages.getS2JMessageAndStatus();
 		assertEquals("Messages retrieved", 1, jmsMessages.size());
-		final DataHandler messageBody = jmsMessages.get(0).getS2JMessage().getBody();
+		final DataHandler messageBody = jmsMessages.get(0).getWsJmsMessage().getBody();
 		assertNotNull("Message body deserialized", messageBody);
 		assertEquals("message content", DEFAULT_CONTENT, IOUtils.toString(messageBody.getInputStream(), "UTF-8"));
 		// acknowlege the message

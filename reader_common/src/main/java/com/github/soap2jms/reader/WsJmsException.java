@@ -2,7 +2,7 @@
 package com.github.soap2jms.reader;
 
 import javax.xml.ws.WebFault;
-import com.github.soap2jms.reader.common.ws.S2JmsExceptionType;
+import com.github.soap2jms.reader.common.ws.WsJmsExceptionData;
 
 
 /**
@@ -11,8 +11,8 @@ import com.github.soap2jms.reader.common.ws.S2JmsExceptionType;
  * Generated source version: 2.2
  * 
  */
-@WebFault(name = "s2jmsException", targetNamespace = "http://soap2jms.github.com/reader/common/ws")
-public class S2JmsException
+@WebFault(name = "wsJmsException", targetNamespace = "http://soap2jms.github.com/reader/common/ws")
+public class WsJmsException
     extends Exception
 {
 
@@ -20,14 +20,14 @@ public class S2JmsException
      * Java type that goes as soapenv:Fault detail element.
      * 
      */
-    private S2JmsExceptionType faultInfo;
+    private WsJmsExceptionData faultInfo;
 
     /**
      * 
      * @param faultInfo
      * @param message
      */
-    public S2JmsException(String message, S2JmsExceptionType faultInfo) {
+    public WsJmsException(String message, WsJmsExceptionData faultInfo) {
         super(message);
         this.faultInfo = faultInfo;
     }
@@ -38,7 +38,7 @@ public class S2JmsException
      * @param cause
      * @param message
      */
-    public S2JmsException(String message, S2JmsExceptionType faultInfo, Throwable cause) {
+    public WsJmsException(String message, WsJmsExceptionData faultInfo, Throwable cause) {
         super(message, cause);
         this.faultInfo = faultInfo;
     }
@@ -46,9 +46,9 @@ public class S2JmsException
     /**
      * 
      * @return
-     *     returns fault bean: com.github.soap2jms.reader.common.ws.S2JmsExceptionType
+     *     returns fault bean: com.github.soap2jms.reader.common.ws.WsJmsExceptionData
      */
-    public S2JmsExceptionType getFaultInfo() {
+    public WsJmsExceptionData getFaultInfo() {
         return faultInfo;
     }
 

@@ -37,14 +37,14 @@ import javax.xml.bind.annotation.XmlType;
 public class RetrieveMessageResponseType {
 
     @XmlElement(name = "s2jMessageAndStatus")
-    protected List<S2JMessageAndStatus> s2JMessageAndStatus;
+    protected List<WsJmsMessageAndStatus> s2JMessageAndStatus;
     protected boolean complete;
 
     public RetrieveMessageResponseType() {
 	}
 
     
-	public RetrieveMessageResponseType(List<S2JMessageAndStatus> s2jMessageAndStatus, boolean complete) {
+	public RetrieveMessageResponseType(List<WsJmsMessageAndStatus> s2jMessageAndStatus, boolean complete) {
 		s2JMessageAndStatus = s2jMessageAndStatus;
 		this.complete = complete;
 	}
@@ -68,13 +68,13 @@ public class RetrieveMessageResponseType {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link S2JMessageAndStatus }
+     * {@link WsJmsMessageAndStatus }
      * 
      * 
      */
-    public List<S2JMessageAndStatus> getS2JMessageAndStatus() {
+    public List<WsJmsMessageAndStatus> getS2JMessageAndStatus() {
         if (s2JMessageAndStatus == null) {
-            s2JMessageAndStatus = new ArrayList<S2JMessageAndStatus>();
+            s2JMessageAndStatus = new ArrayList<WsJmsMessageAndStatus>();
         }
         return this.s2JMessageAndStatus;
     }
