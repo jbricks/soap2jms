@@ -61,7 +61,6 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public Destination getJMSReplyTo() throws JMSException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -85,37 +84,33 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public int getJMSDeliveryMode() throws JMSException {
-		// TODO Auto-generated method stub
-		return 0;
+		return message.getDeliveryMode();
 	}
 
 	@Override
 	public void setJMSDeliveryMode(int deliveryMode) throws JMSException {
-		// TODO Auto-generated method stub
-
+		message.setDeliveryMode(deliveryMode);
 	}
 
 	@Override
 	public boolean getJMSRedelivered() throws JMSException {
-		// TODO Auto-generated method stub
-		return false;
+		return message.isRedelivered();
 	}
 
 	@Override
 	public void setJMSRedelivered(boolean redelivered) throws JMSException {
-		// TODO Auto-generated method stub
+		message.setRedelivered(redelivered);
 
 	}
 
 	@Override
 	public String getJMSType() throws JMSException {
-		// TODO Auto-generated method stub
-		return null;
+		return message.getType();
 	}
 
 	@Override
 	public void setJMSType(String type) throws JMSException {
-		// TODO Auto-generated method stub
+		message.setType(type);
 
 	}
 
@@ -145,14 +140,12 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public int getJMSPriority() throws JMSException {
-		// TODO Auto-generated method stub
-		return 0;
+		return message.getPriority() == null ? 0 : message.getPriority();
 	}
 
 	@Override
 	public void setJMSPriority(int priority) throws JMSException {
-		// TODO Auto-generated method stub
-
+		message.setPriority(priority);
 	}
 
 	@Override

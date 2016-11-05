@@ -16,7 +16,6 @@ import javax.jms.StreamMessage;
 import javax.jms.TextMessage;
 
 import com.github.soap2jms.reader.common.JMSMessageTypeEnum;
-import com.github.soap2jms.reader.common.ws.JmsMessage;
 import com.github.soap2jms.reader.common.ws.ResponseStatus;
 import com.github.soap2jms.reader.common.ws.S2JMessage;
 import com.github.soap2jms.reader.common.ws.S2JMessageAndStatus;

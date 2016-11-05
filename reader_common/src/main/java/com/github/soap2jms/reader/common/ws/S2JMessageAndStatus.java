@@ -40,7 +40,6 @@ public class S2JMessageAndStatus {
     protected ResponseStatus messageStatus;
 
     public S2JMessageAndStatus() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public S2JMessageAndStatus(S2JMessage s2jMessage, ResponseStatus messageStatus) {

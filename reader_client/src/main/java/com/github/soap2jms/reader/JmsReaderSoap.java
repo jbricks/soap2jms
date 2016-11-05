@@ -3,11 +3,11 @@ package com.github.soap2jms.reader;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 import javax.xml.ws.WebEndpoint;
 import javax.xml.ws.WebServiceClient;
-import javax.xml.ws.WebServiceException;
 import javax.xml.ws.WebServiceFeature;
 
 
@@ -22,32 +22,12 @@ public class JmsReaderSoap
     extends Service
 {
 
-    private final static URL JMSREADERSOAP_WSDL_LOCATION;
-    private final static WebServiceException JMSREADERSOAP_EXCEPTION;
     private final static QName JMSREADERSOAP_QNAME = new QName("http://soap2jms.github.com/reader", "jmsReaderSoap");
 
-    static {
-        URL url = null;
-        WebServiceException e = null;
-        try {
-            url = new URL("file:/usr/local/prj/misc/soap2jms/reader_common/src/main/resources/queueReader.wsdl");
-        } catch (MalformedURLException ex) {
-            e = new WebServiceException(ex);
-        }
-        JMSREADERSOAP_WSDL_LOCATION = url;
-        JMSREADERSOAP_EXCEPTION = e;
-    }
 
 	public JmsReaderSoap(String wsdlLocation) throws MalformedURLException {
 		super(new URL(wsdlLocation), JMSREADERSOAP_QNAME);
 	}
-    public JmsReaderSoap() {
-        super(__getWsdlLocation(), JMSREADERSOAP_QNAME);
-    }
-
-    public JmsReaderSoap(WebServiceFeature... features) {
-        super(__getWsdlLocation(), JMSREADERSOAP_QNAME, features);
-    }
 
     public JmsReaderSoap(URL wsdlLocation) {
         super(wsdlLocation, JMSREADERSOAP_QNAME);
@@ -85,13 +65,6 @@ public class JmsReaderSoap
     @WebEndpoint(name = "readerSOAP")
     public ReaderSoap2Jms getReaderSOAP(WebServiceFeature... features) {
         return super.getPort(new QName("http://soap2jms.github.com/reader", "readerSOAP"), ReaderSoap2Jms.class, features);
-    }
-
-    private static URL __getWsdlLocation() {
-        if (JMSREADERSOAP_EXCEPTION!= null) {
-            throw JMSREADERSOAP_EXCEPTION;
-        }
-        return JMSREADERSOAP_WSDL_LOCATION;
     }
 
 }

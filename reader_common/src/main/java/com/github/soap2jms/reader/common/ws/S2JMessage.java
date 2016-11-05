@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="correlationId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="deliveryMode" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="headers" maxOccurs="unbounded">
  *           &lt;complexType>
  *             &lt;complexContent>
@@ -47,9 +48,10 @@ import javax.xml.bind.annotation.XmlType;
  *           &lt;/simpleType>
  *         &lt;/element>
  *         &lt;element name="priority" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
+ *         &lt;element name="redelivered" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *         &lt;element name="timestamp" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="body" type="{http://www.w3.org/2001/XMLSchema}base64Binary"/>
+ *         &lt;element name="body" type="{http://www.w3.org/2001/XMLSchema}base64Binary" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -61,10 +63,12 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "s2jMessage", propOrder = {
     "correlationId",
+    "deliveryMode",
     "headers",
     "messageId",
     "messageType",
     "priority",
+    "redelivered",
     "timestamp",
     "type",
     "body"
@@ -72,6 +76,7 @@ import javax.xml.bind.annotation.XmlType;
 public class S2JMessage {
 
     protected String correlationId;
+    protected int deliveryMode;
     @XmlElement(required = true)
     protected List<S2JMessage.Headers> headers;
     @XmlElement(required = true)
@@ -79,6 +84,7 @@ public class S2JMessage {
     @XmlElement(required = true)
     protected String messageType;
     protected Integer priority;
+    protected boolean redelivered;
     protected long timestamp;
     @XmlElement(required = true)
     protected String type;
@@ -120,6 +126,22 @@ public class S2JMessage {
      */
     public void setCorrelationId(String value) {
         this.correlationId = value;
+    }
+
+    /**
+     * Gets the value of the deliveryMode property.
+     * 
+     */
+    public int getDeliveryMode() {
+        return deliveryMode;
+    }
+
+    /**
+     * Sets the value of the deliveryMode property.
+     * 
+     */
+    public void setDeliveryMode(int value) {
+        this.deliveryMode = value;
     }
 
     /**
@@ -221,6 +243,22 @@ public class S2JMessage {
      */
     public void setPriority(Integer value) {
         this.priority = value;
+    }
+
+    /**
+     * Gets the value of the redelivered property.
+     * 
+     */
+    public boolean isRedelivered() {
+        return redelivered;
+    }
+
+    /**
+     * Sets the value of the redelivered property.
+     * 
+     */
+    public void setRedelivered(boolean value) {
+        this.redelivered = value;
     }
 
     /**

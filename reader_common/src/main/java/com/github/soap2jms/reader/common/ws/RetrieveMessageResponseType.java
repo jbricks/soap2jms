@@ -40,7 +40,17 @@ public class RetrieveMessageResponseType {
     protected List<S2JMessageAndStatus> s2JMessageAndStatus;
     protected boolean complete;
 
-    /**
+    public RetrieveMessageResponseType() {
+	}
+
+    
+	public RetrieveMessageResponseType(List<S2JMessageAndStatus> s2jMessageAndStatus, boolean complete) {
+		s2JMessageAndStatus = s2jMessageAndStatus;
+		this.complete = complete;
+	}
+
+
+	/**
      * Gets the value of the s2JMessageAndStatus property.
      * 
      * <p>
