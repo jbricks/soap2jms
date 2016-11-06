@@ -12,8 +12,10 @@ It is not to be confused with "Soap over JMS". Soap Over JMS encapsulates a soap
  * Reliability: JMS has a plus over SOAP: its reliability. Soap2Jms try to replicate this at the minimum cost: all the operations are idempotent. If clients are coded properly, messages will not be lost or duplicated in case of network or system failure.
  * Interoperability: It is independent from the specific JMS provider used. It can work in any application, without any change. Clients can be coded in languages other than java (.NET ...). Web services are WS-I Basic Profile 1 compliant. 
 
+
 ## Current implementation status
-The project is under active development (Nov/2016). The winter is coming, i have some time in my week-ends.
+
+The project is under active development (Nov/2016). 
 Actually the web service to read message from a queue works with the following limitations:
  - Acknowledge method is not supported.
  - Only text messages are supported.
