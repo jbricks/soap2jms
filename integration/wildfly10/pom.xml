@@ -21,6 +21,12 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.github.gcontini.soap2jms</groupId>
+			<artifactId>reader_server</artifactId>
+			<classifier>classes</classifier>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.wildfly</groupId>
 			<artifactId>wildfly-jms-client-bom</artifactId>
 			<scope>test</scope>

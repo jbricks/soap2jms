@@ -41,7 +41,7 @@ public class JmsReaderSoap extends Service {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return returns ReaderSoap2Jms
 	 */
 	@WebEndpoint(name = "readerSOAP")
@@ -50,7 +50,7 @@ public class JmsReaderSoap extends Service {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param features
 	 *            A list of {@link javax.xml.ws.WebServiceFeature} to configure
 	 *            on the proxy. Supported features not in the

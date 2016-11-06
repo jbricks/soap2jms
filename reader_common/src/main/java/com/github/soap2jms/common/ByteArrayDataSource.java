@@ -61,6 +61,11 @@ public class ByteArrayDataSource implements DataSource {
 		this.type = type;
 	}
 
+	public ByteArrayDataSource(String data) {
+		this.data = data.getBytes();
+		this.type = "text/html";
+	}
+
 	/**
 	 * Return an InputStream for the data. Note that a new stream is returned
 	 * each time this method is called.

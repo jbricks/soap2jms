@@ -33,6 +33,13 @@
 			</dependency>
 			<dependency>
 				<groupId>com.github.gcontini.soap2jms</groupId>
+				<artifactId>reader_server</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+				<type>jar</type>
+				<classifier>classes</classifier>
+			</dependency>
+			<dependency>
+				<groupId>com.github.gcontini.soap2jms</groupId>
 				<artifactId>reader_client</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>

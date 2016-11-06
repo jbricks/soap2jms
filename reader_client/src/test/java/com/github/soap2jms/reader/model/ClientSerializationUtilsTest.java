@@ -11,7 +11,7 @@ import javax.activation.DataHandler;
 import org.junit.Test;
 
 import com.github.soap2jms.common.ByteArrayDataSource;
-import com.github.soap2jms.reader.common.JMSMessageTypeEnum;
+import com.github.soap2jms.reader.common.JMSMessageClassEnum;
 import com.github.soap2jms.reader.common.ws.ResponseStatus;
 import com.github.soap2jms.reader.common.ws.RetrieveMessageResponseType;
 import com.github.soap2jms.reader.common.ws.WsJmsMessage;
@@ -24,7 +24,7 @@ public class ClientSerializationUtilsTest {
 		List<WsJmsMessageAndStatus> messagesIn = new ArrayList<WsJmsMessageAndStatus>();
 		DataHandler body = new DataHandler(new ByteArrayDataSource("test".getBytes(),"text/html"));
 		WsJmsMessage s2jMessage = new WsJmsMessage("correlationId", 1, null, // headers
-				"messageId", JMSMessageTypeEnum.TEXT.name(), 1, // priority
+				"messageId", JMSMessageClassEnum.TEXT.name(), 1, // priority
 				true, 1000L, // timestamp
 				"type", body);
 		ResponseStatus messageStatus = new ResponseStatus("OK", null);

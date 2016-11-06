@@ -18,16 +18,16 @@ import com.github.soap2jms.reader.model.S2JProtocolException;
 public class S2JReaderClient {
 	private final JmsReaderSoap readerSoap;
 
+	public S2JReaderClient(final JmsReaderSoap readerSoap) {
+		this.readerSoap = readerSoap;
+	}
+
 	public S2JReaderClient(final String wsdlLocation) {
 		try {
 			this.readerSoap = new JmsReaderSoap(wsdlLocation);
 		} catch (final MalformedURLException e) {
 			throw new IllegalArgumentException("Url " + wsdlLocation + " is malformed.", e);
 		}
-	}
-
-	public S2JReaderClient(JmsReaderSoap readerSoap) {
-		this.readerSoap = readerSoap;
 	}
 
 	void acknolwedge(final Collection<String> messageId) {

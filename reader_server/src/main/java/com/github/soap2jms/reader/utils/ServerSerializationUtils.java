@@ -16,23 +16,23 @@ import javax.jms.StreamMessage;
 import javax.jms.TextMessage;
 
 import com.github.soap2jms.common.ByteArrayDataSource;
-import com.github.soap2jms.reader.common.JMSMessageTypeEnum;
+import com.github.soap2jms.reader.common.JMSMessageClassEnum;
 import com.github.soap2jms.reader.common.ws.ResponseStatus;
 import com.github.soap2jms.reader.common.ws.WsJmsMessage;
 import com.github.soap2jms.reader.common.ws.WsJmsMessageAndStatus;
 
 public class ServerSerializationUtils {
 
-	private static final Map<Class<? extends Message>, JMSMessageTypeEnum> ENUM_BY_CLASS = new HashMap<>();
+	private static final Map<Class<? extends Message>, JMSMessageClassEnum> ENUM_BY_CLASS = new HashMap<>();
 	static {
-		ENUM_BY_CLASS.put(BytesMessage.class, JMSMessageTypeEnum.BYTE);
-		ENUM_BY_CLASS.put(MapMessage.class, JMSMessageTypeEnum.MAP);
-		ENUM_BY_CLASS.put(ObjectMessage.class, JMSMessageTypeEnum.OBJECT);
-		ENUM_BY_CLASS.put(StreamMessage.class, JMSMessageTypeEnum.STREAM);
-		ENUM_BY_CLASS.put(TextMessage.class, JMSMessageTypeEnum.TEXT);
+		ENUM_BY_CLASS.put(BytesMessage.class, JMSMessageClassEnum.BYTE);
+		ENUM_BY_CLASS.put(MapMessage.class, JMSMessageClassEnum.MAP);
+		ENUM_BY_CLASS.put(ObjectMessage.class, JMSMessageClassEnum.OBJECT);
+		ENUM_BY_CLASS.put(StreamMessage.class, JMSMessageClassEnum.STREAM);
+		ENUM_BY_CLASS.put(TextMessage.class, JMSMessageClassEnum.TEXT);
 	}
 
-	private static DataHandler extractBody(final Message message, final JMSMessageTypeEnum messageType)
+	private static DataHandler extractBody(final Message message, final JMSMessageClassEnum messageType)
 			throws JMSException {
 		byte[] body = null;
 		switch (messageType) {
@@ -68,9 +68,9 @@ public class ServerSerializationUtils {
 	}
 
 	public static WsJmsMessageAndStatus jms2soap(final Message message) throws JMSException {
-		JMSMessageTypeEnum messageType = JMSMessageTypeEnum.UNSUPPORTED;
+		JMSMessageClassEnum messageType = JMSMessageClassEnum.UNSUPPORTED;
 
-		for (final Map.Entry<Class<? extends Message>, JMSMessageTypeEnum> entry : ENUM_BY_CLASS.entrySet()) {
+		for (final Map.Entry<Class<? extends Message>, JMSMessageClassEnum> entry : ENUM_BY_CLASS.entrySet()) {
 			if (entry.getKey().isInstance(message)) {
 				messageType = entry.getValue();
 			}

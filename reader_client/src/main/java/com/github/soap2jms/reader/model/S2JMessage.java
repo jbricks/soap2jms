@@ -1,18 +1,35 @@
 package com.github.soap2jms.reader.model;
 
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Map;
 
+import javax.activation.DataHandler;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 
 import com.github.soap2jms.reader.common.ws.WsJmsMessage;
+import com.github.soap2jms.reader.common.ws.WsJmsMessage.Headers;
 
 public abstract class S2JMessage implements Message {
 
 	private final Map<String, Object> headers;
 	protected final WsJmsMessage message;
+
+	protected S2JMessage(String messageClass, final String messageId,
+			final DataHandler body) {
+		this(new WsJmsMessage(null, 0, null, messageId, messageClass, 0, false, System.currentTimeMillis(), null,
+				body));
+	}
+
+	protected S2JMessage(final String correlationId, final int deliveryMode, final Map<String, Object> headers,
+			final String messageId, final String messageClass, final Integer priority, final boolean redelivered,
+			final long timestamp, final String type, final DataHandler body) {
+		message = new WsJmsMessage(correlationId, deliveryMode, null, messageId, messageClass, priority, redelivered,
+				timestamp, type, body);
+		this.headers = headers;
+	}
 
 	public S2JMessage(final WsJmsMessage message) {
 		this.message = message;
@@ -27,8 +44,7 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public void clearBody() throws JMSException {
-		// TODO Auto-generated method stub
-
+		this.message.setBody(null);
 	}
 
 	@Override
