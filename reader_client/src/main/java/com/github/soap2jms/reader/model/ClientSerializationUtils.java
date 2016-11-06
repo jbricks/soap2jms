@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.github.soap2jms.reader.common.ErrorType;
 import com.github.soap2jms.reader.common.JMSMessageClassEnum;
+import com.github.soap2jms.reader.common.PropertyTypeEnum;
 import com.github.soap2jms.reader.common.ws.RetrieveMessageResponseType;
 import com.github.soap2jms.reader.common.ws.WsJmsMessage;
 import com.github.soap2jms.reader.common.ws.WsJmsMessage.Headers;
@@ -13,13 +14,40 @@ import com.github.soap2jms.reader.common.ws.WsJmsMessageAndStatus;
 
 public class ClientSerializationUtils {
 	public static Map<String, Object> convertHeaders(final List<Headers> headers) {
-		new HashMap<>();
-		for (final Headers header : headers) {
-			header.getKey();
-			header.getValue();
-
+		Map<String, Object> result = new HashMap<>();
+		if (headers != null) {
+			for (final Headers header : headers) {
+				String key = header.getKey();
+				String valueToBeParsed = header.getValue();
+				final int separatorIndex = valueToBeParsed.indexOf(";");
+				if (separatorIndex == -1) {
+					throw new S2JProtocolException(ErrorType.INCOMPATIBLE_SERVER_PROTOCOL,
+							"Deserializing header values: " + valueToBeParsed);
+				}
+				String type = valueToBeParsed.substring(0, separatorIndex);
+				String value = valueToBeParsed.substring(separatorIndex + 1);
+				Object parsedValue;
+				PropertyTypeEnum propType = PropertyTypeEnum.valueOf(type);
+				switch (propType) {
+				case STRING:
+					parsedValue = value;
+					break;
+				case INT:
+					parsedValue = new Integer(value);
+					break;
+				case LONG:
+					parsedValue = new Long(value);
+					break;
+				case CHAR:
+					parsedValue = new Character(value.charAt(0));
+					break;
+				default:
+					throw new UnsupportedOperationException("Type " + propType + " not yet supported.");
+				}
+				result.put(key, parsedValue);
+			}
 		}
-		return null;
+		return result;
 	}
 
 	public static S2JMessage[] convertMessages(final RetrieveMessageResponseType wsResponse)

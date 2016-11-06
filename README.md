@@ -16,7 +16,6 @@ It is not to be confused with "Soap over JMS". Soap Over JMS encapsulates a soap
 The project is under active development (Nov/2016). The winter is coming, i have some time in my week-ends.
 Actually the web service to read message from a queue works with the following limitations:
  - Acknowledge method is not supported.
- - Headers are not passed.
  - Only text messages are supported.
 First step will be remove the limitations above. Then I will address the following points 
  - Cleaning up error handling.

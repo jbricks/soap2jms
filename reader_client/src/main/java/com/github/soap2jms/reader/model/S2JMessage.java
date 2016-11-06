@@ -1,7 +1,7 @@
 package com.github.soap2jms.reader.model;
 
 import java.util.Enumeration;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.activation.DataHandler;
@@ -9,8 +9,9 @@ import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 
+import org.apache.commons.collections4.iterators.IteratorEnumeration;
+
 import com.github.soap2jms.reader.common.ws.WsJmsMessage;
-import com.github.soap2jms.reader.common.ws.WsJmsMessage.Headers;
 
 public abstract class S2JMessage implements Message {
 
@@ -165,7 +166,8 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public Enumeration<String> getPropertyNames() throws JMSException {
-		return null;
+		Iterator<String> iterator = this.headers.keySet().iterator();
+		return new IteratorEnumeration<String>(iterator);
 	}
 
 	@Override
@@ -176,8 +178,7 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public String getStringProperty(final String name) throws JMSException {
-		// TODO Auto-generated method stub
-		return null;
+		return (String)getObjectProperty(name);
 	}
 
 	@Override
@@ -291,26 +292,22 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public void setLongProperty(final String name, final long value) throws JMSException {
-		// TODO Auto-generated method stub
-
+		this.headers.put(name, value);
 	}
 
 	@Override
 	public void setObjectProperty(final String name, final Object value) throws JMSException {
-		// TODO Auto-generated method stub
-
+		this.headers.put(name, value);
 	}
 
 	@Override
 	public void setShortProperty(final String name, final short value) throws JMSException {
-		// TODO Auto-generated method stub
-
+		this.headers.put(name, value);
 	}
 
 	@Override
 	public void setStringProperty(final String name, final String value) throws JMSException {
-		// TODO Auto-generated method stub
-
+		this.headers.put(name, value);
 	}
 
 }

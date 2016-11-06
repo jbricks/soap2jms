@@ -363,7 +363,15 @@ public class WsJmsMessage {
         @XmlElement(required = true)
         protected String value;
 
-        /**
+        public Headers() {
+		}
+
+		public Headers(String key, String value) {
+			this.key = key;
+			this.value = value;
+		}
+
+		/**
          * Gets the value of the key property.
          * 
          * @return

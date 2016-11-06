@@ -1,7 +1,10 @@
 package com.github.soap2jms.reader.utils;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -17,8 +20,10 @@ import javax.jms.TextMessage;
 
 import com.github.soap2jms.common.ByteArrayDataSource;
 import com.github.soap2jms.reader.common.JMSMessageClassEnum;
+import com.github.soap2jms.reader.common.PropertyTypeEnum;
 import com.github.soap2jms.reader.common.ws.ResponseStatus;
 import com.github.soap2jms.reader.common.ws.WsJmsMessage;
+import com.github.soap2jms.reader.common.ws.WsJmsMessage.Headers;
 import com.github.soap2jms.reader.common.ws.WsJmsMessageAndStatus;
 
 public class ServerSerializationUtils {
@@ -75,16 +80,36 @@ public class ServerSerializationUtils {
 				messageType = entry.getValue();
 			}
 		}
-
+		
+		List<Headers> headers = convertHeaders(message);
+		
 		final DataHandler bodyStream = extractBody(message, messageType);
 
 		final WsJmsMessage wsmessage = new WsJmsMessage(message.getJMSCorrelationID(), message.getJMSDeliveryMode(),
-				null, // headers
+				headers, // headers
 				message.getJMSMessageID(), messageType.name(), message.getJMSPriority(), message.getJMSRedelivered(), //
 				message.getJMSTimestamp(), message.getJMSType(), // body
 				bodyStream);
 
 		return new WsJmsMessageAndStatus(wsmessage, new ResponseStatus("OK", null));
 
+	}
+
+	private static List<Headers> convertHeaders(final Message message) throws JMSException {
+		List<Headers> headers = new ArrayList<>();
+		final Enumeration<String> propertyNames = message.getPropertyNames();
+		while(propertyNames.hasMoreElements()){
+			String name = propertyNames.nextElement();
+			Object value = message.getObjectProperty(name);
+			PropertyTypeEnum type = PropertyTypeEnum.fromObject(value);
+			String serializedValue;
+			if (type!=PropertyTypeEnum.NULL){
+				serializedValue = type.name() + ";" + value.toString();
+			}else{
+				serializedValue = type.name() + ";";
+			}
+			headers.add(new Headers(name,serializedValue));
+		}
+		return headers;
 	}
 }
