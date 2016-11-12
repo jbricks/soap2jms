@@ -6,20 +6,25 @@
 
 package com.github.soap2jms.reader;
 
-import java.util.logging.Logger;
-
 import javax.inject.Inject;
+import javax.jms.JMSException;
 import javax.jms.Message;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.github.soap2jms.queue.GetMessagesResult;
 import com.github.soap2jms.queue.QueueInspector;
+import com.github.soap2jms.reader.common.WsExceptionClass;
 import com.github.soap2jms.reader.common.ws.RetrieveMessageResponseType;
 import com.github.soap2jms.reader.utils.ServerSerializationUtils;
 
-@javax.jws.WebService(serviceName = "jmsReaderSoap", portName = "readerSOAP", targetNamespace = "http://soap2jms.github.com/reader", wsdlLocation = "file:/usr/local/prj/misc/soap2jms/reader_common/src/main/resources/queueReader.wsdl", endpointInterface = "com.github.soap2jms.reader.ReaderSoap2Jms")
+@javax.jws.WebService(serviceName = "jmsReaderSoap", 
+	portName = "readerSOAP", targetNamespace = "http://soap2jms.github.com/reader", 
+	endpointInterface = "com.github.soap2jms.reader.ReaderSoap2Jms")
 public class ReaderSOAPImpl implements ReaderSoap2Jms {
 
-	private static final Logger LOG = Logger.getLogger(ReaderSOAPImpl.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger(ReaderSOAPImpl.class.getName());
 	@Inject
 	private QueueInspector qi;
 
@@ -64,9 +69,15 @@ public class ReaderSOAPImpl implements ReaderSoap2Jms {
 				result.getS2JMessageAndStatus().add(ServerSerializationUtils.jms2soap(msg));
 			}
 			return result;
-		} catch (final java.lang.Exception ex) {
-			ex.printStackTrace();
-			throw new RuntimeException(ex);
+		} catch (JMSException e){
+			LOG.error("JMS error processing [" +queueName+"] filter["+filter+"]",e);
+			throw new WsJmsException("Internal server processing [" +queueName+"] filter["+filter+"]", 
+					e.toString(),0,WsExceptionClass.JMS);
+		} catch (Exception ex) {
+			//FIXME:error type
+			LOG.error("JMS error processing [" +queueName+"] filter["+filter+"]",ex);
+			throw new WsJmsException("Internal server processing [" +queueName+"] filter["+filter+"]", 
+					ex.toString(),0,WsExceptionClass.OTHER);
 		}
 	}
 

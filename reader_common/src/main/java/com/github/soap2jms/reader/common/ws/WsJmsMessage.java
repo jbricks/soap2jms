@@ -64,6 +64,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "wsJmsMessage", propOrder = {
     "correlationId",
     "deliveryMode",
+    "expiration",
     "headers",
     "messageId",
     "messageClass",
@@ -77,6 +78,8 @@ public class WsJmsMessage {
 
     protected String correlationId;
     protected int deliveryMode;
+    @XmlElement(required = true)
+    protected long expiration;
     @XmlElement(required = true)
     protected List<WsJmsMessage.Headers> headers;
     @XmlElement(required = true)
@@ -92,12 +95,13 @@ public class WsJmsMessage {
 
     
     
-    public WsJmsMessage(String correlationId, int deliveryMode, List<Headers> headers, 
+    public WsJmsMessage(String correlationId, int deliveryMode, long expiration, List<Headers> headers, 
     		String messageId,
 			String messageClass, Integer priority, boolean redelivered, long timestamp, 
 			String type, DataHandler body) {
 		this.correlationId = correlationId;
 		this.deliveryMode = deliveryMode;
+		this.expiration = expiration;
 		this.headers = headers;
 		this.messageId = messageId;
 		this.messageClass = messageClass;
@@ -135,7 +139,15 @@ public class WsJmsMessage {
         this.correlationId = value;
     }
 
-    /**
+    public long getExpiration() {
+		return expiration;
+	}
+
+	public void setExpiration(long expiration) {
+		this.expiration = expiration;
+	}
+
+	/**
      * Gets the value of the deliveryMode property.
      * 
      */

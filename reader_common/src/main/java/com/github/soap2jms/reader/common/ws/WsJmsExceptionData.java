@@ -7,11 +7,15 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.github.soap2jms.reader.common.WsExceptionClass;
 
 /**
- * <p>Java class for wsJmsExceptionData complex type.
+ * <p>
+ * Java class for wsJmsExceptionData complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="wsJmsExceptionData">
@@ -38,115 +42,115 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "wsJmsExceptionData", propOrder = {
-    "message",
-    "originalException"
-})
+@XmlType(name = "wsJmsExceptionData", propOrder = { "message", "originalException", "code", "jmsCode",
+		"exceptionClass" })
 public class WsJmsExceptionData {
 
-    @XmlElement(required = true)
-    protected String message;
-    @XmlElement(required = true)
-    protected String originalException;
-    @XmlAttribute(name = "code")
-    protected Integer code;
-    @XmlAttribute(name = "exceptionType")
-    protected String exceptionType;
+	@XmlElement(required = true)
+	protected String message;
+	@XmlElement(required = true)
+	protected String originalException;
+	@XmlAttribute(name = "code")
+	protected Integer code;
+	@XmlAttribute(name = "jmsCode")
+	protected Integer jmsCode;
+	@XmlAttribute(name = "exceptionClass")
+	protected String exceptionClass;
 
-    /**
-     * Gets the value of the message property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getMessage() {
-        return message;
-    }
+	public WsJmsExceptionData() {
+	}
 
-    /**
-     * Sets the value of the message property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setMessage(String value) {
-        this.message = value;
-    }
+	public WsJmsExceptionData(String message, String originalException, Integer code, Integer jmsCode,
+			WsExceptionClass exceptionType) {
+		this.message = message;
+		this.originalException = originalException;
+		this.code = code;
+		this.jmsCode = jmsCode;
+		this.exceptionClass = exceptionType == null ? WsExceptionClass.OTHER.name() : exceptionType.name();
+	}
 
-    /**
-     * Gets the value of the originalException property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getOriginalException() {
-        return originalException;
-    }
+	/**
+	 * Gets the value of the message property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getMessage() {
+		return message;
+	}
 
-    /**
-     * Sets the value of the originalException property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setOriginalException(String value) {
-        this.originalException = value;
-    }
+	/**
+	 * Sets the value of the message property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setMessage(String value) {
+		this.message = value;
+	}
 
-    /**
-     * Gets the value of the code property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Integer }
-     *     
-     */
-    public Integer getCode() {
-        return code;
-    }
+	/**
+	 * Gets the value of the originalException property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getOriginalException() {
+		return originalException;
+	}
 
-    /**
-     * Sets the value of the code property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *     
-     */
-    public void setCode(Integer value) {
-        this.code = value;
-    }
+	/**
+	 * Sets the value of the originalException property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setOriginalException(String value) {
+		this.originalException = value;
+	}
 
-    /**
-     * Gets the value of the exceptionType property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getExceptionType() {
-        return exceptionType;
-    }
+	/**
+	 * Gets the value of the code property.
+	 * 
+	 * @return possible object is {@link Integer }
+	 * 
+	 */
+	public Integer getCode() {
+		return code;
+	}
 
-    /**
-     * Sets the value of the exceptionType property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setExceptionType(String value) {
-        this.exceptionType = value;
-    }
+	/**
+	 * Sets the value of the code property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link Integer }
+	 * 
+	 */
+	public void setCode(Integer value) {
+		this.code = value;
+	}
+
+	/**
+	 * Gets the value of the exceptionType property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String setExceptionClass() {
+		return exceptionClass;
+	}
+
+	/**
+	 * Sets the value of the exceptionType property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setExceptionClass(String value) {
+		this.exceptionClass = value;
+	}
 
 }

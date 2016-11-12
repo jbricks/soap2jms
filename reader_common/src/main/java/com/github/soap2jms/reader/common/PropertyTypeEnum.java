@@ -1,7 +1,8 @@
 package com.github.soap2jms.reader.common;
 
 public enum PropertyTypeEnum {
-	BYTE(Byte.class), BYTE_ARRAY(byte[].class), CHAR(Character.class), INT(Integer.class), LONG(Long.class), OBJECT(
+	BYTE(Byte.class), BYTE_ARRAY(byte[].class), CHAR(Character.class), 
+		INT(Integer.class), LONG(Long.class), OBJECT(
 			Object.class), STRING(String.class),NULL(Void.class);
 
 	private final Class<?> propType;

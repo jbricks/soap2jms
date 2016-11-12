@@ -1,6 +1,7 @@
 package com.github.soap2jms.reader.utils;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -49,27 +50,77 @@ public class ServerSerializationUtils {
 			}
 			break;
 		case BYTE:
-			final BytesMessage bytesMessage = (BytesMessage) message;
-			final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			final byte[] buffer = new byte[4096];
-			int n = 0;
-			while (-1 != (n = bytesMessage.readBytes(buffer))) {
-				baos.write(buffer, 0, n);
-			}
-			body = baos.toByteArray();
+			body = serializeBytesMessage(message);
+			break;
 		case OBJECT:
 			throw new UnsupportedOperationException("Type " + messageType + "not supported.");
 		case STREAM:
-			throw new UnsupportedOperationException("Type " + messageType + "not supported.");
+			body = serializeStreamMessage(message);
+			break;
 		case MAP:
-			new Properties();
-			throw new UnsupportedOperationException("Type " + messageType + "not supported.");
+			body = serializeMapMessage(message);
+			break;
 		default:
 			throw new UnsupportedOperationException("Type " + messageType + "not supported.");
 		}
 		final DataSource ds = new ByteArrayDataSource(body, "text/html");
 		final DataHandler dh = new DataHandler(ds);
 		return dh;
+	}
+
+	private static byte[] serializeMapMessage(Message message) throws JMSException {
+		Properties props = new Properties();
+		MapMessage mm = (MapMessage) message;
+		@SuppressWarnings("unchecked")
+		final Enumeration<String> messageKeyNames = mm.getMapNames();
+		while (messageKeyNames.hasMoreElements()) {
+			String name = messageKeyNames.nextElement();
+			Object value = mm.getObject(name);
+			PropertyTypeEnum type = PropertyTypeEnum.fromObject(value);
+			String serializedValue;
+			if (type != PropertyTypeEnum.NULL) {
+				serializedValue = type.name() + ";" + value.toString();
+			} else {
+				serializedValue = type.name() + ";";
+			}
+			props.put(name, serializedValue);
+		}
+		ByteArrayOutputStream baos;
+		try {
+			baos = new ByteArrayOutputStream();
+			props.store(baos, null);
+		} catch (IOException e) {
+			throw new RuntimeException("Error writing to ByteArrayOutputStream", e);
+		}
+		return baos.toByteArray();
+	}
+
+	private static byte[] serializeStreamMessage(final Message message) throws JMSException {
+		// TODO better stream handling (use a DataHandler to retrieve message at
+		// serialization time);
+		byte[] body;
+		final StreamMessage streamMessage = (StreamMessage) message;
+		final ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+		final byte[] buffer1 = new byte[4096];
+		int i = 0;
+		while (-1 != (i = streamMessage.readBytes(buffer1))) {
+			baos1.write(buffer1, 0, i);
+		}
+		body = baos1.toByteArray();
+		return body;
+	}
+
+	private static byte[] serializeBytesMessage(final Message message) throws JMSException {
+		byte[] body;
+		final BytesMessage bytesMessage = (BytesMessage) message;
+		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		final byte[] buffer = new byte[4096];
+		int n = 0;
+		while (-1 != (n = bytesMessage.readBytes(buffer))) {
+			baos.write(buffer, 0, n);
+		}
+		body = baos.toByteArray();
+		return body;
 	}
 
 	public static WsJmsMessageAndStatus jms2soap(final Message message) throws JMSException {
@@ -80,13 +131,13 @@ public class ServerSerializationUtils {
 				messageType = entry.getValue();
 			}
 		}
-		
+
 		List<Headers> headers = convertHeaders(message);
-		
+
 		final DataHandler bodyStream = extractBody(message, messageType);
 
 		final WsJmsMessage wsmessage = new WsJmsMessage(message.getJMSCorrelationID(), message.getJMSDeliveryMode(),
-				headers, // headers
+				message.getJMSExpiration(), headers, // headers
 				message.getJMSMessageID(), messageType.name(), message.getJMSPriority(), message.getJMSRedelivered(), //
 				message.getJMSTimestamp(), message.getJMSType(), // body
 				bodyStream);
@@ -97,18 +148,19 @@ public class ServerSerializationUtils {
 
 	private static List<Headers> convertHeaders(final Message message) throws JMSException {
 		List<Headers> headers = new ArrayList<>();
+		@SuppressWarnings("unchecked")
 		final Enumeration<String> propertyNames = message.getPropertyNames();
-		while(propertyNames.hasMoreElements()){
+		while (propertyNames.hasMoreElements()) {
 			String name = propertyNames.nextElement();
 			Object value = message.getObjectProperty(name);
 			PropertyTypeEnum type = PropertyTypeEnum.fromObject(value);
 			String serializedValue;
-			if (type!=PropertyTypeEnum.NULL){
+			if (type != PropertyTypeEnum.NULL) {
 				serializedValue = type.name() + ";" + value.toString();
-			}else{
+			} else {
 				serializedValue = type.name() + ";";
 			}
-			headers.add(new Headers(name,serializedValue));
+			headers.add(new Headers(name, serializedValue));
 		}
 		return headers;
 	}

@@ -8,6 +8,7 @@ import javax.activation.DataHandler;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
+import javax.jms.MessageFormatException;
 
 import org.apache.commons.collections4.iterators.IteratorEnumeration;
 
@@ -18,18 +19,18 @@ public abstract class S2JMessage implements Message {
 	private final Map<String, Object> headers;
 	protected final WsJmsMessage message;
 
-	protected S2JMessage(String messageClass, final String messageId,
+	protected S2JMessage(final String correlationId, final int deliveryMode, long expiration,
+			final Map<String, Object> headers, final String messageId, final String messageClass,
+			final Integer priority, final boolean redelivered, final long timestamp, final String type,
 			final DataHandler body) {
-		this(new WsJmsMessage(null, 0, null, messageId, messageClass, 0, false, System.currentTimeMillis(), null,
-				body));
+		this.message = new WsJmsMessage(correlationId, deliveryMode, expiration, null, messageId, messageClass,
+				priority, redelivered, timestamp, type, body);
+		this.headers = headers;
 	}
 
-	protected S2JMessage(final String correlationId, final int deliveryMode, final Map<String, Object> headers,
-			final String messageId, final String messageClass, final Integer priority, final boolean redelivered,
-			final long timestamp, final String type, final DataHandler body) {
-		message = new WsJmsMessage(correlationId, deliveryMode, null, messageId, messageClass, priority, redelivered,
-				timestamp, type, body);
-		this.headers = headers;
+	protected S2JMessage(final String messageClass, final String messageId, final DataHandler body) {
+		this(new WsJmsMessage(null, 0, 0, null, messageId, messageClass, 0, false, System.currentTimeMillis(), null,
+				body));
 	}
 
 	public S2JMessage(final WsJmsMessage message) {
@@ -50,8 +51,7 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public void clearProperties() throws JMSException {
-		// TODO Auto-generated method stub
-
+		headers.clear();
 	}
 
 	@Override
@@ -60,34 +60,62 @@ public abstract class S2JMessage implements Message {
 		return null;
 	}
 
+	protected <T> T getNotNullProperty(String name, Class<T> expectedClass) throws MessageFormatException {
+		T result = getProperty(name,expectedClass);
+
+		if (result == null) {
+			throw new MessageFormatException("property [" + name + "] type " + expectedClass + " null");
+		}
+		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected <T> T getProperty(String name, Class<T> expectedClass) throws MessageFormatException {
+		if(!headers.containsKey(name)){
+			throw new MessageFormatException("property [" + name + "] type " + expectedClass + " not found");
+		}
+		
+		Object propValue = headers.get(name);
+
+		if (propValue == null) {
+			return null;
+		}
+		T result;
+		if (expectedClass.isInstance(propValue)) {
+			result = (T) propValue;
+		} else if (String.class.equals(expectedClass)) {
+			result = (T) propValue.toString();
+		} else {
+			throw new MessageFormatException("property [" + name + "] of type " + expectedClass.getName()
+					+ " can't be assigned to " + expectedClass);
+		}
+
+		return result;
+	}
+
 	@Override
 	public boolean getBooleanProperty(final String name) throws JMSException {
-		// TODO Auto-generated method stub
-		return false;
+		return getProperty(name, Boolean.class);
 	}
 
 	@Override
 	public byte getByteProperty(final String name) throws JMSException {
-		// TODO Auto-generated method stub
-		return 0;
+		return getProperty(name, Byte.class);
 	}
 
 	@Override
 	public double getDoubleProperty(final String name) throws JMSException {
-		// TODO Auto-generated method stub
-		return 0;
+		return getProperty(name, Double.class);
 	}
 
 	@Override
 	public float getFloatProperty(final String name) throws JMSException {
-		// TODO Auto-generated method stub
-		return 0;
+		return getProperty(name, Float.class);
 	}
 
 	@Override
 	public int getIntProperty(final String name) throws JMSException {
-		// TODO Auto-generated method stub
-		return 0;
+		return getProperty(name, Integer.class);
 	}
 
 	@Override
@@ -119,8 +147,7 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public long getJMSExpiration() throws JMSException {
-		// TODO Auto-generated method stub
-		return 0;
+		return message.getExpiration();
 	}
 
 	@Override
@@ -155,8 +182,7 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public long getLongProperty(final String name) throws JMSException {
-		// TODO Auto-generated method stub
-		return 0;
+		return getProperty(name, Long.class);
 	}
 
 	@Override
@@ -166,25 +192,18 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public Enumeration<String> getPropertyNames() throws JMSException {
-		Iterator<String> iterator = this.headers.keySet().iterator();
-		return new IteratorEnumeration<String>(iterator);
+		final Iterator<String> iterator = this.headers.keySet().iterator();
+		return new IteratorEnumeration<>(iterator);
 	}
 
 	@Override
 	public short getShortProperty(final String name) throws JMSException {
-		// TODO Auto-generated method stub
-		return 0;
+		return getProperty(name, Short.class);
 	}
 
 	@Override
 	public String getStringProperty(final String name) throws JMSException {
-		return (String)getObjectProperty(name);
-	}
-
-	@Override
-	public boolean isBodyAssignableTo(final Class c) throws JMSException {
-		// TODO Auto-generated method stub
-		return false;
+		return getProperty(name, String.class);
 	}
 
 	@Override
@@ -194,31 +213,31 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public void setBooleanProperty(final String name, final boolean value) throws JMSException {
-		// TODO Auto-generated method stub
+		headers.put(name, value);
 
 	}
 
 	@Override
 	public void setByteProperty(final String name, final byte value) throws JMSException {
-		// TODO Auto-generated method stub
+		headers.put(name, value);
 
 	}
 
 	@Override
 	public void setDoubleProperty(final String name, final double value) throws JMSException {
-		// TODO Auto-generated method stub
+		headers.put(name, value);
 
 	}
 
 	@Override
 	public void setFloatProperty(final String name, final float value) throws JMSException {
-		// TODO Auto-generated method stub
+		headers.put(name, value);
 
 	}
 
 	@Override
 	public void setIntProperty(final String name, final int value) throws JMSException {
-		// TODO Auto-generated method stub
+		headers.put(name, value);
 
 	}
 
@@ -252,7 +271,7 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public void setJMSExpiration(final long expiration) throws JMSException {
-		// TODO Auto-generated method stub
+		this.message.setExpiration(expiration);
 
 	}
 

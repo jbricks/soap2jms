@@ -3,28 +3,34 @@
 # Soap2Jms
 
 This project expose a JMS queue through a standard SOAP over HTTP web service.
-It allows to read and send messages from/to a JMS queue. Clients doesn't have dependency on any JMS implementation libraries. They are simple JAX-WS web service client, that can be used with any JAX-WS implementation (Apache CXF for instance).
+It allows to read and send messages from/to a JMS queue. Clients don't have to depend on any JMS implementation libraries. They are simple JAX-WS web service clients, that can be supported by any JAX-WS implementation (Apache CXF for instance).
 
-It is not to be confused with "Soap over JMS". Soap Over JMS encapsulates a soap message into a jms envelope. It has the same problems of JMS in terms of interoperability and it requires a jms client implementation to connect to the server.
+It is not to be confused with "Soap over JMS". Soap Over JMS encapsulates a soap message into a JMS envelope. It has the same problems of JMS in terms of interoperability and it requires a JMS client implementation to connect to the server.
 
 ## goals:
  * Simplicity: It is simple to integrate. It has few dependencies. It will be well documented.
  * Reliability: JMS has a plus over SOAP: its reliability. Soap2Jms try to replicate this at the minimum cost: all the operations are idempotent. If clients are coded properly, messages will not be lost or duplicated in case of network or system failure.
  * Interoperability: It is independent from the specific JMS provider used. It can work in any application, without any change. Clients can be coded in languages other than java (.NET ...). Web services are WS-I Basic Profile 1 compliant. 
 
+## Requirements
+
+ - Java 7/8 
+ - Jms 2.0, CDI
+ - Currently tested in wildfly 10. Any JavaEE 6 container should be supported.    
 
 ## Current implementation status
 
 The project is under active development (Nov/2016). 
 Actually the web service to read message from a queue works with the following limitations:
  - Acknowledge method is not supported.
- - Only text messages are supported.
 First step will be remove the limitations above. Then I will address the following points 
  - Cleaning up error handling.
  - Documentation / web site 
  - Implementation of the service to send messages to a queue
  - another iteration of documentation
- - improve configuration
+ - make soap2jms simply configurable 
+ - better handling of stream messages
+ - downgrade the JavaEE version required to 5 (?) ... 
  
 
 # Similar projects
@@ -44,4 +50,4 @@ Cons:
   * It's rest. It doesn't have a wsdl to conform to. 
   
 ## ActiveSoap
-Hosted on codehaus, the site seems dead (22/10/2016).
+Hosted on codehaus, the site seems dead (10/11/2016).

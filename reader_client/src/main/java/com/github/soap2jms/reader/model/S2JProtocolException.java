@@ -26,7 +26,7 @@ public class S2JProtocolException extends RuntimeException {
 	}
 
 	public ErrorType getErrorType() {
-		return errorType;
+		return this.errorType;
 	}
 
 }

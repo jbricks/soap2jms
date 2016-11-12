@@ -23,7 +23,7 @@ public class ClientSerializationUtilsTest {
 	public void testClientSerializationUtils() throws Exception {
 		List<WsJmsMessageAndStatus> messagesIn = new ArrayList<WsJmsMessageAndStatus>();
 		DataHandler body = new DataHandler(new ByteArrayDataSource("test".getBytes(),"text/html"));
-		WsJmsMessage s2jMessage = new WsJmsMessage("correlationId", 1, null, // headers
+		WsJmsMessage s2jMessage = new WsJmsMessage("correlationId", 1, 0, null, // headers
 				"messageId", JMSMessageClassEnum.TEXT.name(), 1, // priority
 				true, 1000L, // timestamp
 				"type", body);
@@ -36,7 +36,6 @@ public class ClientSerializationUtilsTest {
 		S2JMessage message = messages[0];
 		assertEquals("Message class", S2JTextMessage.class, message.getClass());
 		assertEquals("Message body", "test", ((S2JTextMessage) message).getText());
-
 	}
 
 }
