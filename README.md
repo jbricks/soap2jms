@@ -21,9 +21,10 @@ It is not to be confused with "Soap over JMS". Soap Over JMS encapsulates a soap
 ## Current implementation status
 
 The project is under active development (Nov/2016). 
-Actually the web service to read message from a queue works with the following limitations:
- - Acknowledge method is not supported.
-First step will be remove the limitations above. Then I will address the following points 
+
+Read message from a queue through a SOAP web service is completed.
+ 
+These points will need to be addressed: 
  - Cleaning up error handling.
  - Documentation / web site 
  - Implementation of the service to send messages to a queue
@@ -47,7 +48,11 @@ Pros:
 Cons:
   * The protocol is over complicated. It mimic JMS. It requires to open a session, and later to close it.
   * It's ActiveMQ specific.
-  * It's rest. It doesn't have a wsdl to conform to. 
-  
+  * It's JSON over HTTP. It doesn't have a WSDL to conform to (only a very lengthly description of the protocol). 
+
+## [OpenMQ UMS](https://mq.java.net/4.3-content/ums/umsIntro.html) Interface
+
+
+
 ## ActiveSoap
 Hosted on codehaus, the site seems dead (10/11/2016).

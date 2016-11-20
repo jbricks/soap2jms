@@ -1,29 +1,25 @@
 package com.github.soap2jms.reader.it;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.List;
 import java.util.Properties;
 
-import javax.activation.DataHandler;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSContext;
+import javax.jms.Message;
+import javax.jms.TextMessage;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.soap2jms.reader.JmsReaderSoap;
-import com.github.soap2jms.reader.ReaderSoap2Jms;
-import com.github.soap2jms.reader.common.ws.RetrieveMessageResponseType;
-import com.github.soap2jms.reader.common.ws.WsJmsMessageAndStatus;
+import com.github.soap2jms.model.S2JMessage;
+import com.github.soap2jms.pub.SoapToJmsClient;
 
 public class ITReaderConsumeMessage {
 	private static final Logger log = LoggerFactory.getLogger(ITReaderConsumeMessage.class);
@@ -43,21 +39,23 @@ public class ITReaderConsumeMessage {
 		// send a message to a queue.
 		sendMessage(1);
 		// read the message with webservice
-		JmsReaderSoap wsClient = new JmsReaderSoap(WSDL_LOCATION);
-		ReaderSoap2Jms reader = wsClient.getReaderSOAP();
+		SoapToJmsClient wsClient = new SoapToJmsClient(WSDL_LOCATION);
 
 		// TODO: map jms/soap2jms.reader to java:/comp/env/soap2jms in project
 		// project_customization (web.xml).
-		RetrieveMessageResponseType messages = reader.retrieveMessages("soap2jms", null, 100);
-		assertTrue("complete response", messages.isComplete());
-		List<WsJmsMessageAndStatus> jmsMessages = messages.getS2JMessageAndStatus();
-		assertEquals("Messages retrieved", 1, jmsMessages.size());
-		final DataHandler messageBody = jmsMessages.get(0).getWsJmsMessage().getBody();
-		assertNotNull("Message body deserialized", messageBody);
-		assertEquals("message content", DEFAULT_CONTENT, IOUtils.toString(messageBody.getInputStream(), "UTF-8"));
+		S2JMessage[]  messages = wsClient.readMessages("soap2jms", null, 100);
+		assertTrue("complete response", wsClient.retrieveComplete());
+		//List<WsJmsMessageAndStatus> jmsMessages = messages.getS2JMessageAndStatus();
+		assertEquals("Messages retrieved", 1, messages.length);
+		final Message message = messages[0];
+		assertTrue("Message instanceof textMessage", message instanceof TextMessage);
+		TextMessage textMessage =(TextMessage) message;
+		assertEquals("message content", DEFAULT_CONTENT, textMessage.getText());
 		// acknowlege the message
-
+		wsClient.acknowledge("soap2jms", messages);
 		// the message is not in the queue
+		S2JMessage[]  messages2 = wsClient.readMessages("soap2jms", null, 100);
+		assertEquals("Messages retrieved after acknowledge", 0, messages2.length);
 	}
 
 	@Test

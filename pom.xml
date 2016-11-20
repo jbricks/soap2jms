@@ -12,9 +12,9 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>reader_common</module>
-		<module>reader_server</module>
-		<module>reader_client</module>
+		<module>s2j_common</module>
+		<module>s2j_server</module>
+		<module>s2j_client</module>
 		<module>integration</module>
 	</modules>
 	<properties>
@@ -24,25 +24,25 @@
 		<dependencies>
 			<dependency>
 				<groupId>com.github.gcontini.soap2jms</groupId>
-				<artifactId>reader_common</artifactId>
+				<artifactId>s2j_common</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.github.gcontini.soap2jms</groupId>
-				<artifactId>reader_server</artifactId>
+				<artifactId>s2j_server</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 				<type>war</type>
 			</dependency>
 			<dependency>
 				<groupId>com.github.gcontini.soap2jms</groupId>
-				<artifactId>reader_server</artifactId>
+				<artifactId>s2j_server</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 				<type>jar</type>
 				<classifier>classes</classifier>
 			</dependency>
 			<dependency>
 				<groupId>com.github.gcontini.soap2jms</groupId>
-				<artifactId>reader_client</artifactId>
+				<artifactId>s2j_client</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
