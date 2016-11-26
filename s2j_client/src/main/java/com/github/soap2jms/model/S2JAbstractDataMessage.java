@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.Map;
 
 import javax.activation.DataHandler;
-import javax.jms.IllegalStateException;
 import javax.jms.JMSException;
 import javax.jms.MessageEOFException;
 import javax.jms.MessageFormatException;

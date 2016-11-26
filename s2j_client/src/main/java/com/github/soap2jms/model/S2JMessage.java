@@ -5,10 +5,10 @@ import java.util.Iterator;
 import java.util.Map;
 
 import javax.activation.DataHandler;
-import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageFormatException;
+import javax.print.attribute.standard.Destination;
 
 import org.apache.commons.collections4.iterators.IteratorEnumeration;
 

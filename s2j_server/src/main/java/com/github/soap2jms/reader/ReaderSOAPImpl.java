@@ -16,11 +16,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.soap2jms.common.WsExceptionClass;
+import com.github.soap2jms.common.serialization.JmsToSoapSerializer;
 import com.github.soap2jms.common.ws.MessageIdAndStatus;
 import com.github.soap2jms.common.ws.RetrieveMessageResponseType;
 import com.github.soap2jms.queue.GetMessagesResult;
 import com.github.soap2jms.queue.QueueInspector;
-import com.github.soap2jms.reader.utils.ServerSerializationUtils;
 import com.github.soap2jms.service.ReaderSoap2Jms;
 import com.github.soap2jms.service.WsJmsException;
 
@@ -33,7 +33,7 @@ public class ReaderSOAPImpl implements ReaderSoap2Jms {
 	@Inject
 	private QueueInspector qi;
 	@Inject
-	private ServerSerializationUtils serializationUtils;
+	private JmsToSoapSerializer serializationUtils;
 	/*
 	 * (non-Javadoc)
 	 *
@@ -64,7 +64,7 @@ public class ReaderSOAPImpl implements ReaderSoap2Jms {
 			result.setComplete(!messages.moreMessages);
 
 			for (final Message msg : messages.result) {
-				result.getS2JMessageAndStatus().add(serializationUtils.jms2soap(msg));
+				result.getS2JMessageAndStatus().add(serializationUtils.jmsToSoapMessageAndStatus(msg));
 			}
 		} catch (JMSException e){
 			LOG.error("JMS error processing [" +queueName+"] filter["+filter+"]",e);

@@ -1,6 +1,4 @@
-package com.github.soap2jms.model;
-
-import com.github.soap2jms.common.StatusCodeEnum;
+package com.github.soap2jms.common;
 
 public class S2JProtocolException extends RuntimeException {
 	/**

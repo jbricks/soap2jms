@@ -10,13 +10,13 @@ import javax.naming.NamingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.soap2jms.common.serialization.JMSMessageFactory;
+import com.github.soap2jms.common.serialization.SoapToJmsSerializer;
 import com.github.soap2jms.common.ws.MessageIdAndStatus;
 import com.github.soap2jms.common.ws.WsJmsMessage;
 import com.github.soap2jms.queue.IdAndStatus;
 import com.github.soap2jms.queue.QueueInspector;
 import com.github.soap2jms.reader.ReaderSOAPImpl;
-import com.github.soap2jms.reader.utils.JMSMessageFactory;
-import com.github.soap2jms.reader.utils.ServerSerializationUtils;
 import com.github.soap2jms.service.SenderSoap2Jms;
 import com.github.soap2jms.service.WsJmsException;
 
@@ -26,7 +26,7 @@ public class SenderSOAPImpl implements SenderSoap2Jms {
 	@Inject
 	private QueueInspector qi;
 	@Inject
-	private ServerSerializationUtils serializationUtils;
+	private SoapToJmsSerializer serializationUtils;
 
 	public SenderSOAPImpl() {
 
@@ -35,12 +35,12 @@ public class SenderSOAPImpl implements SenderSoap2Jms {
 	@Override
 	public List<MessageIdAndStatus> sendMessages(String queueName, String messageSetIdentifier,
 			List<WsJmsMessage> wsMessages) throws WsJmsException {
-		
-		JMSMessageFactory jmsMessageFactory=qi.getJmsMessageFactory();
-		Message[] jmsMessages=serializationUtils.soap2Jms(wsMessages, jmsMessageFactory);
-		IdAndStatus[] result=null;
+
+		JMSMessageFactory jmsMessageFactory = qi.getJmsMessageFactory();
+		Message[] jmsMessages = serializationUtils.convertMessages(jmsMessageFactory, wsMessages);
+		IdAndStatus[] result = null;
 		try {
-			 result = qi.sendMessages(queueName, jmsMessages);
+			result = qi.sendMessages(queueName, jmsMessages);
 		} catch (JMSException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

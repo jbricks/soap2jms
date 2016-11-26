@@ -1,4 +1,4 @@
-package com.github.soap2jms.reader.utils;
+package com.github.soap2jms.common.serialization;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -22,14 +22,12 @@ import javax.jms.TextMessage;
 import com.github.soap2jms.common.ByteArrayDataSource;
 import com.github.soap2jms.common.JMSMessageClassEnum;
 import com.github.soap2jms.common.PropertyTypeEnum;
-import com.github.soap2jms.common.ws.MessageIdAndStatus;
 import com.github.soap2jms.common.ws.StatusCode;
 import com.github.soap2jms.common.ws.WsJmsMessage;
 import com.github.soap2jms.common.ws.WsJmsMessage.Headers;
 import com.github.soap2jms.common.ws.WsJmsMessageAndStatus;
-import com.github.soap2jms.queue.IdAndStatus;
 
-public class ServerSerializationUtils {
+public class JmsToSoapSerializer {
 
 	private static final Map<Class<? extends Message>, JMSMessageClassEnum> ENUM_BY_CLASS = new HashMap<>();
 	static {
@@ -125,7 +123,14 @@ public class ServerSerializationUtils {
 		return body;
 	}
 
-	public WsJmsMessageAndStatus jms2soap(final Message message) throws JMSException {
+	public WsJmsMessageAndStatus jmsToSoapMessageAndStatus(final Message message) throws JMSException {
+		final WsJmsMessage wsmessage = jmsToSoap(message);
+
+		return new WsJmsMessageAndStatus(wsmessage, new StatusCode("OK", null));
+
+	}
+
+	public WsJmsMessage jmsToSoap(final Message message) throws JMSException {
 		JMSMessageClassEnum messageType = JMSMessageClassEnum.UNSUPPORTED;
 
 		for (final Map.Entry<Class<? extends Message>, JMSMessageClassEnum> entry : ENUM_BY_CLASS.entrySet()) {
@@ -143,9 +148,7 @@ public class ServerSerializationUtils {
 				message.getJMSMessageID(), messageType.name(), message.getJMSPriority(), message.getJMSRedelivered(), //
 				message.getJMSTimestamp(), message.getJMSType(), // body
 				bodyStream);
-
-		return new WsJmsMessageAndStatus(wsmessage, new StatusCode("OK", null));
-
+		return wsmessage;
 	}
 
 	private static List<Headers> convertHeaders(final Message message) throws JMSException {
@@ -167,13 +170,12 @@ public class ServerSerializationUtils {
 		return headers;
 	}
 
-	public Message[] soap2Jms(List<WsJmsMessage> wsMessages, JMSMessageFactory jmsMessageFactory) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<WsJmsMessage> messagesToWs(Message[] messages) throws JMSException {
+		List<WsJmsMessage> wsmessages = new ArrayList<>(messages.length);
+		for(Message message:messages){
+			wsmessages.add(jmsToSoap(message));
+		}
+		return wsmessages;
 	}
 
-	public List<MessageIdAndStatus> idAndStatusToWS(IdAndStatus[] result) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

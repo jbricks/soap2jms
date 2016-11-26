@@ -17,8 +17,6 @@ import com.github.soap2jms.common.ws.StatusCode;
 import com.github.soap2jms.common.ws.WsJmsMessage;
 import com.github.soap2jms.common.ws.WsJmsMessageAndStatus;
 import com.github.soap2jms.model.ClientSerializationUtils;
-import com.github.soap2jms.model.S2JMessage;
-import com.github.soap2jms.model.S2JTextMessage;
 
 public class ClientSerializationUtilsTest {
 

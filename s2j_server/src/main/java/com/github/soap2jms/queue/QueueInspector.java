@@ -2,7 +2,6 @@ package com.github.soap2jms.queue;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -31,8 +30,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.soap2jms.common.StatusCodeEnum;
+import com.github.soap2jms.common.serialization.JMSMessageFactory;
 import com.github.soap2jms.common.ws.MessageIdAndStatus;
-import com.github.soap2jms.reader.utils.JMSMessageFactory;
 
 public class QueueInspector {
 	private static final String JNDI_LOCAL = "java:comp/env/";
@@ -144,15 +143,6 @@ public class QueueInspector {
 				return createObjectMessage(object);
 			}
 
-			@Override
-			public ObjectMessage createObjectMessage() {
-				return localCopy.createObjectMessage();
-			}
-
-			@Override
-			public Message createMessage() {
-				return localCopy.createMessage();
-			}
 
 			@Override
 			public MapMessage createMapMessage() {

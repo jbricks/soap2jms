@@ -13,14 +13,15 @@ import javax.jms.Message;
 
 import org.junit.Test;
 
+import com.github.soap2jms.common.S2JProtocolException;
+import com.github.soap2jms.common.serialization.JmsToSoapSerializer;
+import com.github.soap2jms.common.serialization.SoapToJmsSerializer;
 import com.github.soap2jms.common.ws.RetrieveMessageResponseType;
 import com.github.soap2jms.common.ws.WsJmsMessageAndStatus;
-import com.github.soap2jms.model.ClientSerializationUtils;
+import com.github.soap2jms.model.ClientMessageFactory;
 import com.github.soap2jms.model.S2JMapMessage;
 import com.github.soap2jms.model.S2JMessage;
-import com.github.soap2jms.model.S2JProtocolException;
 import com.github.soap2jms.model.S2JTextMessage;
-import com.github.soap2jms.reader.utils.ServerSerializationUtils;
 
 public class TestJmsSerialization {
 
@@ -73,14 +74,14 @@ public class TestJmsSerialization {
 		assertEquals("body returns null if a key doesn't exist", null, mapMessage.getObject("not exist"));
 	}
 
-
 	private S2JMessage serializeAndDeserializeMessage(Message serverMessage) throws JMSException, S2JProtocolException {
-		WsJmsMessageAndStatus jms2soap = new ServerSerializationUtils().jms2soap(serverMessage);
+		WsJmsMessageAndStatus jms2soap = new JmsToSoapSerializer().jmsToSoapMessageAndStatus(serverMessage);
 		RetrieveMessageResponseType wsdlResponse = new RetrieveMessageResponseType();
 		wsdlResponse.getS2JMessageAndStatus().add(jms2soap);
-		S2JMessage[] convertMessages = ClientSerializationUtils.convertMessages(wsdlResponse);
+		Message[] convertMessages = new SoapToJmsSerializer().convertMessages(new ClientMessageFactory(),
+				wsdlResponse.getS2JMessageAndStatus());
 		assertEquals("Deserialized message num", 1, convertMessages.length);
-		S2JMessage message = convertMessages[0];
+		S2JMessage message = (S2JMessage)convertMessages[0];
 		return message;
 	}
 

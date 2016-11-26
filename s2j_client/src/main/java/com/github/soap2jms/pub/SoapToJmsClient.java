@@ -1,4 +1,4 @@
-package com.github.soap2jms.pub;
+La spackage com.github.soap2jms.pub;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -7,21 +7,24 @@ import java.util.List;
 import javax.jms.JMSException;
 import javax.jms.Message;
 
+import com.github.soap2jms.common.S2JProtocolException;
+import com.github.soap2jms.common.serialization.JmsToSoapSerializer;
+import com.github.soap2jms.common.serialization.SoapToJmsSerializer;
 import com.github.soap2jms.common.ws.RetrieveMessageResponseType;
 import com.github.soap2jms.common.ws.WsJmsMessage;
-import com.github.soap2jms.model.ClientSerializationUtils;
+import com.github.soap2jms.model.ClientMessageFactory;
 import com.github.soap2jms.model.InternalServerException;
 import com.github.soap2jms.model.NetworkException;
 import com.github.soap2jms.model.S2JMessage;
-import com.github.soap2jms.model.S2JProtocolException;
 import com.github.soap2jms.service.ReaderSoap2Jms;
 import com.github.soap2jms.service.SenderSoap2Jms;
 import com.github.soap2jms.service.SoapToJmsService;
 import com.github.soap2jms.service.WsJmsException;
 
 public class SoapToJmsClient {
-	private final SoapToJmsService soap2JmsService;
-	final SenderSoap2Jms senderSoap2Jms;
+	private final SenderSoap2Jms senderSoap2Jms;
+	private final ReaderSoap2Jms rs;
+	private final SoapToJmsSerializer soap2JmsSerializer = new SoapToJmsSerializer();
 	private final ThreadLocal<Boolean> isComplete = new ThreadLocal<Boolean>() {
 		@Override
 		protected Boolean initialValue() {
@@ -30,21 +33,22 @@ public class SoapToJmsClient {
 	};
 
 	public SoapToJmsClient(final SoapToJmsService readerSoap) {
-		this.soap2JmsService = readerSoap;
-		senderSoap2Jms = soap2JmsService.getSenderSOAP();
+		this.rs = readerSoap.getReaderSOAP();
+		senderSoap2Jms = readerSoap.getSenderSOAP();
 	}
 
 	public SoapToJmsClient(final String wsdlLocation) {
+		SoapToJmsService soap2JmsService;
 		try {
-			this.soap2JmsService = new SoapToJmsService(wsdlLocation);
+			soap2JmsService = new SoapToJmsService(wsdlLocation);
 		} catch (final MalformedURLException e) {
 			throw new IllegalArgumentException("Url " + wsdlLocation + " is malformed.", e);
 		}
 		senderSoap2Jms = soap2JmsService.getSenderSOAP();
+		rs = soap2JmsService.getReaderSOAP();
 	}
 
 	public void acknolwedge(String queueName, final List<String> messageIds) throws InternalServerException {
-		final ReaderSoap2Jms rs = this.soap2JmsService.getReaderSOAP();
 		try {
 			rs.acknowledgeMessages(queueName, messageIds);
 		} catch (final WsJmsException e) {
@@ -66,9 +70,9 @@ public class SoapToJmsClient {
 		return isComplete.get();
 	}
 
-	public S2JMessage[] readMessages(final String queueName, final String filter, final int msgMax)
+	public Message[] readMessages(final String queueName, final String filter, final int msgMax)
 			throws S2JProtocolException, NetworkException, InternalServerException {
-		final ReaderSoap2Jms rs = this.soap2JmsService.getReaderSOAP();
+
 		RetrieveMessageResponseType wsResponse;
 		try {
 			wsResponse = rs.retrieveMessages(queueName, filter, msgMax);
@@ -77,13 +81,13 @@ public class SoapToJmsClient {
 			throw new InternalServerException("", e);
 		}
 		this.isComplete.set(wsResponse.isComplete());
-		return ClientSerializationUtils.convertMessages(wsResponse);
+		return soap2JmsSerializer.convertMessages(new ClientMessageFactory(),wsResponse.getS2JMessageAndStatus());
 	}
 
 	public void sendMessages(final String queueName, final S2JMessage[] messages)
 			throws S2JProtocolException, NetworkException, InternalServerException {
 
-		List<WsJmsMessage> messages1 = ClientSerializationUtils.messagesToWs(messages);
+		List<WsJmsMessage> messages1 = new JmsToSoapSerializer().messagesToWs(messages);
 		try {
 			senderSoap2Jms.sendMessages(queueName, null, messages1);
 
