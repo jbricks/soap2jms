@@ -11,9 +11,11 @@ import com.github.soap2jms.common.JMSMessageClassEnum;
 import com.github.soap2jms.common.PropertyTypeEnum;
 import com.github.soap2jms.common.S2JProtocolException;
 import com.github.soap2jms.common.StatusCodeEnum;
+import com.github.soap2jms.common.ws.MessageIdAndStatus;
 import com.github.soap2jms.common.ws.WsJmsMessage;
 import com.github.soap2jms.common.ws.WsJmsMessage.Headers;
 import com.github.soap2jms.common.ws.WsJmsMessageAndStatus;
+import com.github.soap2jms.queue.IdAndStatus;
 
 public class SoapToJmsSerializer {
 	private final Map<JMSMessageClassEnum, MessageAndBodyStrategy> messageCreationByMessageType = new HashMap<>();
@@ -115,6 +117,11 @@ public class SoapToJmsSerializer {
 				e.printStackTrace();
 			}
 		}	
+	}
+
+	public List<MessageIdAndStatus> idAndStatusToWS(IdAndStatus[] result) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
