@@ -7,7 +7,7 @@
 	<artifactId>soap2jms</artifactId>
 	<groupId>com.github.gcontini.soap2jms</groupId>
 	<version>0.0.2-SNAPSHOT</version>
-	<name>Soap2Jms base pom</name>
+	<name>Soap2Jms</name>
 	<description />
 	<url>https://gcontini.github.com/soap2jms</url>
 	<packaging>pom</packaging>
@@ -189,6 +189,9 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
 					<version>3.6</version>
+					<configuration>
+						<skip>true</skip>
+					</configuration>
 					<dependencies>
 						<dependency>
 							<groupId>org.apache.maven.doxia</groupId>
@@ -219,20 +222,11 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
 				<inherited>false</inherited>
-
-				<!-- plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-scm-plugin</artifactId> 
-					<version>1.9.5</version> <configuration> <providerImplementations> <git>jgit</git> 
-					</providerImplementations> </configuration> <dependencies> <dependency> <groupId>org.apache.maven.scm</groupId> 
-					<artifactId>maven-scm-provider-jgit</artifactId> <version>1.9.5</version> 
-					</dependency> </dependencies> </plugin -->
+				<configuration>
+					<skip>false</skip>
+				</configuration>
 			</plugin>
 		</plugins>
-		<!-- extensions> <extension> <groupId>org.apache.maven.wagon</groupId> 
-			<artifactId>wagon-scm</artifactId> <version>2.10</version> </extension> <extension> 
-			<groupId>org.apache.maven.scm</groupId> <artifactId>maven-scm-manager-plexus</artifactId> 
-			<version>1.9.5</version> </extension> <extension> <groupId>org.apache.maven.scm</groupId> 
-			<artifactId>maven-scm-provider-gitexe</artifactId> <version>1.9.5</version> 
-			</extension> </extensions -->
 	</build>
 	<reporting>
 		<plugins>

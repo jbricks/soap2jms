@@ -13,7 +13,7 @@
 	<name>Soap2JmsServer</name>
 	<description />
 	<packaging>war</packaging>
-
+	<url>https://gcontini.github.com/soap2jms/s2j_server</url>
 	<dependencies>
 		<dependency>
 			<groupId>com.github.gcontini.soap2jms</groupId>
