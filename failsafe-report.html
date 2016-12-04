@@ -57,11 +57,11 @@
                           <a href="project-reports.html" title="Project Reports">Project Reports</a>
                     <ul>
                       <li class="none">
-                          <a href="failsafe-report.html" title="Failsafe Report">Failsafe Report</a>
-            </li>
-                      <li class="none">
-            <strong>Surefire Report</strong>
+            <strong>Failsafe Report</strong>
           </li>
+                      <li class="none">
+                          <a href="surefire-report.html" title="Surefire Report">Surefire Report</a>
+            </li>
                       <li class="none">
                           <a href="taglist.html" title="Tag List">Tag List</a>
             </li>
@@ -97,7 +97,8 @@ function toggleDisplay(elementId) {
 <div class="section">
 <h2><a name="Surefire_Report"></a>Surefire Report</h2></div>
 <div class="section">
-<h2><a name="Summary"></a>Summary</h2><a name="Summary"></a><br />
+<h2><a name="Summary"></a>Summary</h2><a name="Summary"></a>
+<p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br />
 <table border="1" class="bodyTable">
 <tr class="a">
 <th>Tests</th>
@@ -107,13 +108,77 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
+<td>4</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
-<td>0</td>
-<td>0%</td>
-<td>0</td></tr></table><br />
+<td>100%</td>
+<td>18.42</td></tr></table><br />
 <p>Note: failures are anticipated and checked for with assertions while errors are unanticipated.</p><br /></div>
+<div class="section">
+<h2><a name="Package_List"></a>Package List</h2><a name="Package_List"></a>
+<p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br />
+<table border="1" class="bodyTable">
+<tr class="a">
+<th>Package</th>
+<th>Tests</th>
+<th>Errors </th>
+<th>Failures</th>
+<th>Skipped</th>
+<th>Success Rate</th>
+<th>Time</th></tr>
+<tr class="b">
+<td><a href="#com.github.soap2jms.reader.it">com.github.soap2jms.reader.it</a></td>
+<td>4</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>18.42</td></tr></table><br />
+<p>Note: package statistics are not computed recursively, they only sum up all of its testsuites numbers.</p>
+<div class="section">
+<h3><a name="com.github.soap2jms.reader.it"></a>com.github.soap2jms.reader.it</h3><a name="com.github.soap2jms.reader.it"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<th></th>
+<th>Class</th>
+<th>Tests</th>
+<th>Errors </th>
+<th>Failures</th>
+<th>Skipped</th>
+<th>Success Rate</th>
+<th>Time</th></tr>
+<tr class="b">
+<td><a href="#com.github.soap2jms.reader.itITReaderConsumeMessage"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.github.soap2jms.reader.itITReaderConsumeMessage">ITReaderConsumeMessage</a></td>
+<td>4</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>18.42</td></tr></table></div><br /></div>
+<div class="section">
+<h2><a name="Test_Cases"></a>Test Cases</h2><a name="Test_Cases"></a>
+<p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p>
+<div class="section">
+<h3><a name="ITReaderConsumeMessage"></a>ITReaderConsumeMessage</h3><a name="com.github.soap2jms.reader.itITReaderConsumeMessage"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td><a name="TC_com.github.soap2jms.reader.it.ITReaderConsumeMessage.testAcknowledgeMessage2Times"></a>testAcknowledgeMessage2Times</td>
+<td>0.004</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td><a name="TC_com.github.soap2jms.reader.it.ITReaderConsumeMessage.testReadTextMessage"></a>testReadTextMessage</td>
+<td>18.323</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td><a name="TC_com.github.soap2jms.reader.it.ITReaderConsumeMessage.testReadMapMessage"></a>testReadMapMessage</td>
+<td>0</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td><a name="TC_com.github.soap2jms.reader.it.ITReaderConsumeMessage.testReadObjectMessage"></a>testReadObjectMessage</td>
+<td>0</td></tr></table></div><br /></div>
       </div>
     </div>
     <div class="clear">
