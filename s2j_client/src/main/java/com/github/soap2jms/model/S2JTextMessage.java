@@ -11,24 +11,18 @@ import org.apache.commons.io.IOUtils;
 
 import com.github.soap2jms.common.ByteArrayDataSource;
 import com.github.soap2jms.common.JMSMessageClassEnum;
-import com.github.soap2jms.common.ws.WsJmsMessage;
 
 public class S2JTextMessage extends S2JMessage implements TextMessage {
 
-	
-	public S2JTextMessage(final String messageId, final String body) {
-		super(JMSMessageClassEnum.TEXT.name(), messageId, new DataHandler(new ByteArrayDataSource(body)));
-	}
-
-	public S2JTextMessage(final String correlationId, final int deliveryMode, long expiration,
+	public S2JTextMessage(final String correlationId, final int deliveryMode, final long expiration,
 			final Map<String, Object> headers, final String messageId, final Integer priority,
 			final boolean redelivered, final long timestamp, final String type, final String body) {
 		super(correlationId, deliveryMode, expiration, headers, messageId, JMSMessageClassEnum.TEXT.name(), priority,
 				redelivered, timestamp, type, new DataHandler(new ByteArrayDataSource(body)));
 	}
 
-	public S2JTextMessage(final WsJmsMessage message) {
-		super(message);
+	public S2JTextMessage(final String messageId, final String body) {
+		super(JMSMessageClassEnum.TEXT.name(), messageId, new DataHandler(new ByteArrayDataSource(body)));
 	}
 
 	@Override

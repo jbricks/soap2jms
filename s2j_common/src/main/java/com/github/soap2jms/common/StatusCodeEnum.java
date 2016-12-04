@@ -16,6 +16,10 @@ public enum StatusCodeEnum {
 	/**
 	 *
 	 */
+	ERR_SERIALIZATION(false, true, true, 103),
+	/**
+	 *
+	 */
 	OK(false, false, true, 0),
 	/**
 	 *

@@ -1,7 +1,7 @@
 package com.github.soap2jms.reader.it;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.Properties;
 
@@ -32,7 +32,7 @@ public class ITReaderConsumeMessage {
 	private static final String DEFAULT_PASSWORD = "test1";
 	private static final String INITIAL_CONTEXT_FACTORY = "org.jboss.naming.remote.client.InitialContextFactory";
 	private static final String PROVIDER_URL = "http-remoting://127.0.0.1:8080";
-	private static final String WSDL_LOCATION = "http://localhost:8080/soap2jms-integration-wildfly10/jmsReaderSoap?wsdl";
+	private static final String WSDL_LOCATION = "http://localhost:8080/soap2jms-integration-wildfly10/";
 
 	@Test
 	public void testReadTextMessage() throws Exception {
@@ -43,7 +43,7 @@ public class ITReaderConsumeMessage {
 
 		// TODO: map jms/soap2jms.reader to java:/comp/env/soap2jms in project
 		// project_customization (web.xml).
-		S2JMessage[]  messages = wsClient.readMessages("soap2jms", null, 100);
+		Message[]  messages = wsClient.readMessages("soap2jms", null, 100);
 		assertTrue("complete response", wsClient.retrieveComplete());
 		//List<WsJmsMessageAndStatus> jmsMessages = messages.getS2JMessageAndStatus();
 		assertEquals("Messages retrieved", 1, messages.length);
@@ -51,10 +51,12 @@ public class ITReaderConsumeMessage {
 		assertTrue("Message instanceof textMessage", message instanceof TextMessage);
 		TextMessage textMessage =(TextMessage) message;
 		assertEquals("message content", DEFAULT_CONTENT, textMessage.getText());
+		assertNotNull("MessageId not null", textMessage.getJMSMessageID());
+		log.info("JMS message id to acknowledge:" + textMessage.getJMSMessageID());
 		// acknowlege the message
 		wsClient.acknowledge("soap2jms", messages);
 		// the message is not in the queue
-		S2JMessage[]  messages2 = wsClient.readMessages("soap2jms", null, 100);
+		Message[]  messages2 = wsClient.readMessages("soap2jms", null, 100);
 		assertEquals("Messages retrieved after acknowledge", 0, messages2.length);
 	}
 

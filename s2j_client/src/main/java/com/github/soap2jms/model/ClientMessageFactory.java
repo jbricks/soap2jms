@@ -1,5 +1,6 @@
 package com.github.soap2jms.model;
 
+import java.io.InputStream;
 import java.io.Serializable;
 
 import javax.jms.BytesMessage;
@@ -13,37 +14,32 @@ import com.github.soap2jms.common.serialization.JMSMessageFactory;
 public class ClientMessageFactory implements JMSMessageFactory {
 
 	public ClientMessageFactory() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public ObjectMessage createObjectMessage(Serializable object) {
-		// TODO Auto-generated method stub
+	public BytesMessage createBytesMessage() {
 		return null;
 	}
 
 	@Override
 	public MapMessage createMapMessage() {
-		// TODO Auto-generated method stub
-		return null;
+		return new S2JMapMessage(null, null);
 	}
 
 	@Override
-	public BytesMessage createBytesMessage() {
-		// TODO Auto-generated method stub
-		return null;
+	public ObjectMessage createObjectMessage(final Serializable object) {
+		throw new UnsupportedOperationException("not yet implemented");
 	}
 
 	@Override
-	public TextMessage createTextMessage(String text) {
-		// TODO Auto-generated method stub
-		return null;
+	public StreamMessage createStreamMessage(InputStream message) {
+		//return new S2JStreamMessage(null, null);
+		throw new UnsupportedOperationException("not yet implemented");
 	}
 
 	@Override
-	public StreamMessage createStreamMessage() {
-		// TODO Auto-generated method stub
-		return null;
+	public TextMessage createTextMessage(final String text) {
+		return new S2JTextMessage(null,text);
 	}
 
 }

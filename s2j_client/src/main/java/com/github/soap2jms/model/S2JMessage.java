@@ -1,14 +1,15 @@
 package com.github.soap2jms.model;
 
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import javax.activation.DataHandler;
+import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageFormatException;
-import javax.print.attribute.standard.Destination;
 
 import org.apache.commons.collections4.iterators.IteratorEnumeration;
 
@@ -19,7 +20,7 @@ public abstract class S2JMessage implements Message {
 	private final Map<String, Object> headers;
 	protected final WsJmsMessage message;
 
-	protected S2JMessage(final String correlationId, final int deliveryMode, long expiration,
+	protected S2JMessage(final String correlationId, final int deliveryMode, final long expiration,
 			final Map<String, Object> headers, final String messageId, final String messageClass,
 			final Integer priority, final boolean redelivered, final long timestamp, final String type,
 			final DataHandler body) {
@@ -29,13 +30,9 @@ public abstract class S2JMessage implements Message {
 	}
 
 	protected S2JMessage(final String messageClass, final String messageId, final DataHandler body) {
-		this(new WsJmsMessage(null, 0, 0, null, messageId, messageClass, 0, false, System.currentTimeMillis(), null,
-				body));
-	}
-
-	public S2JMessage(final WsJmsMessage message) {
-		this.message = message;
-		this.headers = ClientSerializationUtils.convertHeaders(message.getHeaders());
+		this.message = new WsJmsMessage(null, 0, 0, null, messageId, messageClass, 0, false, System.currentTimeMillis(),
+				null, body);
+		this.headers = new HashMap<>();
 	}
 
 	@Override
@@ -51,46 +48,12 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public void clearProperties() throws JMSException {
-		headers.clear();
+		this.headers.clear();
 	}
 
 	@Override
 	public <T> T getBody(final Class<T> c) throws JMSException {
-		// TODO Auto-generated method stub
 		return null;
-	}
-
-	protected <T> T getNotNullProperty(String name, Class<T> expectedClass) throws MessageFormatException {
-		T result = getProperty(name,expectedClass);
-
-		if (result == null) {
-			throw new MessageFormatException("property [" + name + "] type " + expectedClass + " null");
-		}
-		return result;
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected <T> T getProperty(String name, Class<T> expectedClass) throws MessageFormatException {
-		if(!headers.containsKey(name)){
-			throw new MessageFormatException("property [" + name + "] type " + expectedClass + " not found");
-		}
-		
-		Object propValue = headers.get(name);
-
-		if (propValue == null) {
-			return null;
-		}
-		T result;
-		if (expectedClass.isInstance(propValue)) {
-			result = (T) propValue;
-		} else if (String.class.equals(expectedClass)) {
-			result = (T) propValue.toString();
-		} else {
-			throw new MessageFormatException("property [" + name + "] of type " + expectedClass.getName()
-					+ " can't be assigned to " + expectedClass);
-		}
-
-		return result;
 	}
 
 	@Override
@@ -135,7 +98,6 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public long getJMSDeliveryTime() throws JMSException {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -147,7 +109,7 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public long getJMSExpiration() throws JMSException {
-		return message.getExpiration();
+		return this.message.getExpiration();
 	}
 
 	@Override
@@ -166,7 +128,7 @@ public abstract class S2JMessage implements Message {
 	}
 
 	@Override
-	public Destination getJMSReplyTo() throws JMSException {
+	public javax.jms.Destination getJMSReplyTo() throws JMSException {
 		return null;
 	}
 
@@ -185,9 +147,42 @@ public abstract class S2JMessage implements Message {
 		return getProperty(name, Long.class);
 	}
 
+	protected <T> T getNotNullProperty(final String name, final Class<T> expectedClass) throws MessageFormatException {
+		final T result = getProperty(name, expectedClass);
+
+		if (result == null) {
+			throw new MessageFormatException("property [" + name + "] type " + expectedClass + " null");
+		}
+		return result;
+	}
+
 	@Override
 	public Object getObjectProperty(final String name) throws JMSException {
 		return this.headers.get(name);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected <T> T getProperty(final String name, final Class<T> expectedClass) throws MessageFormatException {
+		if (!this.headers.containsKey(name)) {
+			throw new MessageFormatException("property [" + name + "] type " + expectedClass + " not found");
+		}
+
+		final Object propValue = this.headers.get(name);
+
+		if (propValue == null) {
+			return null;
+		}
+		T result;
+		if (expectedClass.isInstance(propValue)) {
+			result = (T) propValue;
+		} else if (String.class.equals(expectedClass)) {
+			result = (T) propValue.toString();
+		} else {
+			throw new MessageFormatException("property [" + name + "] of type " + expectedClass.getName()
+					+ " can't be assigned to " + expectedClass);
+		}
+
+		return result;
 	}
 
 	@Override
@@ -213,31 +208,31 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public void setBooleanProperty(final String name, final boolean value) throws JMSException {
-		headers.put(name, value);
+		this.headers.put(name, value);
 
 	}
 
 	@Override
 	public void setByteProperty(final String name, final byte value) throws JMSException {
-		headers.put(name, value);
+		this.headers.put(name, value);
 
 	}
 
 	@Override
 	public void setDoubleProperty(final String name, final double value) throws JMSException {
-		headers.put(name, value);
+		this.headers.put(name, value);
 
 	}
 
 	@Override
 	public void setFloatProperty(final String name, final float value) throws JMSException {
-		headers.put(name, value);
+		this.headers.put(name, value);
 
 	}
 
 	@Override
 	public void setIntProperty(final String name, final int value) throws JMSException {
-		headers.put(name, value);
+		this.headers.put(name, value);
 
 	}
 
@@ -266,7 +261,6 @@ public abstract class S2JMessage implements Message {
 	@Override
 	public void setJMSDestination(final Destination destination) throws JMSException {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override

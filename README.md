@@ -20,17 +20,15 @@ It is not to be confused with "Soap over JMS". Soap Over JMS encapsulates a soap
 
 ## Current implementation status
 
-The project is under active development (Nov/2016). 
+The project is under active development (Dec/2016). 
 
-Read message from a queue through a SOAP web service is completed.
+Read message from a queue through a SOAP web service, and sending a message are completed (Text,Map).
  
 These points will need to be addressed: 
+ - Support for BytesMessages, StreamMessages and ObjectMessages.
  - Cleaning up error handling.
  - Documentation / web site 
- - Implementation of the service to send messages to a queue
- - another iteration of documentation
  - make soap2jms simply configurable 
- - better handling of stream messages
  - downgrade the JavaEE version required to 5 (?) ... 
  
 

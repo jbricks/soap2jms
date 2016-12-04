@@ -11,21 +11,19 @@ import com.github.soap2jms.common.JMSMessageClassEnum;
 import com.github.soap2jms.common.PropertyTypeEnum;
 import com.github.soap2jms.common.S2JProtocolException;
 import com.github.soap2jms.common.StatusCodeEnum;
-import com.github.soap2jms.common.ws.MessageIdAndStatus;
 import com.github.soap2jms.common.ws.WsJmsMessage;
 import com.github.soap2jms.common.ws.WsJmsMessage.Headers;
 import com.github.soap2jms.common.ws.WsJmsMessageAndStatus;
-import com.github.soap2jms.queue.IdAndStatus;
 
 public class SoapToJmsSerializer {
 	private final Map<JMSMessageClassEnum, MessageAndBodyStrategy> messageCreationByMessageType = new HashMap<>();
-	
+
 	public SoapToJmsSerializer() {
 		messageCreationByMessageType.put(JMSMessageClassEnum.TEXT, new TextMessageStrategy());
 		messageCreationByMessageType.put(JMSMessageClassEnum.MAP, new MapMessageStrategy());
 	}
 
-	private static Map<String, Object> convertHeaders(final List<Headers> headers) {
+	/*private static Map<String, Object> convertHeaders(final List<Headers> headers) {
 		Map<String, Object> result = new HashMap<>();
 		if (headers != null) {
 			Map<String, String> parsedProps = new HashMap<>();
@@ -34,13 +32,13 @@ public class SoapToJmsSerializer {
 				final String valueToBeParsed = header.getValue();
 				parsedProps.put(key, valueToBeParsed);
 			}
-			result = deserializePorperties( parsedProps);
+			result = deserializePorperties(parsedProps);
 		}
 		return result;
 
 	}
 
-	private static Map<String, Object>  deserializePorperties( Map<String, String> parsedProps) {
+	private static Map<String, Object> deserializePorperties(Map<String, String> parsedProps) {
 		Map<String, Object> result = new HashMap<>();
 		for (Map.Entry<String, String> entry : parsedProps.entrySet()) {
 			String valueToBeParsed = entry.getValue();
@@ -48,7 +46,7 @@ public class SoapToJmsSerializer {
 			result.put(entry.getKey(), parsedValue);
 		}
 		return result;
-	}
+	}*/
 
 	public static Object deserializeValue(String valueToBeParsed) {
 		final int separatorIndex = valueToBeParsed.indexOf(";");
@@ -85,7 +83,7 @@ public class SoapToJmsSerializer {
 		return parsedValue;
 	}
 
-	public Message[] convertMessages(JMSMessageFactory  messageFactory,final List<WsJmsMessageAndStatus> wsResponse)
+	public Message[] convertMessages(JMSMessageFactory messageFactory, final List<WsJmsMessageAndStatus> wsResponse)
 			throws S2JProtocolException {
 		final Message[] messages = new Message[wsResponse.size()];
 
@@ -93,17 +91,41 @@ public class SoapToJmsSerializer {
 			// FIXME status
 			final WsJmsMessageAndStatus messageAndStatus = wsResponse.get(i);
 			final WsJmsMessage wsMessage = messageAndStatus.getWsJmsMessage();
-			final String messageType = wsMessage.getMessageClass();
-			final JMSMessageClassEnum messageTypeEnum = JMSMessageClassEnum.valueOf(messageType);
-			MessageAndBodyStrategy creationStrategy = messageCreationByMessageType.get(messageTypeEnum);
-			if(creationStrategy == null){
-				throw new S2JProtocolException(StatusCodeEnum.ERR_INCOMPATIBLE_PROTOCOL, "Message " + messageTypeEnum + " not supported.");
-			}
-			messages[i] = creationStrategy.deserializeBody(messageFactory, wsMessage);
-			fillHeaders(messages[i],wsMessage.getHeaders());
+			Message message = convertSingleMessage(messageFactory, wsMessage);
+			messages[i] = message;
 		}
 
 		return messages;
+	}
+
+	public Message convertSingleMessage(JMSMessageFactory messageFactory, final WsJmsMessage wsMessage)  {
+		final String messageType = wsMessage.getMessageClass();
+		final JMSMessageClassEnum messageTypeEnum = JMSMessageClassEnum.valueOf(messageType);
+		MessageAndBodyStrategy creationStrategy = messageCreationByMessageType.get(messageTypeEnum);
+		if (creationStrategy == null) {
+			throw new S2JProtocolException(StatusCodeEnum.ERR_INCOMPATIBLE_PROTOCOL,
+					"Message " + messageTypeEnum + " not supported.");
+		}
+		Message message = creationStrategy.deserializeBody(messageFactory, wsMessage);
+		fillHeaders(message, wsMessage.getHeaders());
+		try {
+			if(wsMessage.getCorrelationId()!=null)
+				message.setJMSCorrelationID(wsMessage.getCorrelationId());
+			if(wsMessage.getMessageId()!=null){
+				message.setJMSMessageID(wsMessage.getMessageId());
+			}
+			message.setJMSTimestamp(wsMessage.getTimestamp());
+			message.setJMSExpiration(wsMessage.getExpiration());
+			message.setJMSPriority(wsMessage.getPriority());
+			message.setJMSDeliveryMode(wsMessage.getDeliveryMode());
+			message.setJMSRedelivered(wsMessage.isRedelivered());
+			message.setJMSType(wsMessage.getType());
+		} catch (JMSException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return message;
 	}
 
 	private void fillHeaders(Message message, List<WsJmsMessage.Headers> wsMessage) {
@@ -116,14 +138,11 @@ public class SoapToJmsSerializer {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}	
+		}
 	}
 
-	public List<MessageIdAndStatus> idAndStatusToWS(IdAndStatus[] result) {
-		// TODO Auto-generated method stub
-		return null;
+	public Message convertMessage(JMSMessageFactory jmsMessageFactory, WsJmsMessage wsMessage) {
+		return convertSingleMessage(jmsMessageFactory, wsMessage);
 	}
-
-
 
 }

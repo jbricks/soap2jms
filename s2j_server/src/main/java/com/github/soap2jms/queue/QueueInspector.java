@@ -1,5 +1,7 @@
 package com.github.soap2jms.queue;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -107,7 +109,7 @@ public class QueueInspector {
 			final Queue queue = (Queue) ictx.lookup(jndiName);
 
 			producer = this.ctx.createProducer();
-			for (int i=0;i<messages.length;i++) {
+			for (int i = 0; i < messages.length; i++) {
 				Message message = messages[i];
 				try {
 					producer.send(queue, message);
@@ -115,13 +117,13 @@ public class QueueInspector {
 				} catch (MessageFormatRuntimeException e) {
 					e.printStackTrace();
 				} catch (InvalidDestinationRuntimeException e) {
-					String errmessage = "Destination " + queue + " is not valid. Name ["
-							+ queueName + "] jndiName [" + jndiName + "]";
-					LOGGER.error(errmessage,e);
-				} catch(MessageNotWriteableRuntimeException e){
-				} catch(JMSRuntimeException e){
-				} catch (RuntimeException e){
-					
+					String errmessage = "Destination " + queue + " is not valid. Name [" + queueName + "] jndiName ["
+							+ jndiName + "]";
+					LOGGER.error(errmessage, e);
+				} catch (MessageNotWriteableRuntimeException e) {
+				} catch (JMSRuntimeException e) {
+				} catch (RuntimeException e) {
+
 				}
 			}
 		} finally {
@@ -131,18 +133,23 @@ public class QueueInspector {
 	}
 
 	public JMSMessageFactory getJmsMessageFactory() {
-		final JMSContext localCopy =ctx;
+		final JMSContext localCopy = ctx;
 		return new JMSMessageFactory() {
 			@Override
-			public StreamMessage createStreamMessage(){
-				return localCopy.createStreamMessage();
+			public StreamMessage createStreamMessage(InputStream is) throws IOException, JMSException {
+				StreamMessage sm = localCopy.createStreamMessage();
+				byte[] buffer = new byte[1024 * 1024];
+				int n;
+				while ((n = is.read(buffer)) > 0) {
+					sm.writeBytes(buffer, 0, n);
+				}
+				return sm;
 			}
 
 			@Override
 			public ObjectMessage createObjectMessage(Serializable object) {
-				return createObjectMessage(object);
+				return localCopy.createObjectMessage(object);
 			}
-
 
 			@Override
 			public MapMessage createMapMessage() {
@@ -158,8 +165,7 @@ public class QueueInspector {
 			public TextMessage createTextMessage(String text) {
 				return localCopy.createTextMessage(text);
 			}
-			
-			
+
 		};
 	}
 

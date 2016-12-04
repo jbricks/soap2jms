@@ -5,22 +5,17 @@ import java.util.Map;
 import javax.activation.DataHandler;
 import javax.jms.BytesMessage;
 
-import com.github.soap2jms.common.ws.WsJmsMessage;
-
 public class S2JBytesMessage extends S2JAbstractDataMessage implements BytesMessage {
 
-	public S2JBytesMessage(String messageId, DataHandler body)  {
+	public S2JBytesMessage(final String messageId, final DataHandler body) {
 		super(messageId, body);
 	}
 
-	public S2JBytesMessage(String correlationId, int deliveryMode, long expiration, Map<String, Object> headers,
-			String messageId, Integer priority, boolean redelivered, long timestamp, String type, DataHandler body)  {
-		super(correlationId, deliveryMode, expiration, headers, messageId, priority, redelivered, timestamp, type, body);
+	public S2JBytesMessage(final String correlationId, final int deliveryMode, final long expiration,
+			final Map<String, Object> headers, final String messageId, final Integer priority,
+			final boolean redelivered, final long timestamp, final String type, final DataHandler body) {
+		super(correlationId, deliveryMode, expiration, headers, messageId, priority, redelivered, timestamp, type,
+				body);
 	}
-
-	public S2JBytesMessage(WsJmsMessage message)  {
-		super(message);
-	}
-
 
 }

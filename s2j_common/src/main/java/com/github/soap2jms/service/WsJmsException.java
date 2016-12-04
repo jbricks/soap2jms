@@ -3,6 +3,7 @@ package com.github.soap2jms.service;
 
 import javax.xml.ws.WebFault;
 
+import com.github.soap2jms.common.StatusCodeEnum;
 import com.github.soap2jms.common.WsExceptionClass;
 import com.github.soap2jms.common.ws.WsJmsExceptionData;
 
@@ -29,10 +30,10 @@ public class WsJmsException extends Exception {
 	 * @param faultInfo
 	 * @param message
 	 */
-	public WsJmsException(final String message, final String originalException, final Integer code,
+	public WsJmsException(final String message, final String originalException, final StatusCodeEnum code,
 			final WsExceptionClass exceptionType) {
 		super(message);
-		this.faultInfo = new WsJmsExceptionData(message, originalException, code, null, exceptionType);
+		this.faultInfo = new WsJmsExceptionData(message, originalException, code.getErrorCode(), null, exceptionType);
 	}
 
 	/**

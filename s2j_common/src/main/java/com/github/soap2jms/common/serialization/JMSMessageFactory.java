@@ -1,8 +1,11 @@
 package com.github.soap2jms.common.serialization;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 
 import javax.jms.BytesMessage;
+import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.ObjectMessage;
 import javax.jms.StreamMessage;
@@ -13,5 +16,5 @@ public interface JMSMessageFactory {
 	MapMessage createMapMessage();
 	BytesMessage createBytesMessage();
 	TextMessage createTextMessage(String text);
-	StreamMessage createStreamMessage();
+	StreamMessage createStreamMessage(InputStream stream) throws IOException, JMSException;
 }

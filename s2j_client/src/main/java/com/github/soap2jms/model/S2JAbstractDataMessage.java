@@ -13,46 +13,46 @@ import javax.jms.MessageNotReadableException;
 import javax.jms.MessageNotWriteableException;
 
 import com.github.soap2jms.common.JMSMessageClassEnum;
-import com.github.soap2jms.common.ws.WsJmsMessage;
 
 public class S2JAbstractDataMessage extends S2JMessage {
 
-	private boolean readonly;
-	protected DataInputStream instream;
 	protected IOException initializeBodyException = null;
+	protected DataInputStream instream;
+	private boolean readonly;
 
 	public S2JAbstractDataMessage(final String messageId, final DataHandler body) {
 		super(JMSMessageClassEnum.BYTE.name(), messageId, body);
 		try {
-			instream = new DataInputStream(body.getInputStream());
-		} catch (IOException e) {
-			instream = null;
-			initializeBodyException = e;
+			this.instream = new DataInputStream(body.getInputStream());
+		} catch (final IOException e) {
+			this.instream = null;
+			this.initializeBodyException = e;
 		}
 	}
 
-	public S2JAbstractDataMessage(final String correlationId, final int deliveryMode, long expiration,
+	public S2JAbstractDataMessage(final String correlationId, final int deliveryMode, final long expiration,
 			final Map<String, Object> headers, final String messageId, final Integer priority,
 			final boolean redelivered, final long timestamp, final String type, final DataHandler body) {
 		super(correlationId, deliveryMode, expiration, headers, messageId, JMSMessageClassEnum.BYTE.name(), priority,
 				redelivered, timestamp, type, body);
 		try {
-			instream = new DataInputStream(body.getInputStream());
-		} catch (IOException e) {
-			instream = null;
-			initializeBodyException = e;
+			this.instream = new DataInputStream(body.getInputStream());
+		} catch (final IOException e) {
+			this.instream = null;
+			this.initializeBodyException = e;
 		}
 	}
 
-	public S2JAbstractDataMessage(final WsJmsMessage message) {
-		super(message);
-		try {
-			instream = new DataInputStream(message.getBody().getInputStream());
-		} catch (IOException e) {
-			instream = null;
-			initializeBodyException = e;
+	private void checkBodyReadable() throws JMSException {
+		if (!this.readonly) {
+			throw new MessageNotReadableException("The message " + getJMSMessageID() + " is not in readable state");
 		}
-		this.readonly = true;
+		if (this.initializeBodyException != null) {
+			final MessageFormatException e1 = new MessageFormatException(
+					"Problem reading body for " + getJMSMessageID());
+			e1.initCause(this.initializeBodyException);
+			throw e1;
+		}
 	}
 
 	public long getBodyLength() throws JMSException {
@@ -60,23 +60,24 @@ public class S2JAbstractDataMessage extends S2JMessage {
 		int result = 0;
 
 		try {
-			result = instream.available();
-		} catch (IOException e) {
+			result = this.instream.available();
+		} catch (final IOException e) {
 			handleException("Error in available", e);
 		}
 
 		return result;
 	}
 
-	private void checkBodyReadable() throws JMSException {
-		if (!readonly) {
-			throw new MessageNotReadableException("The message " + getJMSMessageID() + " is not in readable state");
+	private void handleException(final String cause, final IOException e) throws JMSException {
+		JMSException e1;
+		if (e instanceof EOFException) {
+			e1 = new MessageEOFException(cause);
+		} else {
+			e1 = new MessageFormatException(cause);
 		}
-		if (initializeBodyException != null) {
-			MessageFormatException e1 = new MessageFormatException("Problem reading body for " + getJMSMessageID());
-			e1.initCause(initializeBodyException);
-			throw e1;
-		}
+		e1.initCause(e);
+		e1.setLinkedException(e);
+		throw e1;
 	}
 
 	@Override
@@ -101,31 +102,19 @@ public class S2JAbstractDataMessage extends S2JMessage {
 		checkBodyReadable();
 		boolean result = false;
 		try {
-			result = instream.readBoolean();
-		} catch (IOException e) {
+			result = this.instream.readBoolean();
+		} catch (final IOException e) {
 			handleException("Error in readBoolean", e);
 		}
 		return result;
-	}
-
-	private void handleException(String cause, IOException e) throws JMSException {
-		JMSException e1;
-		if (e instanceof EOFException) {
-			e1 = new MessageEOFException(cause);
-		} else {
-			e1 = new MessageFormatException(cause);
-		}
-		e1.initCause(e);
-		e1.setLinkedException(e);
-		throw e1;
 	}
 
 	public byte readByte() throws JMSException {
 		checkBodyReadable();
 		byte result = 0;
 		try {
-			result = instream.readByte();
-		} catch (IOException e) {
+			result = this.instream.readByte();
+		} catch (final IOException e) {
 			handleException("Error in readByte", e);
 		}
 		return result;
@@ -135,8 +124,8 @@ public class S2JAbstractDataMessage extends S2JMessage {
 		checkBodyReadable();
 		int bytes = -1;
 		try {
-			bytes = instream.read(value);
-		} catch (IOException e) {
+			bytes = this.instream.read(value);
+		} catch (final IOException e) {
 			handleException("Error in readBytes", e);
 		}
 		return bytes;
@@ -146,8 +135,8 @@ public class S2JAbstractDataMessage extends S2JMessage {
 		checkBodyReadable();
 		int bytes = -1;
 		try {
-			bytes = instream.read(value, 0, length);
-		} catch (IOException e) {
+			bytes = this.instream.read(value, 0, length);
+		} catch (final IOException e) {
 			handleException("Error in readBytes", e);
 		}
 		return bytes;
@@ -157,8 +146,8 @@ public class S2JAbstractDataMessage extends S2JMessage {
 		checkBodyReadable();
 		char result = 0;
 		try {
-			result = instream.readChar();
-		} catch (IOException e) {
+			result = this.instream.readChar();
+		} catch (final IOException e) {
 			handleException("Error in readChar", e);
 		}
 		return result;
@@ -168,8 +157,8 @@ public class S2JAbstractDataMessage extends S2JMessage {
 		checkBodyReadable();
 		double result = 0;
 		try {
-			result = instream.readDouble();
-		} catch (IOException e) {
+			result = this.instream.readDouble();
+		} catch (final IOException e) {
 			handleException("Error in readDouble", e);
 		}
 		return result;

@@ -6,27 +6,17 @@ import javax.activation.DataHandler;
 import javax.jms.JMSException;
 import javax.jms.StreamMessage;
 
-import com.github.soap2jms.common.ws.WsJmsMessage;
-
 public class S2JStreamMessage extends S2JAbstractDataMessage implements StreamMessage {
 
-	public S2JStreamMessage(String messageId, DataHandler body)  {
+	public S2JStreamMessage(final String messageId, final DataHandler body) {
 		super(messageId, body);
 	}
 
-	public S2JStreamMessage(String correlationId, int deliveryMode, long expiration, Map<String, Object> headers,
-			String messageId, Integer priority, boolean redelivered, long timestamp, String type, DataHandler body)  {
+	public S2JStreamMessage(final String correlationId, final int deliveryMode, final long expiration,
+			final Map<String, Object> headers, final String messageId, final Integer priority,
+			final boolean redelivered, final long timestamp, final String type, final DataHandler body) {
 		super(correlationId, deliveryMode, expiration, headers, messageId, priority, redelivered, timestamp, type,
 				body);
-	}
-
-	public S2JStreamMessage(WsJmsMessage message)  {
-		super(message);
-	}
-
-	@Override
-	public String readString() throws JMSException {
-		return null;
 	}
 
 	@Override
@@ -35,8 +25,12 @@ public class S2JStreamMessage extends S2JAbstractDataMessage implements StreamMe
 	}
 
 	@Override
-	public void writeString(String value) throws JMSException {
+	public String readString() throws JMSException {
+		return null;
+	}
 
+	@Override
+	public void writeString(final String value) throws JMSException {
 
 	}
 

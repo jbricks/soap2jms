@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	name="ebiscus" xmlns:cls="http://soap2jms.github.com/common/ws"
+	xmlns:tns="http://soap2jms.github.com/service" targetNamespace="http://soap2jms.github.com/service">
+	<wsdl:types>
+		<xsd:schema>
+            <xsd:import namespace="http://soap2jms.github.com/common/ws" schemaLocation="datatypes.xsd" />             
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="wsJmsException">
+		<wsdl:part name="parameters" element="cls:wsJmsException" />
+	</wsdl:message>
+	<wsdl:message name="sendMessagesRequest">
+		<wsdl:part name="parameters" element="cls:sendMessages"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="sendMessagesResponse">
+		<wsdl:part name="parameters" element="cls:sendMessagesResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="sender.soap2jms">
+		<wsdl:operation name="sendMessages">
+			<wsdl:input message="tns:sendMessagesRequest" />
+			<wsdl:output message="tns:sendMessagesResponse" />
+			<wsdl:fault name="wsJmsException" message="tns:wsJmsException" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="senderSOAP" type="tns:sender.soap2jms">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="sendMessages">
+			<soap:operation soapAction="http://soap2jms.github.com/sendMessages" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="wsJmsException">
+				<soap:fault name="wsJmsException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="soapToJmsSenderService">
+		<wsdl:port binding="tns:senderSOAP" name="senderSOAP">
+			<soap:address location="http://www.example.org/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
