@@ -10,16 +10,43 @@
 	<name>Soap2Jms base pom</name>
 	<description></description>
 	<packaging>pom</packaging>
+	<issueManagement>
+		<url>https://github.com/kevinsawicki/github-maven-example/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
 
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<url>https://github.com/gcontini/soap2jms</url>
+		<connection>scm:git:git://github.com/gcontini/soap2jms.git</connection>
+		<developerConnection>scm:git:git@github.com:gcontini/soap2jms.git</developerConnection>
+	</scm>
+
+	<developers>
+		<developer>
+			<email>contini.mailing@gmail.com</email>
+			<name>Gabriele Contini</name>
+			<url>https://github.com/kevinsawicki</url>
+			<id>gcontini</id>
+		</developer>
+	</developers>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<modules>
 		<module>s2j_common</module>
 		<module>s2j_server</module>
 		<module>s2j_client</module>
 		<module>integration</module>
 	</modules>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
