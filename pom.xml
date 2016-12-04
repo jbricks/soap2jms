@@ -4,7 +4,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>soap2jms-base-pom</artifactId>
+	<artifactId>soap2jms</artifactId>
 	<groupId>com.github.gcontini.soap2jms</groupId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Soap2Jms base pom</name>
@@ -167,8 +167,11 @@
 					<version>2.19.1</version>
 				</plugin>
 				<plugin>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.5.3</version>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>2.5.3</version>
+					<configuration>          
+						<autoVersionSubmodules>true</autoVersionSubmodules>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
