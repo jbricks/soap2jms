@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<artifactId>soap2jms-base-pom</artifactId>
+		<artifactId>soap2jms</artifactId>
 		<groupId>com.github.gcontini.soap2jms</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
