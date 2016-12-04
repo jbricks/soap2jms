@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>soap2jms-base-pom</artifactId>
 	<groupId>com.github.gcontini.soap2jms</groupId>
-	<version>0.0.1</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>Soap2Jms base pom</name>
-	<description />
+	<description></description>
 	<packaging>pom</packaging>
 	<issueManagement>
 		<url>https://github.com/kevinsawicki/github-maven-example/issues</url>
@@ -26,8 +27,7 @@
 		<url>https://github.com/gcontini/soap2jms</url>
 		<connection>scm:git:git://github.com/gcontini/soap2jms.git</connection>
 		<developerConnection>scm:git:git@github.com:gcontini/soap2jms.git</developerConnection>
-	  <tag>soap2jms-base-pom-0.0.1</tag>
-  </scm>
+	</scm>
 
 	<developers>
 		<developer>
@@ -52,25 +52,25 @@
 			<dependency>
 				<groupId>com.github.gcontini.soap2jms</groupId>
 				<artifactId>s2j_common</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.github.gcontini.soap2jms</groupId>
 				<artifactId>s2j_server</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 				<type>war</type>
 			</dependency>
 			<dependency>
 				<groupId>com.github.gcontini.soap2jms</groupId>
 				<artifactId>s2j_server</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 				<type>jar</type>
 				<classifier>classes</classifier>
 			</dependency>
 			<dependency>
 				<groupId>com.github.gcontini.soap2jms</groupId>
 				<artifactId>s2j_client</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
