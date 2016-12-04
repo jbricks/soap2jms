@@ -5,7 +5,7 @@
 
 	<artifactId>soap2jms</artifactId>
 	<groupId>com.github.gcontini.soap2jms</groupId>
-	<version>0.0.1</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>Soap2Jms base pom</name>
 	<description />
 	<packaging>pom</packaging>
@@ -26,7 +26,7 @@
 		<url>https://github.com/gcontini/soap2jms</url>
 		<connection>scm:git:git://github.com/gcontini/soap2jms.git</connection>
 		<developerConnection>scm:git:git@github.com:gcontini/soap2jms.git</developerConnection>
-	  <tag>soap2jms-0.0.1</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 	<developers>
@@ -52,25 +52,25 @@
 			<dependency>
 				<groupId>com.github.gcontini.soap2jms</groupId>
 				<artifactId>s2j_common</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.github.gcontini.soap2jms</groupId>
 				<artifactId>s2j_server</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.2-SNAPSHOT</version>
 				<type>war</type>
 			</dependency>
 			<dependency>
 				<groupId>com.github.gcontini.soap2jms</groupId>
 				<artifactId>s2j_server</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.2-SNAPSHOT</version>
 				<type>jar</type>
 				<classifier>classes</classifier>
 			</dependency>
 			<dependency>
 				<groupId>com.github.gcontini.soap2jms</groupId>
 				<artifactId>s2j_client</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>

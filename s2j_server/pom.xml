@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>soap2jms</artifactId>
 		<groupId>com.github.gcontini.soap2jms</groupId>
-		<version>0.0.1</version>
+		<version>0.0.2-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>s2j_server</artifactId>
