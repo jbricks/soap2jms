@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
@@ -8,12 +9,12 @@
 	<version>0.0.2-SNAPSHOT</version>
 	<name>Soap2Jms base pom</name>
 	<description />
+	<url>https://gcontini.github.com/soap2jms</url>
 	<packaging>pom</packaging>
 	<issueManagement>
-		<url>https://github.com/kevinsawicki/github-maven-example/issues</url>
+		<url>https://github.com/gcontini/soap2jms/issues</url>
 		<system>GitHub Issues</system>
 	</issueManagement>
-
 	<licenses>
 		<license>
 			<name>MIT License</name>
@@ -21,26 +22,37 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-
 	<scm>
 		<url>https://github.com/gcontini/soap2jms</url>
 		<connection>scm:git:git://github.com/gcontini/soap2jms.git</connection>
 		<developerConnection>scm:git:git@github.com:gcontini/soap2jms.git</developerConnection>
-	  <tag>HEAD</tag>
-  </scm>
-
+		<tag>HEAD</tag>
+	</scm>
+	<distributionManagement>
+		<site>
+			<id>soap2jms.github1</id>
+			<url>scm:git:ssh://git@github.com/gcontini/soap2jms.git</url>
+		</site>
+	</distributionManagement>
 	<developers>
 		<developer>
 			<email>contini.mailing@gmail.com</email>
 			<name>Gabriele Contini</name>
-			<url>https://github.com/kevinsawicki</url>
+			<url></url>
 			<id>gcontini</id>
 		</developer>
 	</developers>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- github.global.server>soap2jms.github</github.global.server -->
 	</properties>
+
+	<ciManagement>
+		<system>travis-ci</system>
+		<url>https://travis-ci.org/gcontini/soap2jms</url>
+	</ciManagement>
+
 	<modules>
 		<module>s2j_common</module>
 		<module>s2j_server</module>
@@ -169,11 +181,107 @@
 				<plugin>
 					<artifactId>maven-release-plugin</artifactId>
 					<version>2.5.3</version>
-					<configuration>          
+					<configuration>
 						<autoVersionSubmodules>true</autoVersionSubmodules>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>3.6</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.apache.maven.doxia</groupId>
+							<artifactId>doxia-module-markdown</artifactId>
+							<version>1.6</version>
+						</dependency>
+						<dependency>
+							<groupId>org.apache.maven.scm</groupId>
+							<artifactId>maven-scm-provider-gitexe</artifactId>
+							<version>1.9.5</version>
+						</dependency>
+						<dependency>
+							<groupId>org.apache.maven.scm</groupId>
+							<artifactId>maven-scm-manager-plexus</artifactId>
+							<version>1.9.5</version>
+						</dependency>
+						<dependency>
+							<groupId>org.apache.maven.wagon</groupId>
+							<artifactId>wagon-scm</artifactId>
+							<version>2.10</version>
+						</dependency>
+					</dependencies>
+				</plugin>
 			</plugins>
 		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<inherited>false</inherited>
+
+				<!-- plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-scm-plugin</artifactId> 
+					<version>1.9.5</version> <configuration> <providerImplementations> <git>jgit</git> 
+					</providerImplementations> </configuration> <dependencies> <dependency> <groupId>org.apache.maven.scm</groupId> 
+					<artifactId>maven-scm-provider-jgit</artifactId> <version>1.9.5</version> 
+					</dependency> </dependencies> </plugin -->
+			</plugin>
+		</plugins>
+		<!-- extensions> <extension> <groupId>org.apache.maven.wagon</groupId> 
+			<artifactId>wagon-scm</artifactId> <version>2.10</version> </extension> <extension> 
+			<groupId>org.apache.maven.scm</groupId> <artifactId>maven-scm-manager-plexus</artifactId> 
+			<version>1.9.5</version> </extension> <extension> <groupId>org.apache.maven.scm</groupId> 
+			<artifactId>maven-scm-provider-gitexe</artifactId> <version>1.9.5</version> 
+			</extension> </extensions -->
 	</build>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.19.1</version>
+				<reportSets>
+					<reportSet>
+						<id>aggregate</id>
+						<inherited>false</inherited>
+						<reports>
+							<report>aggregate</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.9</version>
+				<reportSets>
+					<reportSet>
+						<id>aggregate</id>
+						<inherited>false</inherited>
+						<reports>
+							<report>project-team</report>
+							<report>cim</report>
+							<report>issue-tracking</report>
+							<report>license</report>
+							<report>scm</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>taglist-maven-plugin</artifactId>
+				<version>2.4</version>
+				<reportSets>
+					<reportSet>
+						<id>aggregate</id>
+						<inherited>false</inherited>
+						<reports>
+							<report>aggregate</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>
