@@ -8,9 +8,10 @@
 	</properties>
 	<body>
 		<section name="Soap To JMS">
+			<img src="https://travis-ci.org/jbricks/soap2jms.svg?branch=master" alt="build status" class="block-right"/>
 			<p>
 				Soap2JMS allows to access a JMS queue through a standard SOAP over
-				HTTP web service. <img src="https://travis-ci.org/jbricks/soap2jms.svg?branch=master" alt="build status"/>
+				HTTP web service. 
 			</p>
 			<subsection name="Features">
 				<p>

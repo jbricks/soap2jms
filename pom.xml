@@ -9,7 +9,7 @@
 	<version>0.0.2-SNAPSHOT</version>
 	<name>Soap2Jms</name>
 	<description />
-	<url>https://jbricks.github.com/soap2jms</url>
+	<url>https://jbricks.github.io/soap2jms</url>
 	<packaging>pom</packaging>
 	<issueManagement>
 		<url>https://github.com/jbricks/soap2jms/issues</url>

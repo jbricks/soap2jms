@@ -23,7 +23,7 @@
 	<name>Soap2JmsCommon</name>
 	<description>Common classes shared between Server and Client</description>
 	<packaging>jar</packaging>
-	<url>https://jbricks.github.com/soap2jms/s2j_common</url>
+	<url>https://jbricks.github.io/soap2jms/s2j_common</url>
 	<dependencies>
 		<!-- logging -->
 		<dependency>

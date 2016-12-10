@@ -13,7 +13,7 @@
 	<artifactId>s2j_client</artifactId>
 	<name>Soap2JmsClient</name>
 	<description />
-	<url>https://jbricks.github.com/soap2jms/s2j_client</url>
+	<url>https://jbricks.github.io/soap2jms/s2j_client</url>
 	<dependencies>
 		<dependency>
 			<groupId>com.github.jbricks.soap2jms</groupId>
