@@ -72,9 +72,9 @@ public class WsJmsExceptionData {
 
 	/**
 	 * Gets the value of the jmsCode property.
-	 * 
+	 *
 	 * @return possible object is {@link Integer }
-	 * 
+	 *
 	 */
 	public Integer getJmsCode() {
 		return this.jmsCode;
@@ -82,9 +82,9 @@ public class WsJmsExceptionData {
 
 	/**
 	 * Gets the value of the message property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getMessage() {
 		return this.message;
@@ -92,9 +92,9 @@ public class WsJmsExceptionData {
 
 	/**
 	 * Gets the value of the originalException property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getOriginalException() {
 		return this.originalException;
@@ -102,10 +102,10 @@ public class WsJmsExceptionData {
 
 	/**
 	 * Sets the value of the code property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Integer }
-	 * 
+	 *
 	 */
 	public void setCode(final Integer value) {
 		this.code = value;
@@ -113,10 +113,10 @@ public class WsJmsExceptionData {
 
 	/**
 	 * Sets the value of the exceptionClass property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setExceptionClass(final String value) {
 		this.exceptionClass = value;
@@ -124,10 +124,10 @@ public class WsJmsExceptionData {
 
 	/**
 	 * Sets the value of the jmsCode property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Integer }
-	 * 
+	 *
 	 */
 	public void setJmsCode(final Integer value) {
 		this.jmsCode = value;
@@ -135,10 +135,10 @@ public class WsJmsExceptionData {
 
 	/**
 	 * Sets the value of the message property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setMessage(final String value) {
 		this.message = value;
@@ -146,10 +146,10 @@ public class WsJmsExceptionData {
 
 	/**
 	 * Sets the value of the originalException property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setOriginalException(final String value) {
 		this.originalException = value;

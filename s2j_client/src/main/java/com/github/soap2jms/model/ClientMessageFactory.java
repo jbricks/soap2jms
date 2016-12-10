@@ -32,14 +32,14 @@ public class ClientMessageFactory implements JMSMessageFactory {
 	}
 
 	@Override
-	public StreamMessage createStreamMessage(InputStream message) {
-		//return new S2JStreamMessage(null, null);
+	public StreamMessage createStreamMessage(final InputStream message) {
+		// return new S2JStreamMessage(null, null);
 		throw new UnsupportedOperationException("not yet implemented");
 	}
 
 	@Override
 	public TextMessage createTextMessage(final String text) {
-		return new S2JTextMessage(null,text);
+		return new S2JTextMessage(null, text);
 	}
 
 }

@@ -41,6 +41,68 @@ public class QueueInspector {
 	@Inject
 	private JMSContext ctx;
 
+	public List<MessageIdAndStatus> acknolwedge(final String queueName, final List<String> messageIds)
+			throws JMSException, NamingException {
+		InitialContext ictx = null;
+		final List<MessageIdAndStatus> messageResult = new ArrayList<>();
+		try {
+			ictx = new InitialContext();
+			final Queue queue = (Queue) ictx.lookup(JNDI_LOCAL + queueName);
+			for (final String messageId : messageIds) {
+				final String selector = "JMSMessageID='" + messageId + "'";
+				final JMSConsumer browser = this.ctx.createConsumer(queue, selector, true);
+				final Message msg = browser.receiveNoWait();
+				if (msg != null) {
+					// msg.acknowledge();
+					messageResult.add(new MessageIdAndStatus(messageId));
+				} else {
+					messageResult.add(new MessageIdAndStatus(messageId, StatusCodeEnum.WARN_MSG_NOT_FOUND, ""));
+				}
+				browser.close();
+			}
+		} finally {
+			ictx.close();
+		}
+		return messageResult;
+	}
+
+	public JMSMessageFactory getJmsMessageFactory() {
+		final JMSContext localCopy = this.ctx;
+		return new JMSMessageFactory() {
+			@Override
+			public BytesMessage createBytesMessage() {
+				return localCopy.createBytesMessage();
+			}
+
+			@Override
+			public MapMessage createMapMessage() {
+				return localCopy.createMapMessage();
+			}
+
+			@Override
+			public ObjectMessage createObjectMessage(final Serializable object) {
+				return localCopy.createObjectMessage(object);
+			}
+
+			@Override
+			public StreamMessage createStreamMessage(final InputStream is) throws IOException, JMSException {
+				final StreamMessage sm = localCopy.createStreamMessage();
+				final byte[] buffer = new byte[1024 * 1024];
+				int n;
+				while ((n = is.read(buffer)) > 0) {
+					sm.writeBytes(buffer, 0, n);
+				}
+				return sm;
+			}
+
+			@Override
+			public TextMessage createTextMessage(final String text) {
+				return localCopy.createTextMessage(text);
+			}
+
+		};
+	}
+
 	public GetMessagesResult getMessages(final String queueName, final int msgMax, final String filter)
 			throws JMSException, NamingException {
 		final List<Message> result = new ArrayList<>();
@@ -73,31 +135,6 @@ public class QueueInspector {
 		return messageResult;
 	}
 
-	public List<MessageIdAndStatus> acknolwedge(final String queueName, final List<String> messageIds)
-			throws JMSException, NamingException {
-		InitialContext ictx = null;
-		final List<MessageIdAndStatus> messageResult = new ArrayList<>();
-		try {
-			ictx = new InitialContext();
-			final Queue queue = (Queue) ictx.lookup(JNDI_LOCAL + queueName);
-			for (String messageId : messageIds) {
-				String selector = "JMSMessageID='" + messageId + "'";
-				JMSConsumer browser = this.ctx.createConsumer(queue, selector, true);
-				Message msg = browser.receiveNoWait();
-				if (msg != null) {
-					// msg.acknowledge();
-					messageResult.add(new MessageIdAndStatus(messageId));
-				} else {
-					messageResult.add(new MessageIdAndStatus(messageId, StatusCodeEnum.WARN_MSG_NOT_FOUND, ""));
-				}
-				browser.close();
-			}
-		} finally {
-			ictx.close();
-		}
-		return messageResult;
-	}
-
 	public IdAndStatus[] sendMessages(final String queueName, final Message[] messages)
 			throws JMSException, NamingException {
 		final IdAndStatus[] result = new IdAndStatus[messages.length];
@@ -110,19 +147,19 @@ public class QueueInspector {
 
 			producer = this.ctx.createProducer();
 			for (int i = 0; i < messages.length; i++) {
-				Message message = messages[i];
+				final Message message = messages[i];
 				try {
 					producer.send(queue, message);
 					result[i] = new IdAndStatus(message.getJMSMessageID());
-				} catch (MessageFormatRuntimeException e) {
+				} catch (final MessageFormatRuntimeException e) {
 					e.printStackTrace();
-				} catch (InvalidDestinationRuntimeException e) {
-					String errmessage = "Destination " + queue + " is not valid. Name [" + queueName + "] jndiName ["
-							+ jndiName + "]";
+				} catch (final InvalidDestinationRuntimeException e) {
+					final String errmessage = "Destination " + queue + " is not valid. Name [" + queueName
+							+ "] jndiName [" + jndiName + "]";
 					LOGGER.error(errmessage, e);
-				} catch (MessageNotWriteableRuntimeException e) {
-				} catch (JMSRuntimeException e) {
-				} catch (RuntimeException e) {
+				} catch (final MessageNotWriteableRuntimeException e) {
+				} catch (final JMSRuntimeException e) {
+				} catch (final RuntimeException e) {
 
 				}
 			}
@@ -130,43 +167,6 @@ public class QueueInspector {
 			ictx.close();
 		}
 		return result;
-	}
-
-	public JMSMessageFactory getJmsMessageFactory() {
-		final JMSContext localCopy = ctx;
-		return new JMSMessageFactory() {
-			@Override
-			public StreamMessage createStreamMessage(InputStream is) throws IOException, JMSException {
-				StreamMessage sm = localCopy.createStreamMessage();
-				byte[] buffer = new byte[1024 * 1024];
-				int n;
-				while ((n = is.read(buffer)) > 0) {
-					sm.writeBytes(buffer, 0, n);
-				}
-				return sm;
-			}
-
-			@Override
-			public ObjectMessage createObjectMessage(Serializable object) {
-				return localCopy.createObjectMessage(object);
-			}
-
-			@Override
-			public MapMessage createMapMessage() {
-				return localCopy.createMapMessage();
-			}
-
-			@Override
-			public BytesMessage createBytesMessage() {
-				return localCopy.createBytesMessage();
-			}
-
-			@Override
-			public TextMessage createTextMessage(String text) {
-				return localCopy.createTextMessage(text);
-			}
-
-		};
 	}
 
 }

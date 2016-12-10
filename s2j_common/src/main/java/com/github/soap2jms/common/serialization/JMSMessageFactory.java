@@ -12,9 +12,13 @@ import javax.jms.StreamMessage;
 import javax.jms.TextMessage;
 
 public interface JMSMessageFactory {
-	ObjectMessage createObjectMessage(Serializable object);
-	MapMessage createMapMessage();
 	BytesMessage createBytesMessage();
-	TextMessage createTextMessage(String text);
+
+	MapMessage createMapMessage();
+
+	ObjectMessage createObjectMessage(Serializable object);
+
 	StreamMessage createStreamMessage(InputStream stream) throws IOException, JMSException;
+
+	TextMessage createTextMessage(String text);
 }

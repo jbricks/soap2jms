@@ -25,10 +25,7 @@ import com.github.soap2jms.queue.QueueInspector;
 import com.github.soap2jms.service.ReaderSoap2Jms;
 import com.github.soap2jms.service.WsJmsException;
 
-@javax.jws.WebService(serviceName = "soapToJmsReaderService", 
-	portName = "readerSOAP", 
-	targetNamespace = "http://soap2jms.github.com/service"
-)
+@javax.jws.WebService(serviceName = "soapToJmsReaderService", portName = "readerSOAP", targetNamespace = "http://soap2jms.github.com/service")
 public class ReaderSOAPImpl implements ReaderSoap2Jms {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ReaderSOAPImpl.class);
@@ -36,7 +33,7 @@ public class ReaderSOAPImpl implements ReaderSoap2Jms {
 	private QueueInspector qi;
 	@Inject
 	private JmsToSoapSerializer serializationUtils;
-	
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -67,13 +64,13 @@ public class ReaderSOAPImpl implements ReaderSoap2Jms {
 			result.setComplete(!messages.moreMessages);
 
 			for (final Message msg : messages.result) {
-				result.getS2JMessageAndStatus().add(serializationUtils.jmsToSoapMessageAndStatus(msg));
+				result.getS2JMessageAndStatus().add(this.serializationUtils.jmsToSoapMessageAndStatus(msg));
 			}
-		} catch (JMSException e) {
+		} catch (final JMSException e) {
 			LOG.error("JMS error processing [" + queueName + "] filter[" + filter + "]", e);
 			throw new WsJmsException("Internal server processing [" + queueName + "] filter[" + filter + "]",
 					e.toString(), StatusCodeEnum.ERR_GENERIC, WsExceptionClass.JMS);
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			// FIXME:error type
 			LOG.error("JMS error processing [" + queueName + "] filter[" + filter + "]", ex);
 			throw new WsJmsException("Internal server processing [" + queueName + "] filter[" + filter + "]",

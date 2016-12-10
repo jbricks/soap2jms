@@ -49,9 +49,9 @@ public class RetrieveMessages {
 
 	/**
 	 * Gets the value of the filter property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getFilter() {
 		return this.filter;
@@ -59,7 +59,7 @@ public class RetrieveMessages {
 
 	/**
 	 * Gets the value of the maxItems property.
-	 * 
+	 *
 	 */
 	public int getMaxItems() {
 		return this.maxItems;
@@ -67,9 +67,9 @@ public class RetrieveMessages {
 
 	/**
 	 * Gets the value of the queueName property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getQueueName() {
 		return this.queueName;
@@ -77,10 +77,10 @@ public class RetrieveMessages {
 
 	/**
 	 * Sets the value of the filter property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setFilter(final String value) {
 		this.filter = value;
@@ -88,7 +88,7 @@ public class RetrieveMessages {
 
 	/**
 	 * Sets the value of the maxItems property.
-	 * 
+	 *
 	 */
 	public void setMaxItems(final int value) {
 		this.maxItems = value;
@@ -96,10 +96,10 @@ public class RetrieveMessages {
 
 	/**
 	 * Sets the value of the queueName property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setQueueName(final String value) {
 		this.queueName = value;

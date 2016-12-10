@@ -21,12 +21,12 @@ public class WsJmsException extends Exception {
 	private static final long serialVersionUID = -159443347422019950L;
 	/**
 	 * Java type that goes as soapenv:Fault detail element.
-	 * 
+	 *
 	 */
 	private final WsJmsExceptionData faultInfo;
 
 	/**
-	 * 
+	 *
 	 * @param faultInfo
 	 * @param message
 	 */
@@ -47,7 +47,7 @@ public class WsJmsException extends Exception {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param faultInfo
 	 * @param cause
 	 * @param message
@@ -58,7 +58,7 @@ public class WsJmsException extends Exception {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return returns fault bean:
 	 *         com.github.soap2jms.common.ws.WsJmsExceptionData
 	 */

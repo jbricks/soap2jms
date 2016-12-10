@@ -2,21 +2,18 @@
 
 # Soap2Jms
 
-This project expose a JMS queue through a standard SOAP over HTTP web service.
+This project allows to access a JMS queue through a standard SOAP over HTTP web service.
 It allows to read and send messages from/to a JMS queue. Clients don't have to depend on any JMS implementation libraries. They are simple JAX-WS web service clients, that can be supported by any JAX-WS implementation (Apache CXF for instance).
 
 It is not to be confused with "Soap over JMS". Soap Over JMS encapsulates a soap message into a JMS envelope. It has the same problems of JMS in terms of interoperability and it requires a JMS client implementation to connect to the server.
+
+Visit the [website](https://gcontini.github.com/soap2jms/index.html) for more informations.
 
 ## goals:
  * Simplicity: It is simple to integrate. It has few dependencies. It will be well documented.
  * Reliability: JMS has a plus over SOAP: its reliability. Soap2Jms try to replicate this at the minimum cost: all the operations are idempotent. If clients are coded properly, messages will not be lost or duplicated in case of network or system failure.
  * Interoperability: It is independent from the specific JMS provider used. It can work in any application, without any change. Clients can be coded in languages other than java (.NET ...). Web services are WS-I Basic Profile 1 compliant. 
 
-## Requirements
-
- - Java 7/8 
- - Jms 2.0, CDI
- - Currently tested in wildfly 10. Any JavaEE 6 container should be supported.    
 
 ## Current implementation status
 

@@ -24,23 +24,24 @@ public class ClientSerializationUtilsTest {
 
 	@Test
 	public void testClientSerializationUtils() throws Exception {
-		List<WsJmsMessageAndStatus> messagesIn = new ArrayList<WsJmsMessageAndStatus>();
-		DataHandler body = new DataHandler(new ByteArrayDataSource("test".getBytes(),"text/html"));
-		WsJmsMessage s2jMessage = new WsJmsMessage("correlationId", 1, 0, null, // headers
+		final List<WsJmsMessageAndStatus> messagesIn = new ArrayList<>();
+		final DataHandler body = new DataHandler(new ByteArrayDataSource("test".getBytes(), "text/html"));
+		final WsJmsMessage s2jMessage = new WsJmsMessage("correlationId", 1, 0, null, // headers
 				"messageId", JMSMessageClassEnum.TEXT.name(), 1, // priority
 				true, 1000L, // timestamp
 				"type", body);
-		StatusCode messageStatus = new StatusCode("OK", null);
+		final StatusCode messageStatus = new StatusCode("OK", null);
 		messagesIn.add(new WsJmsMessageAndStatus(s2jMessage, messageStatus));
-		RetrieveMessageResponseType wsdlResponse = new RetrieveMessageResponseType(messagesIn, false);
-		JMSMessageFactory messageFactory=new ClientMessageFactory();
-		Message[] messages = new SoapToJmsSerializer().convertMessages(messageFactory, wsdlResponse.getS2JMessageAndStatus());
+		final RetrieveMessageResponseType wsdlResponse = new RetrieveMessageResponseType(messagesIn, false);
+		final JMSMessageFactory messageFactory = new ClientMessageFactory();
+		final Message[] messages = new SoapToJmsSerializer().convertMessages(messageFactory,
+				wsdlResponse.getS2JMessageAndStatus());
 		assertNotNull("Result is not null", messages);
 		assertEquals("Messages deserialized", 1, messages.length);
-		S2JMessage message = (S2JMessage) messages[0];
+		final S2JMessage message = (S2JMessage) messages[0];
 		assertEquals("Message class", S2JTextMessage.class, message.getClass());
 		assertEquals("Message body", "test", ((S2JTextMessage) message).getText());
-		assertEquals("MessageId ", "messageId",message.getJMSMessageID());
+		assertEquals("MessageId ", "messageId", message.getJMSMessageID());
 	}
 
 }

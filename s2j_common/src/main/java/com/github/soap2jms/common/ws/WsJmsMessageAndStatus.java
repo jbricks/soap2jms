@@ -49,9 +49,9 @@ public class WsJmsMessageAndStatus {
 
 	/**
 	 * Gets the value of the messageStatus property.
-	 * 
+	 *
 	 * @return possible object is {@link StatusCode }
-	 * 
+	 *
 	 */
 	public StatusCode getMessageStatus() {
 		return this.messageStatus;
@@ -59,9 +59,9 @@ public class WsJmsMessageAndStatus {
 
 	/**
 	 * Gets the value of the wsJmsMessage property.
-	 * 
+	 *
 	 * @return possible object is {@link WsJmsMessage }
-	 * 
+	 *
 	 */
 	public WsJmsMessage getWsJmsMessage() {
 		return this.wsJmsMessage;
@@ -69,10 +69,10 @@ public class WsJmsMessageAndStatus {
 
 	/**
 	 * Sets the value of the messageStatus property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link StatusCode }
-	 * 
+	 *
 	 */
 	public void setMessageStatus(final StatusCode value) {
 		this.messageStatus = value;
@@ -80,10 +80,10 @@ public class WsJmsMessageAndStatus {
 
 	/**
 	 * Sets the value of the wsJmsMessage property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link WsJmsMessage }
-	 * 
+	 *
 	 */
 	public void setWsJmsMessage(final WsJmsMessage value) {
 		this.wsJmsMessage = value;

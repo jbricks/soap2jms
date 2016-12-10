@@ -26,7 +26,7 @@ public class S2JMapMessage extends S2JMessage implements MapMessage {
 
 	public S2JMapMessage(final String messageId, final Map<String, Object> body) {
 		super(JMSMessageClassEnum.MAP.name(), messageId, null);
-		this.body = (body == null ? new HashMap<>(): body);
+		this.body = (body == null ? new HashMap<>() : body);
 	}
 
 	@SuppressWarnings("unchecked")

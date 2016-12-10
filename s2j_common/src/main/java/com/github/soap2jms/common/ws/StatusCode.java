@@ -6,6 +6,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.github.soap2jms.common.S2JProtocolException;
+import com.github.soap2jms.common.StatusCodeEnum;
+
 /**
  * <p>
  * Java class for statusCode complex type.
@@ -49,6 +52,7 @@ public class StatusCode {
 	protected String reason;
 
 	public StatusCode() {
+		this.code = StatusCodeEnum.OK.name();
 	}
 
 	public StatusCode(final String code, final String reason) {
@@ -58,19 +62,27 @@ public class StatusCode {
 
 	/**
 	 * Gets the value of the code property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getCode() {
 		return this.code;
 	}
 
+	public StatusCodeEnum getCodeEnum() {
+		final StatusCodeEnum sce = StatusCodeEnum.valueOf(this.code);
+		if (sce == null) {
+			throw new S2JProtocolException(StatusCodeEnum.ERR_INCOMPATIBLE_PROTOCOL);
+		}
+		return sce;
+	}
+
 	/**
 	 * Gets the value of the reason property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getReason() {
 		return this.reason;
@@ -78,10 +90,10 @@ public class StatusCode {
 
 	/**
 	 * Sets the value of the code property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setCode(final String value) {
 		this.code = value;
@@ -89,10 +101,10 @@ public class StatusCode {
 
 	/**
 	 * Sets the value of the reason property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setReason(final String value) {
 		this.reason = value;

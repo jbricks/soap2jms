@@ -25,30 +25,25 @@ import com.github.soap2jms.model.S2JTextMessage;
 
 public class TestJmsSerialization {
 
-	@Test
-	public void testNullHeaders() throws Exception {
-		Message serverMessage = new S2JTextMessage("1", "test");
-		S2JMessage message = serializeAndDeserializeMessage(serverMessage);
-		assertFalse("headers size", message.getPropertyNames().hasMoreElements());
-	}
-
-	@Test
-	public void testStringHeaders() throws Exception {
-		Message serverMessage = new S2JTextMessage("1", "test");
-		serverMessage.setStringProperty("testName", "testValue");
-		S2JMessage message = serializeAndDeserializeMessage(serverMessage);
-		assertTrue("There are headers", message.getPropertyNames().hasMoreElements());
-		assertTrue("Header testName is present", message.propertyExists("testName"));
-		assertEquals("Header testName has the right value", "testValue", message.getStringProperty("testName"));
+	private S2JMessage serializeAndDeserializeMessage(final Message serverMessage)
+			throws JMSException, S2JProtocolException {
+		final WsJmsMessageAndStatus jms2soap = new JmsToSoapSerializer().jmsToSoapMessageAndStatus(serverMessage);
+		final RetrieveMessageResponseType wsdlResponse = new RetrieveMessageResponseType();
+		wsdlResponse.getS2JMessageAndStatus().add(jms2soap);
+		final Message[] convertMessages = new SoapToJmsSerializer().convertMessages(new ClientMessageFactory(),
+				wsdlResponse.getS2JMessageAndStatus());
+		assertEquals("Deserialized message num", 1, convertMessages.length);
+		final S2JMessage message = (S2JMessage) convertMessages[0];
+		return message;
 	}
 
 	@Test
 	public void testIntegerHeaders() throws Exception {
-		Message serverMessage = new S2JTextMessage("1", "test");
+		final Message serverMessage = new S2JTextMessage("1", "test");
 		serverMessage.setIntProperty("test1", 1);
 		serverMessage.setObjectProperty("test2", 2);
 
-		S2JMessage message = serializeAndDeserializeMessage(serverMessage);
+		final S2JMessage message = serializeAndDeserializeMessage(serverMessage);
 		assertTrue("There are headers", message.getPropertyNames().hasMoreElements());
 		assertTrue("Header test1 is present", message.propertyExists("test1"));
 		assertTrue("Header test2 is present", message.propertyExists("test2"));
@@ -60,13 +55,13 @@ public class TestJmsSerialization {
 
 	@Test
 	public void testMapMessage() throws Exception {
-		Map<String, Object> map = new HashMap<>();
+		final Map<String, Object> map = new HashMap<>();
 		map.put("string", "string");
 		map.put("int", 1);
-		Message serverMessage = new S2JMapMessage("1", map);
-		Message message = serializeAndDeserializeMessage(serverMessage);
+		final Message serverMessage = new S2JMapMessage("1", map);
+		final Message message = serializeAndDeserializeMessage(serverMessage);
 		assertTrue("instance of ", message instanceof MapMessage);
-		MapMessage mapMessage = (MapMessage) message;
+		final MapMessage mapMessage = (MapMessage) message;
 		assertTrue("body string is present", mapMessage.itemExists("string"));
 		assertEquals("Body int ", 1, mapMessage.getInt("int"));
 		assertEquals("body string ", "string", mapMessage.getString("string"));
@@ -74,15 +69,21 @@ public class TestJmsSerialization {
 		assertEquals("body returns null if a key doesn't exist", null, mapMessage.getObject("not exist"));
 	}
 
-	private S2JMessage serializeAndDeserializeMessage(Message serverMessage) throws JMSException, S2JProtocolException {
-		WsJmsMessageAndStatus jms2soap = new JmsToSoapSerializer().jmsToSoapMessageAndStatus(serverMessage);
-		RetrieveMessageResponseType wsdlResponse = new RetrieveMessageResponseType();
-		wsdlResponse.getS2JMessageAndStatus().add(jms2soap);
-		Message[] convertMessages = new SoapToJmsSerializer().convertMessages(new ClientMessageFactory(),
-				wsdlResponse.getS2JMessageAndStatus());
-		assertEquals("Deserialized message num", 1, convertMessages.length);
-		S2JMessage message = (S2JMessage)convertMessages[0];
-		return message;
+	@Test
+	public void testNullHeaders() throws Exception {
+		final Message serverMessage = new S2JTextMessage("1", "test");
+		final S2JMessage message = serializeAndDeserializeMessage(serverMessage);
+		assertFalse("headers size", message.getPropertyNames().hasMoreElements());
+	}
+
+	@Test
+	public void testStringHeaders() throws Exception {
+		final Message serverMessage = new S2JTextMessage("1", "test");
+		serverMessage.setStringProperty("testName", "testValue");
+		final S2JMessage message = serializeAndDeserializeMessage(serverMessage);
+		assertTrue("There are headers", message.getPropertyNames().hasMoreElements());
+		assertTrue("Header testName is present", message.propertyExists("testName"));
+		assertEquals("Header testName has the right value", "testValue", message.getStringProperty("testName"));
 	}
 
 }

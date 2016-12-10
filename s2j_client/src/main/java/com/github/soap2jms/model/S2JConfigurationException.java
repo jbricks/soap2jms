@@ -7,8 +7,6 @@ public class S2JConfigurationException extends S2JException {
 	 */
 	private static final long serialVersionUID = -2744675911702559397L;
 
-
-
 	public S2JConfigurationException(final String message) {
 		super(message, true);
 	}

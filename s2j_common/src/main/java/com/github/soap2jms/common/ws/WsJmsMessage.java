@@ -71,11 +71,11 @@ public class WsJmsMessage {
 	/**
 	 * <p>
 	 * Java class for anonymous complex type.
-	 * 
+	 *
 	 * <p>
 	 * The following schema fragment specifies the expected content contained
 	 * within this class.
-	 * 
+	 *
 	 * <pre>
 	 * &lt;complexType>
 	 *   &lt;complexContent>
@@ -88,8 +88,8 @@ public class WsJmsMessage {
 	 *   &lt;/complexContent>
 	 * &lt;/complexType>
 	 * </pre>
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@XmlType(name = "", propOrder = { "key", "value" })
@@ -110,9 +110,9 @@ public class WsJmsMessage {
 
 		/**
 		 * Gets the value of the key property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getKey() {
 			return this.key;
@@ -120,9 +120,9 @@ public class WsJmsMessage {
 
 		/**
 		 * Gets the value of the value property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getValue() {
 			return this.value;
@@ -130,10 +130,10 @@ public class WsJmsMessage {
 
 		/**
 		 * Sets the value of the key property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setKey(final String value) {
 			this.key = value;
@@ -141,10 +141,10 @@ public class WsJmsMessage {
 
 		/**
 		 * Sets the value of the value property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setValue(final String value) {
 			this.value = value;
@@ -190,7 +190,7 @@ public class WsJmsMessage {
 
 	/**
 	 * Gets the value of the body property.
-	 * 
+	 *
 	 * @return possible object is byte[]
 	 */
 	public DataHandler getBody() {
@@ -199,9 +199,9 @@ public class WsJmsMessage {
 
 	/**
 	 * Gets the value of the correlationId property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getCorrelationId() {
 		return this.correlationId;
@@ -209,7 +209,7 @@ public class WsJmsMessage {
 
 	/**
 	 * Gets the value of the deliveryMode property.
-	 * 
+	 *
 	 */
 	public int getDeliveryMode() {
 		return this.deliveryMode;
@@ -217,7 +217,7 @@ public class WsJmsMessage {
 
 	/**
 	 * Gets the value of the expiration property.
-	 * 
+	 *
 	 */
 	public long getExpiration() {
 		return this.expiration;
@@ -225,26 +225,26 @@ public class WsJmsMessage {
 
 	/**
 	 * Gets the value of the headers property.
-	 * 
+	 *
 	 * <p>
 	 * This accessor method returns a reference to the live list, not a
 	 * snapshot. Therefore any modification you make to the returned list will
 	 * be present inside the JAXB object. This is why there is not a
 	 * <CODE>set</CODE> method for the headers property.
-	 * 
+	 *
 	 * <p>
 	 * For example, to add a new item, do as follows:
-	 * 
+	 *
 	 * <pre>
 	 * getHeaders().add(newItem);
 	 * </pre>
-	 * 
-	 * 
+	 *
+	 *
 	 * <p>
 	 * Objects of the following type(s) are allowed in the list
 	 * {@link WsJmsMessage.Headers }
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	public List<WsJmsMessage.Headers> getHeaders() {
 		if (this.headers == null) {
@@ -255,9 +255,9 @@ public class WsJmsMessage {
 
 	/**
 	 * Gets the value of the messageClass property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getMessageClass() {
 		return this.messageClass;
@@ -265,9 +265,9 @@ public class WsJmsMessage {
 
 	/**
 	 * Gets the value of the messageId property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getMessageId() {
 		return this.messageId;
@@ -275,9 +275,9 @@ public class WsJmsMessage {
 
 	/**
 	 * Gets the value of the priority property.
-	 * 
+	 *
 	 * @return possible object is {@link Integer }
-	 * 
+	 *
 	 */
 	public Integer getPriority() {
 		return this.priority;
@@ -285,7 +285,7 @@ public class WsJmsMessage {
 
 	/**
 	 * Gets the value of the timestamp property.
-	 * 
+	 *
 	 */
 	public long getTimestamp() {
 		return this.timestamp;
@@ -293,9 +293,9 @@ public class WsJmsMessage {
 
 	/**
 	 * Gets the value of the type property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getType() {
 		return this.type;
@@ -303,7 +303,7 @@ public class WsJmsMessage {
 
 	/**
 	 * Gets the value of the redelivered property.
-	 * 
+	 *
 	 */
 	public boolean isRedelivered() {
 		return this.redelivered;
@@ -311,7 +311,7 @@ public class WsJmsMessage {
 
 	/**
 	 * Sets the value of the body property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is byte[]
 	 */
@@ -321,10 +321,10 @@ public class WsJmsMessage {
 
 	/**
 	 * Sets the value of the correlationId property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setCorrelationId(final String value) {
 		this.correlationId = value;
@@ -332,7 +332,7 @@ public class WsJmsMessage {
 
 	/**
 	 * Sets the value of the deliveryMode property.
-	 * 
+	 *
 	 */
 	public void setDeliveryMode(final int value) {
 		this.deliveryMode = value;
@@ -340,7 +340,7 @@ public class WsJmsMessage {
 
 	/**
 	 * Sets the value of the expiration property.
-	 * 
+	 *
 	 */
 	public void setExpiration(final long value) {
 		this.expiration = value;
@@ -348,10 +348,10 @@ public class WsJmsMessage {
 
 	/**
 	 * Sets the value of the messageClass property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setMessageClass(final String value) {
 		this.messageClass = value;
@@ -359,10 +359,10 @@ public class WsJmsMessage {
 
 	/**
 	 * Sets the value of the messageId property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setMessageId(final String value) {
 		this.messageId = value;
@@ -370,10 +370,10 @@ public class WsJmsMessage {
 
 	/**
 	 * Sets the value of the priority property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Integer }
-	 * 
+	 *
 	 */
 	public void setPriority(final Integer value) {
 		this.priority = value;
@@ -381,7 +381,7 @@ public class WsJmsMessage {
 
 	/**
 	 * Sets the value of the redelivered property.
-	 * 
+	 *
 	 */
 	public void setRedelivered(final boolean value) {
 		this.redelivered = value;
@@ -389,7 +389,7 @@ public class WsJmsMessage {
 
 	/**
 	 * Sets the value of the timestamp property.
-	 * 
+	 *
 	 */
 	public void setTimestamp(final long value) {
 		this.timestamp = value;
@@ -397,10 +397,10 @@ public class WsJmsMessage {
 
 	/**
 	 * Sets the value of the type property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setType(final String value) {
 		this.type = value;

@@ -11,11 +11,13 @@ import com.github.soap2jms.common.S2JProtocolException;
 import com.github.soap2jms.common.StatusCodeEnum;
 import com.github.soap2jms.common.serialization.JmsToSoapSerializer;
 import com.github.soap2jms.common.serialization.SoapToJmsSerializer;
+import com.github.soap2jms.common.ws.MessageIdAndStatus;
 import com.github.soap2jms.common.ws.RetrieveMessageResponseType;
 import com.github.soap2jms.common.ws.WsJmsMessage;
 import com.github.soap2jms.model.ClientMessageFactory;
 import com.github.soap2jms.model.InternalServerException;
 import com.github.soap2jms.model.NetworkException;
+import com.github.soap2jms.model.ResponseStatus;
 import com.github.soap2jms.model.S2JConfigurationException;
 import com.github.soap2jms.model.S2JMessage;
 import com.github.soap2jms.service.ReaderSoap2Jms;
@@ -25,17 +27,17 @@ import com.github.soap2jms.service.SoapToJmsSenderService;
 import com.github.soap2jms.service.WsJmsException;
 
 public class SoapToJmsClient {
-	private final SenderSoap2Jms senderSoapPort;
-	private final ReaderSoap2Jms readerSoapPort;
-	private final SoapToJmsSerializer soap2JmsSerializer = new SoapToJmsSerializer();
 	private final ThreadLocal<Boolean> isComplete = new ThreadLocal<Boolean>() {
 		@Override
 		protected Boolean initialValue() {
 			return Boolean.TRUE;
 		}
 	};
+	private final ReaderSoap2Jms readerSoapPort;
+	private final SenderSoap2Jms senderSoapPort;
+	private final SoapToJmsSerializer soap2JmsSerializer = new SoapToJmsSerializer();
 
-	public SoapToJmsClient(final SoapToJmsReaderService readerService, SoapToJmsSenderService senderService) {
+	public SoapToJmsClient(final SoapToJmsReaderService readerService, final SoapToJmsSenderService senderService) {
 		this.readerSoapPort = readerService == null ? null : readerService.getReaderSOAP();
 		this.senderSoapPort = senderService == null ? null : senderService.getSenderSOAP();
 	}
@@ -44,15 +46,13 @@ public class SoapToJmsClient {
 		this(contextBase, true, true);
 	}
 
-	public SoapToJmsClient(final String contextBase, boolean initReader, boolean initSender)
+	public SoapToJmsClient(final String contextBase, final boolean initReader, final boolean initSender)
 			throws S2JConfigurationException {
-		String contextBaseNorm = contextBase.endsWith("/") ? contextBase : contextBase + "/";
-		String senderUrl = contextBase + "soapToJmsSenderService?wsdl";
-		final SoapToJmsReaderService readerService;
+		final String contextBaseNorm = contextBase.endsWith("/") ? contextBase : contextBase + "/";
 		if (initReader) {
-			String readerUrl = contextBase + "soapToJmsReaderService?wsdl";
+			final String readerUrl = contextBaseNorm + "soapToJmsReaderService?wsdl";
 			try {
-				SoapToJmsReaderService soap2JmsService = new SoapToJmsReaderService(readerUrl);
+				final SoapToJmsReaderService soap2JmsService = new SoapToJmsReaderService(readerUrl);
 				this.readerSoapPort = soap2JmsService.getReaderSOAP();
 			} catch (final MalformedURLException e) {
 				throw new S2JConfigurationException("Url " + readerUrl + " is malformed.", e);
@@ -61,38 +61,36 @@ public class SoapToJmsClient {
 			this.readerSoapPort = null;
 		}
 		if (initSender) {
-			String readerUrl = contextBase + "soapToJmsSenderService?wsdl";
+			final String senderUrl = contextBaseNorm + "soapToJmsSenderService?wsdl";
 			try {
-				SoapToJmsSenderService soap2JmsService = new SoapToJmsSenderService(readerUrl);
+				final SoapToJmsSenderService soap2JmsService = new SoapToJmsSenderService(senderUrl);
 				this.senderSoapPort = soap2JmsService.getSenderSOAP();
 			} catch (final MalformedURLException e) {
-				throw new S2JConfigurationException("Url " + readerUrl + " is malformed.", e);
+				throw new S2JConfigurationException("Url " + senderUrl + " is malformed.", e);
 			}
 		} else {
 			this.senderSoapPort = null;
 		}
 	}
 
-	public void acknolwedge(String queueName, final List<String> messageIds) throws InternalServerException {
+	public ResponseStatus acknolwedge(final String queueName, final List<String> messageIds)
+			throws InternalServerException {
+		List<MessageIdAndStatus> result;
 		try {
-			readerSoapPort.acknowledgeMessages(queueName, messageIds);
+			result = this.readerSoapPort.acknowledgeMessages(queueName, messageIds);
 		} catch (final WsJmsException e) {
-			// FIXME: error handling.
 			throw new InternalServerException("", e);
 		}
+		return new ResponseStatus(result);
 	}
 
-	public void acknowledge(String queueName, final Message[] messages)
+	public ResponseStatus acknowledge(final String queueName, final Message[] messages)
 			throws S2JProtocolException, NetworkException, InternalServerException, JMSException {
-		List<String> msgIds = new ArrayList<>(messages.length);
-		for (Message message : messages) {
+		final List<String> msgIds = new ArrayList<>(messages.length);
+		for (final Message message : messages) {
 			msgIds.add(message.getJMSMessageID());
 		}
-		acknolwedge(queueName, msgIds);
-	}
-
-	public boolean retrieveComplete() {
-		return isComplete.get();
+		return acknolwedge(queueName, msgIds);
 	}
 
 	public Message[] readMessages(final String queueName, final String filter, final int msgMax)
@@ -100,30 +98,35 @@ public class SoapToJmsClient {
 
 		RetrieveMessageResponseType wsResponse;
 		try {
-			wsResponse = readerSoapPort.retrieveMessages(queueName, filter, msgMax);
+			wsResponse = this.readerSoapPort.retrieveMessages(queueName, filter, msgMax);
 		} catch (final WsJmsException e) {
 			// FIXME: error handling.
 			throw new InternalServerException("", e);
 		}
 		this.isComplete.set(wsResponse.isComplete());
-		return soap2JmsSerializer.convertMessages(new ClientMessageFactory(), wsResponse.getS2JMessageAndStatus());
+		return this.soap2JmsSerializer.convertMessages(new ClientMessageFactory(), wsResponse.getS2JMessageAndStatus());
 	}
 
-	public void sendMessages(final String queueName, final S2JMessage[] messages)
+	public boolean retrieveComplete() {
+		return this.isComplete.get();
+	}
+
+	public ResponseStatus sendMessages(final String queueName, final S2JMessage[] messages)
 			throws S2JProtocolException, NetworkException, InternalServerException {
 
 		List<WsJmsMessage> messages1;
 		try {
 			messages1 = new JmsToSoapSerializer().messagesToWs(messages);
-		} catch (JMSException e1) {
+		} catch (final JMSException e1) {
 			throw new S2JProtocolException(StatusCodeEnum.ERR_SERIALIZATION, "", e1);
 		}
+		List<MessageIdAndStatus> result;
 		try {
-			senderSoapPort.sendMessages(queueName, null, messages1);
-
+			result = this.senderSoapPort.sendMessages(queueName, null, messages1);
 		} catch (final WsJmsException e) {
 			// FIXME: error handling.
 			throw new InternalServerException("", e);
 		}
+		return new ResponseStatus(result);
 	}
 }

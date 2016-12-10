@@ -35,36 +35,36 @@ public class SenderSOAPImpl implements SenderSoap2Jms {
 
 	}
 
-	@Override
-	public List<MessageIdAndStatus> sendMessages(String queueName, String messageSetIdentifier,
-			List<WsJmsMessage> wsMessages) throws WsJmsException {
-
-		JMSMessageFactory jmsMessageFactory = qi.getJmsMessageFactory();
-		Message[] jmsMessages = new Message[wsMessages.size()];
-		for (int i = 0; i < wsMessages.size(); i++) {
-			jmsMessages[i] = serializationUtils.convertMessage(jmsMessageFactory, wsMessages.get(i));
-		}
-		IdAndStatus[] result = null;
-		try {
-			result = qi.sendMessages(queueName, jmsMessages);
-		} catch (JMSException e) {
-			throw new WsJmsException("JMS problem. Queue " + queueName, e.getMessage(), StatusCodeEnum.ERR_JMS,
-					WsExceptionClass.JMS);
-		} catch (NamingException e) {
-			throw new WsJmsException("JMS problem. Queue " + queueName, e.getMessage(), StatusCodeEnum.ERR_JMS,
-					WsExceptionClass.CONFIGURATION);
-		}
-		return idAndStatusToWS(result);
-	}
-
-	private List<MessageIdAndStatus> idAndStatusToWS(IdAndStatus[] results) {
-		List<MessageIdAndStatus> messageIdAndStatusList = new ArrayList<>();
-		for (IdAndStatus result : results) {
+	private List<MessageIdAndStatus> idAndStatusToWS(final IdAndStatus[] results) {
+		final List<MessageIdAndStatus> messageIdAndStatusList = new ArrayList<>();
+		for (final IdAndStatus result : results) {
 			final MessageIdAndStatus messageIdAndStatus1 = new MessageIdAndStatus(result.getMessageId(),
 					result.getStatusCode(), result.getReason());
 			messageIdAndStatusList.add(messageIdAndStatus1);
 		}
 		return messageIdAndStatusList;
+	}
+
+	@Override
+	public List<MessageIdAndStatus> sendMessages(final String queueName, final String messageSetIdentifier,
+			final List<WsJmsMessage> wsMessages) throws WsJmsException {
+
+		final JMSMessageFactory jmsMessageFactory = this.qi.getJmsMessageFactory();
+		final Message[] jmsMessages = new Message[wsMessages.size()];
+		for (int i = 0; i < wsMessages.size(); i++) {
+			jmsMessages[i] = this.serializationUtils.convertMessage(jmsMessageFactory, wsMessages.get(i));
+		}
+		IdAndStatus[] result = null;
+		try {
+			result = this.qi.sendMessages(queueName, jmsMessages);
+		} catch (final JMSException e) {
+			throw new WsJmsException("JMS problem. Queue " + queueName, e.getMessage(), StatusCodeEnum.ERR_JMS,
+					WsExceptionClass.JMS);
+		} catch (final NamingException e) {
+			throw new WsJmsException("JMS problem. Queue " + queueName, e.getMessage(), StatusCodeEnum.ERR_JMS,
+					WsExceptionClass.CONFIGURATION);
+		}
+		return idAndStatusToWS(result);
 	}
 
 }

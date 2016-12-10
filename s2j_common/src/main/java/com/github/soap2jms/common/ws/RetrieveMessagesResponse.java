@@ -39,9 +39,9 @@ public class RetrieveMessagesResponse {
 
 	/**
 	 * Gets the value of the retrieveMessagesResponse property.
-	 * 
+	 *
 	 * @return possible object is {@link RetrieveMessageResponseType }
-	 * 
+	 *
 	 */
 	public RetrieveMessageResponseType getRetrieveMessagesResponse() {
 		return this.retrieveMessagesResponse;
@@ -49,10 +49,10 @@ public class RetrieveMessagesResponse {
 
 	/**
 	 * Sets the value of the retrieveMessagesResponse property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link RetrieveMessageResponseType }
-	 * 
+	 *
 	 */
 	public void setRetrieveMessagesResponse(final RetrieveMessageResponseType value) {
 		this.retrieveMessagesResponse = value;

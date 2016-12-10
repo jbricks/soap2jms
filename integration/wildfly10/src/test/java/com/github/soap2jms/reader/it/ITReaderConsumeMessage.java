@@ -8,6 +8,7 @@ import java.util.Properties;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSContext;
+import javax.jms.JMSProducer;
 import javax.jms.Message;
 import javax.jms.TextMessage;
 import javax.naming.Context;
@@ -18,28 +19,25 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.soap2jms.Constants;
 import com.github.soap2jms.model.S2JMessage;
 import com.github.soap2jms.pub.SoapToJmsClient;
 
 public class ITReaderConsumeMessage {
 	private static final Logger log = LoggerFactory.getLogger(ITReaderConsumeMessage.class);
 
-	// Set up all the default values
-	private static final String DEFAULT_CONTENT = "Hello, World!";
-	private static final String DEFAULT_CONNECTION_FACTORY = "jms/RemoteConnectionFactory";
 	private static final String DEFAULT_DESTINATION = "jms/soap2jms.reader";
 	private static final String DEFAULT_USERNAME = "test";
 	private static final String DEFAULT_PASSWORD = "test1";
 	private static final String INITIAL_CONTEXT_FACTORY = "org.jboss.naming.remote.client.InitialContextFactory";
 	private static final String PROVIDER_URL = "http-remoting://127.0.0.1:8080";
-	private static final String WSDL_LOCATION = "http://localhost:8080/soap2jms-integration-wildfly10/";
 
 	@Test
 	public void testReadTextMessage() throws Exception {
 		// send a message to a queue.
 		sendMessage(1);
 		// read the message with webservice
-		SoapToJmsClient wsClient = new SoapToJmsClient(WSDL_LOCATION);
+		SoapToJmsClient wsClient = new SoapToJmsClient(Constants.CTX_NAME);
 
 		// TODO: map jms/soap2jms.reader to java:/comp/env/soap2jms in project
 		// project_customization (web.xml).
@@ -50,7 +48,7 @@ public class ITReaderConsumeMessage {
 		final Message message = messages[0];
 		assertTrue("Message instanceof textMessage", message instanceof TextMessage);
 		TextMessage textMessage =(TextMessage) message;
-		assertEquals("message content", DEFAULT_CONTENT, textMessage.getText());
+		assertEquals("message content", Constants.DEFAULT_CONTENT, textMessage.getText());
 		assertNotNull("MessageId not null", textMessage.getJMSMessageID());
 		log.info("JMS message id to acknowledge:" + textMessage.getJMSMessageID());
 		// acknowlege the message
@@ -107,7 +105,7 @@ public class ITReaderConsumeMessage {
 			namingContext = new InitialContext(env);
 
 			// Perform the JNDI lookups
-			String connectionFactoryString = System.getProperty("connection.factory", DEFAULT_CONNECTION_FACTORY);
+			String connectionFactoryString = System.getProperty("connection.factory", Constants.DEFAULT_CONNECTION_FACTORY);
 			log.info("Attempting to acquire connection factory \"" + connectionFactoryString + "\"");
 			ConnectionFactory connectionFactory = (ConnectionFactory) namingContext.lookup(connectionFactoryString);
 			log.info("Found connection factory \"" + connectionFactoryString + "\" in JNDI");
@@ -117,13 +115,14 @@ public class ITReaderConsumeMessage {
 			Destination destination = (Destination) namingContext.lookup(destinationString);
 			log.info("Found destination \"" + destinationString + "\" in JNDI");
 
-			String content = System.getProperty("message.content", DEFAULT_CONTENT);
+			String content = System.getProperty("message.content", Constants.DEFAULT_CONTENT);
 
 			try (JMSContext context = connectionFactory.createContext(userName, password)) {
 				log.info("Sending " + count + " messages with content: " + content);
 				// Send the specified number of messages
+				final JMSProducer producer = context.createProducer();
 				for (int i = 0; i < count; i++) {
-					context.createProducer().send(destination, content);
+					producer.send(destination, content);
 				}
 
 				/*

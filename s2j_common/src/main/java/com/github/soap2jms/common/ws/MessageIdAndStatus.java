@@ -55,9 +55,9 @@ public class MessageIdAndStatus {
 
 	/**
 	 * Gets the value of the messageId property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getMessageId() {
 		return this.messageId;
@@ -65,9 +65,9 @@ public class MessageIdAndStatus {
 
 	/**
 	 * Gets the value of the status property.
-	 * 
+	 *
 	 * @return possible object is {@link StatusCode }
-	 * 
+	 *
 	 */
 	public StatusCode getStatus() {
 		return this.status;
@@ -75,10 +75,10 @@ public class MessageIdAndStatus {
 
 	/**
 	 * Sets the value of the messageId property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setMessageId(final String value) {
 		this.messageId = value;
@@ -86,10 +86,10 @@ public class MessageIdAndStatus {
 
 	/**
 	 * Sets the value of the status property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link StatusCode }
-	 * 
+	 *
 	 */
 	public void setStatus(final StatusCode value) {
 		this.status = value;
