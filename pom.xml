@@ -5,14 +5,14 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>soap2jms</artifactId>
-	<groupId>com.github.gcontini.soap2jms</groupId>
+	<groupId>com.github.jbricks.soap2jms</groupId>
 	<version>0.0.2-SNAPSHOT</version>
 	<name>Soap2Jms</name>
 	<description />
-	<url>https://gcontini.github.com/soap2jms</url>
+	<url>https://jbricks.github.com/soap2jms</url>
 	<packaging>pom</packaging>
 	<issueManagement>
-		<url>https://github.com/gcontini/soap2jms/issues</url>
+		<url>https://github.com/jbricks/soap2jms/issues</url>
 		<system>GitHub Issues</system>
 	</issueManagement>
 	<licenses>
@@ -23,34 +23,35 @@
 		</license>
 	</licenses>
 	<scm>
-		<url>https://github.com/gcontini/soap2jms</url>
-		<connection>scm:git:git://github.com/gcontini/soap2jms.git</connection>
-		<developerConnection>scm:git:git@github.com:gcontini/soap2jms.git</developerConnection>
+		<url>https://github.com/jbricks/soap2jms</url>
+		<connection>scm:git:git://github.com/jbricks/soap2jms.git</connection>
+		<developerConnection>scm:git:git@github.com:jbricks/soap2jms.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 	<distributionManagement>
 		<site>
 			<id>soap2jms.github1</id>
-			<url>scm:git:ssh://git@github.com/gcontini/soap2jms.git</url>
+			<url>scm:git:ssh://git@github.com/jbricks/soap2jms.git</url>
 		</site>
 	</distributionManagement>
 	<developers>
 		<developer>
 			<email>contini.mailing@gmail.com</email>
 			<name>Gabriele Contini</name>
-			<url></url>
-			<id>gcontini</id>
+			<url>https://it.linkedin.com/in/gabrielecontini</url>
+			<id>jbricks</id>
 		</developer>
 	</developers>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<!-- github.global.server>soap2jms.github</github.global.server -->
 	</properties>
 
 	<ciManagement>
 		<system>travis-ci</system>
-		<url>https://travis-ci.org/gcontini/soap2jms</url>
+		<url>https://travis-ci.org/jbricks/soap2jms</url>
 	</ciManagement>
 
 	<modules>
@@ -62,25 +63,25 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>com.github.gcontini.soap2jms</groupId>
+				<groupId>com.github.jbricks.soap2jms</groupId>
 				<artifactId>s2j_common</artifactId>
 				<version>0.0.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>com.github.gcontini.soap2jms</groupId>
+				<groupId>com.github.jbricks.soap2jms</groupId>
 				<artifactId>s2j_server</artifactId>
 				<version>0.0.2-SNAPSHOT</version>
 				<type>war</type>
 			</dependency>
 			<dependency>
-				<groupId>com.github.gcontini.soap2jms</groupId>
+				<groupId>com.github.jbricks.soap2jms</groupId>
 				<artifactId>s2j_server</artifactId>
 				<version>0.0.2-SNAPSHOT</version>
 				<type>jar</type>
 				<classifier>classes</classifier>
 			</dependency>
 			<dependency>
-				<groupId>com.github.gcontini.soap2jms</groupId>
+				<groupId>com.github.jbricks.soap2jms</groupId>
 				<artifactId>s2j_client</artifactId>
 				<version>0.0.2-SNAPSHOT</version>
 			</dependency>

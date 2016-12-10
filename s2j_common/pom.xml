@@ -15,7 +15,7 @@
 
 	<parent>
 		<artifactId>soap2jms</artifactId>
-		<groupId>com.github.gcontini.soap2jms</groupId>
+		<groupId>com.github.jbricks.soap2jms</groupId>
 		<version>0.0.2-SNAPSHOT</version>
 	</parent>
 
@@ -23,7 +23,7 @@
 	<name>Soap2JmsCommon</name>
 	<description>Common classes shared between Server and Client</description>
 	<packaging>jar</packaging>
-	<url>https://gcontini.github.com/soap2jms/s2j_common</url>
+	<url>https://jbricks.github.com/soap2jms/s2j_common</url>
 	<dependencies>
 		<!-- logging -->
 		<dependency>

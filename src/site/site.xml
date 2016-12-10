@@ -22,7 +22,7 @@
 	<bannerLeft>
 		<name>[soap -> jms]</name>
 		<src>img/soap2jms-banner.png</src>
-		<href>https://gcontini.github.com/soap2jms/index.html</href>
+		<href>https://jbricks.github.com/soap2jms/index.html</href>
 	</bannerLeft>
 	<!-- bannerRight>
 		<name>SourceForge</name>
@@ -52,7 +52,7 @@
 		</head>
 
 		<links>
-			<item name="Github project" href="https://github.com/gcontini/soap2jms" />
+			<item name="Github project" href="https://github.com/jbricks/soap2jms" />
 		</links>
 
 		<breadcrumbs>
@@ -60,7 +60,7 @@
 		</breadcrumbs>
 	
 		<menu name="Community">
-			<item name="GitHub Project" href="https://github.com/gcontini/soap2jms" />
+			<item name="GitHub Project" href="https://github.com/jbricks/soap2jms" />
 			<item name="Team" href="team-list.html" />
 		</menu>
 		<menu name="Documents">

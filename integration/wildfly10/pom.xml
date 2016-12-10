@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<artifactId>soap2jms-integration</artifactId>
-		<groupId>com.github.gcontini.soap2jms.integration-tests</groupId>
+		<groupId>com.github.jbricks.soap2jms.integration-tests</groupId>
 		<version>0.0.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>soap2jms-integration-wildfly10</artifactId>
@@ -15,12 +15,12 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.github.gcontini.soap2jms</groupId>
+			<groupId>com.github.jbricks.soap2jms</groupId>
 			<artifactId>s2j_client</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<!-- dependency>
-			<groupId>com.github.gcontini.soap2jms</groupId>
+			<groupId>com.github.jbricks.soap2jms</groupId>
 			<artifactId>s2j_server</artifactId>
 			<classifier>classes</classifier>
 			<scope>test</scope>
@@ -51,7 +51,7 @@
 			<artifactId>junit</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.github.gcontini.soap2jms</groupId>
+			<groupId>com.github.jbricks.soap2jms</groupId>
 			<artifactId>s2j_server</artifactId>
 			<type>war</type>
 		</dependency>
@@ -88,7 +88,7 @@
       </plugin>
 			<!-- plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-ear-plugin</artifactId> 
 				<version>2.10.1</version> <configuration> <defaultLibBundleDir>APP-INF/lib</defaultLibBundleDir> 
-				<modules> <webModule> <groupId>com.github.gcontini.soap2jms</groupId> <artifactId>s2j_server</artifactId> 
+				<modules> <webModule> <groupId>com.github.jbricks.soap2jms</groupId> <artifactId>s2j_server</artifactId> 
 				<contextRoot>/s2j_server</contextRoot> </webModule> </modules> </configuration> 
 				</plugin -->
 			<plugin>
@@ -131,7 +131,7 @@
 						<deployable>
 							<!-- pingURL>http://localhost:8080/s2j_server/jmsReaderSoap?wsdl</pingURL> 
 							<pingTimeout>120000</pingTimeout> 
-							<groupId>com.github.gcontini.soap2jms</groupId>
+							<groupId>com.github.jbricks.soap2jms</groupId>
 							<artifactId>s2j_server</artifactId>
 							<type>war</type -->
 						</deployable>

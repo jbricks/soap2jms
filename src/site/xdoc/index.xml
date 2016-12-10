@@ -4,13 +4,13 @@
 	<properties>
 		<title>Soap To JMS</title>
 		<author>Gabriele Contini</author>
-		<date>2016-10-05</date>
+		<date>2016-12-05</date>
 	</properties>
 	<body>
-		<section name="Soap -> JMS">
+		<section name="Soap To JMS">
 			<p>
 				Soap2JMS allows to access a JMS queue through a standard SOAP over
-				HTTP web service.
+				HTTP web service. <img src="https://travis-ci.org/jbricks/soap2jms.svg?branch=master" alt="build status"/>
 			</p>
 			<subsection name="Features">
 				<p>

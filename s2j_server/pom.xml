@@ -5,7 +5,7 @@
 
 	<parent>
 		<artifactId>soap2jms</artifactId>
-		<groupId>com.github.gcontini.soap2jms</groupId>
+		<groupId>com.github.jbricks.soap2jms</groupId>
 		<version>0.0.2-SNAPSHOT</version>
 	</parent>
 
@@ -13,10 +13,10 @@
 	<name>Soap2JmsServer</name>
 	<description />
 	<packaging>war</packaging>
-	<url>https://gcontini.github.com/soap2jms/s2j_server</url>
+	<url>https://jbricks.github.com/soap2jms/s2j_server</url>
 	<dependencies>
 		<dependency>
-			<groupId>com.github.gcontini.soap2jms</groupId>
+			<groupId>com.github.jbricks.soap2jms</groupId>
 			<artifactId>s2j_common</artifactId>
 		</dependency>
 		<dependency>
@@ -44,7 +44,7 @@
 			<artifactId>commons-io</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.github.gcontini.soap2jms</groupId>
+			<groupId>com.github.jbricks.soap2jms</groupId>
 			<artifactId>s2j_client</artifactId>
 			<scope>test</scope>
 		</dependency>

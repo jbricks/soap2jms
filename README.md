@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/gcontini/soap2jms.svg?branch=master)](https://travis-ci.org/gcontini/soap2jms)
+[![Build Status](https://travis-ci.org/jbricks/soap2jms.svg?branch=master)](https://travis-ci.org/jbricks/soap2jms)
 
 # Soap2Jms
 
@@ -7,7 +7,7 @@ It allows to read and send messages from/to a JMS queue. Clients don't have to d
 
 It is not to be confused with "Soap over JMS". Soap Over JMS encapsulates a soap message into a JMS envelope. It has the same problems of JMS in terms of interoperability and it requires a JMS client implementation to connect to the server.
 
-Visit the [website](https://gcontini.github.com/soap2jms/index.html) for more informations.
+Visit the [website](https://jbricks.github.com/soap2jms/index.html) for more informations.
 
 ## goals:
  * Simplicity: It is simple to integrate. It has few dependencies. It will be well documented.

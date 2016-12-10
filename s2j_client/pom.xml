@@ -6,17 +6,17 @@
 
 	<parent>
 		<artifactId>soap2jms</artifactId>
-		<groupId>com.github.gcontini.soap2jms</groupId>
+		<groupId>com.github.jbricks.soap2jms</groupId>
 		<version>0.0.2-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>s2j_client</artifactId>
 	<name>Soap2JmsClient</name>
 	<description />
-	<url>https://gcontini.github.com/soap2jms/s2j_client</url>
+	<url>https://jbricks.github.com/soap2jms/s2j_client</url>
 	<dependencies>
 		<dependency>
-			<groupId>com.github.gcontini.soap2jms</groupId>
+			<groupId>com.github.jbricks.soap2jms</groupId>
 			<artifactId>s2j_common</artifactId>
 		</dependency>
 		<dependency>
