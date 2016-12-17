@@ -1,13 +1,13 @@
 [![Build Status](https://travis-ci.org/jbricks/soap2jms.svg?branch=master)](https://travis-ci.org/jbricks/soap2jms)
 
-# Soap2Jms
+#Jms Over Soap
 
 This project allows to access a JMS queue through a standard SOAP over HTTP web service.
 It allows to read and send messages from/to a JMS queue. Clients don't have to depend on any JMS implementation libraries. They are simple JAX-WS web service clients, that can be supported by any JAX-WS implementation (Apache CXF for instance).
 
 It is not to be confused with "Soap over JMS". Soap Over JMS encapsulates a soap message into a JMS envelope. It has the same problems of JMS in terms of interoperability and it requires a JMS client implementation to connect to the server.
 
-Visit the [website](https://jbricks.github.com/soap2jms/index.html) for more informations.
+Visit the [website](https://jbricks.github.io/soap2jms/index.html) for more informations.
 
 ## goals:
  * Simplicity: It is simple to integrate. It has few dependencies. It will be well documented.
@@ -15,19 +15,6 @@ Visit the [website](https://jbricks.github.com/soap2jms/index.html) for more inf
  * Interoperability: It is independent from the specific JMS provider used. It can work in any application, without any change. Clients can be coded in languages other than java (.NET ...). Web services are WS-I Basic Profile 1 compliant. 
 
 
-## Current implementation status
-
-The project is under active development (Dec/2016). 
-
-Read message from a queue through a SOAP web service, and sending a message are completed (Text,Map).
- 
-These points will need to be addressed: 
- - Support for BytesMessages, StreamMessages and ObjectMessages.
- - Cleaning up error handling.
- - Documentation / web site 
- - make soap2jms simply configurable 
- - downgrade the JavaEE version required to 5 (?) ... 
- 
 
 # Similar projects
 

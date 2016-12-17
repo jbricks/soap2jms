@@ -20,7 +20,7 @@
 		</fluidoSkin>
 	</custom>
 	<bannerLeft>
-		<name>[soap -> jms]</name>
+		<name>[soap over jms]</name>
 		<src>img/soap2jms-banner.png</src>
 		<href>https://jbricks.github.com/soap2jms/index.html</href>
 	</bannerLeft>
@@ -38,7 +38,7 @@
 	<body>
 		<head><![CDATA[
 			<link rel="shortcut icon" href="/favicon.ico" />
-			<meta name="keywords" content="JMS,Soap,Integration,messaging,SOA,Open Source"></meta>
+			<meta name="keywords" content="soap over jms,JMS,Soap,Integration,messaging,SOA,Open Source"></meta>
 			<meta name="description"
 				content="Access a JMS queue through a SOAP over HTTP web service."></meta>
 			<script type="text/javascript">
