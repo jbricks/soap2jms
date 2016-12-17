@@ -40,7 +40,7 @@
 			<link rel="shortcut icon" href="/favicon.ico" />
 			<meta name="keywords" content="JMS,Soap,Integration,messaging,SOA,Open Source"></meta>
 			<meta name="description"
-				content="Access a JMS queue through a standard SOAP over HTTP web service."></meta>
+				content="Access a JMS queue through a SOAP over HTTP web service."></meta>
 			<script type="text/javascript">
 				  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 				  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

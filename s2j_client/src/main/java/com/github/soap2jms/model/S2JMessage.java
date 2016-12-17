@@ -13,26 +13,43 @@ import javax.jms.MessageFormatException;
 
 import org.apache.commons.collections4.iterators.IteratorEnumeration;
 
-import com.github.soap2jms.common.ws.WsJmsMessage;
-
 public abstract class S2JMessage implements Message {
 
+	protected DataHandler body;
+	private final String clientId;
 	private final Map<String, Object> headers;
-	protected final WsJmsMessage message;
+	private String jmsCorrelationId;
+	private Integer jmsDeliveryMode;
+	private long jmsDeliveryTime;
+	private long jmsExpiration;
+	private String jmsMessageId;
+	private Integer jmsPriority;
+	boolean jmsRedelivered;
+	private long jmsTimestamp;
+	private String jmsType;
+	private final String messageClass;
 
-	protected S2JMessage(final String correlationId, final int deliveryMode, final long expiration,
-			final Map<String, Object> headers, final String messageId, final String messageClass,
-			final Integer priority, final boolean redelivered, final long timestamp, final String type,
-			final DataHandler body) {
-		this.message = new WsJmsMessage(correlationId, deliveryMode, expiration, null, messageId, messageClass,
-				priority, redelivered, timestamp, type, body);
+	public S2JMessage(final String jmsCorrelationId, final int jmsDeliveryMode, final long jmsExpiration,
+			final Map<String, Object> headers, final String clientId, final String jmsMessageId,
+			final String messageClass, final Integer jmsPriority, final boolean jmsRedelivered, final long jmsTimestamp,
+			final String type, final DataHandler body) {
+		this.jmsCorrelationId = jmsCorrelationId;
+		this.jmsDeliveryMode = jmsDeliveryMode;
+		this.jmsExpiration = jmsExpiration;
 		this.headers = headers;
+		this.jmsMessageId = jmsMessageId;
+		this.clientId = clientId;
+		this.messageClass = messageClass;
+		this.jmsPriority = jmsPriority;
+		this.jmsRedelivered = jmsRedelivered;
+		this.jmsTimestamp = jmsTimestamp;
+		this.jmsType = type;
+		this.body = body;
 	}
 
-	protected S2JMessage(final String messageClass, final String messageId, final DataHandler body) {
-		this.message = new WsJmsMessage(null, 0, 0, null, messageId, messageClass, 0, false, System.currentTimeMillis(),
-				null, body);
-		this.headers = new HashMap<>();
+	protected S2JMessage(final String messageClass, final String clientId, final DataHandler body) {
+		this(null, 0, 0, new HashMap<String, Object>(), clientId, null, messageClass, 0, false,
+				System.currentTimeMillis(), null, body);
 	}
 
 	@Override
@@ -43,7 +60,7 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public void clearBody() throws JMSException {
-		this.message.setBody(null);
+		this.body = null;
 	}
 
 	@Override
@@ -66,6 +83,10 @@ public abstract class S2JMessage implements Message {
 		return getProperty(name, Byte.class);
 	}
 
+	public String getClientId() {
+		return this.clientId;
+	}
+
 	@Override
 	public double getDoubleProperty(final String name) throws JMSException {
 		return getProperty(name, Double.class);
@@ -83,22 +104,22 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public String getJMSCorrelationID() throws JMSException {
-		return this.message.getCorrelationId();
+		return this.jmsCorrelationId;
 	}
 
 	@Override
 	public byte[] getJMSCorrelationIDAsBytes() throws JMSException {
-		return null;
+		return this.jmsCorrelationId == null ? null : this.jmsCorrelationId.getBytes();
 	}
 
 	@Override
 	public int getJMSDeliveryMode() throws JMSException {
-		return this.message.getDeliveryMode();
+		return this.jmsDeliveryMode;
 	}
 
 	@Override
 	public long getJMSDeliveryTime() throws JMSException {
-		return 0;
+		return this.jmsDeliveryTime;
 	}
 
 	@Override
@@ -109,22 +130,22 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public long getJMSExpiration() throws JMSException {
-		return this.message.getExpiration();
+		return this.jmsExpiration;
 	}
 
 	@Override
 	public String getJMSMessageID() throws JMSException {
-		return this.message.getMessageId();
+		return this.jmsMessageId;
 	}
 
 	@Override
 	public int getJMSPriority() throws JMSException {
-		return this.message.getPriority() == null ? 0 : this.message.getPriority();
+		return this.jmsPriority;
 	}
 
 	@Override
 	public boolean getJMSRedelivered() throws JMSException {
-		return this.message.isRedelivered();
+		return this.jmsRedelivered;
 	}
 
 	@Override
@@ -134,12 +155,12 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public long getJMSTimestamp() throws JMSException {
-		return this.message.getTimestamp();
+		return this.jmsTimestamp;
 	}
 
 	@Override
 	public String getJMSType() throws JMSException {
-		return this.message.getType();
+		return this.jmsType;
 	}
 
 	@Override
@@ -238,24 +259,22 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public void setJMSCorrelationID(final String correlationID) throws JMSException {
-		this.message.setCorrelationId(correlationID);
+		this.jmsCorrelationId = correlationID;
 	}
 
 	@Override
 	public void setJMSCorrelationIDAsBytes(final byte[] correlationID) throws JMSException {
-		// TODO Auto-generated method stub
-
+		this.jmsCorrelationId = new String(correlationID);
 	}
 
 	@Override
 	public void setJMSDeliveryMode(final int deliveryMode) throws JMSException {
-		this.message.setDeliveryMode(deliveryMode);
+		this.jmsDeliveryMode = deliveryMode;
 	}
 
 	@Override
 	public void setJMSDeliveryTime(final long deliveryTime) throws JMSException {
-		// TODO Auto-generated method stub
-
+		this.jmsDeliveryTime = deliveryTime;
 	}
 
 	@Override
@@ -265,23 +284,23 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public void setJMSExpiration(final long expiration) throws JMSException {
-		this.message.setExpiration(expiration);
+		this.jmsExpiration = expiration;
 
 	}
 
 	@Override
 	public void setJMSMessageID(final String id) throws JMSException {
-		this.message.setMessageId(id);
+		this.jmsMessageId = id;
 	}
 
 	@Override
 	public void setJMSPriority(final int priority) throws JMSException {
-		this.message.setPriority(priority);
+		this.jmsPriority = priority;
 	}
 
 	@Override
 	public void setJMSRedelivered(final boolean redelivered) throws JMSException {
-		this.message.setRedelivered(redelivered);
+		this.jmsRedelivered = redelivered;
 
 	}
 
@@ -293,13 +312,13 @@ public abstract class S2JMessage implements Message {
 
 	@Override
 	public void setJMSTimestamp(final long timestamp) throws JMSException {
-		this.message.setTimestamp(timestamp);
+		this.jmsTimestamp = timestamp;
 
 	}
 
 	@Override
 	public void setJMSType(final String type) throws JMSException {
-		this.message.setType(type);
+		this.jmsType = type;
 
 	}
 

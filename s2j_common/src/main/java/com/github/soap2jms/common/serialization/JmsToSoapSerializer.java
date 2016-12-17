@@ -142,7 +142,7 @@ public class JmsToSoapSerializer {
 		return body;
 	}
 
-	public WsJmsMessage jmsToSoap(final Message message) throws JMSException {
+	public WsJmsMessage jmsToSoap(final Message message, JMSImplementation impl) throws JMSException {
 		JMSMessageClassEnum messageType = JMSMessageClassEnum.UNSUPPORTED;
 
 		for (final Map.Entry<Class<? extends Message>, JMSMessageClassEnum> entry : ENUM_BY_CLASS.entrySet()) {
@@ -152,30 +152,28 @@ public class JmsToSoapSerializer {
 		}
 
 		final List<Headers> headers = convertHeaders(message);
-
+		String clientId = null;
+		if (JMSImplementation.ARTEMIS_ACTIVE_MQ.equals(impl)
+				&& message.propertyExists(SoapToJmsSerializer.ACTIVEMQ_DUPLICATE_ID)) {
+			clientId = message.getStringProperty(SoapToJmsSerializer.ACTIVEMQ_DUPLICATE_ID);
+		}
 		final DataHandler bodyStream = extractBody(message, messageType);
 
-		final WsJmsMessage wsmessage = new WsJmsMessage(message.getJMSCorrelationID(), message.getJMSDeliveryMode(),
-				message.getJMSExpiration(), headers, // headers
-				message.getJMSMessageID(), messageType.name(), message.getJMSPriority(), message.getJMSRedelivered(), //
-				message.getJMSTimestamp(), message.getJMSType(), // body
-				bodyStream);
+		final WsJmsMessage wsmessage = new WsJmsMessage(headers, message.getJMSCorrelationID(),
+				message.getJMSDeliveryMode(), message.getJMSDeliveryTime(), message.getJMSExpiration(), // expiration
+				message.getJMSMessageID(), message.getJMSPriority(), message.getJMSRedelivered(), //
+				message.getJMSTimestamp(), message.getJMSType(), //
+				clientId, messageType.toString(), bodyStream);
 		return wsmessage;
 	}
 
-	public WsJmsMessageAndStatus jmsToSoapMessageAndStatus(final Message message) throws JMSException {
-		final WsJmsMessage wsmessage = jmsToSoap(message);
+	public WsJmsMessageAndStatus jmsToSoapMessageAndStatus(final Message message,JMSImplementation jmsImplementation) throws JMSException {
+		final WsJmsMessage wsmessage = jmsToSoap(message, jmsImplementation);
 
 		return new WsJmsMessageAndStatus(wsmessage, new StatusCode("OK", null));
 
 	}
 
-	public List<WsJmsMessage> messagesToWs(final Message[] messages) throws JMSException {
-		final List<WsJmsMessage> wsmessages = new ArrayList<>(messages.length);
-		for (final Message message : messages) {
-			wsmessages.add(jmsToSoap(message));
-		}
-		return wsmessages;
-	}
+
 
 }

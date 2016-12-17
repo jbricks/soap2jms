@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.github.soap2jms.common.StatusCodeEnum;
 import com.github.soap2jms.common.WsExceptionClass;
+import com.github.soap2jms.common.serialization.JMSImplementation;
 import com.github.soap2jms.common.serialization.JMSMessageFactory;
 import com.github.soap2jms.common.serialization.SoapToJmsSerializer;
 import com.github.soap2jms.common.ws.MessageIdAndStatus;
@@ -46,13 +47,13 @@ public class SenderSOAPImpl implements SenderSoap2Jms {
 	}
 
 	@Override
-	public List<MessageIdAndStatus> sendMessages(final String queueName, final String messageSetIdentifier,
+	public List<MessageIdAndStatus> sendMessages(final String clientIdentifier,final String queueName, 
 			final List<WsJmsMessage> wsMessages) throws WsJmsException {
 
 		final JMSMessageFactory jmsMessageFactory = this.qi.getJmsMessageFactory();
 		final Message[] jmsMessages = new Message[wsMessages.size()];
 		for (int i = 0; i < wsMessages.size(); i++) {
-			jmsMessages[i] = this.serializationUtils.convertMessage(jmsMessageFactory, wsMessages.get(i));
+			jmsMessages[i] = this.serializationUtils.convertMessage(jmsMessageFactory, wsMessages.get(i), JMSImplementation.ARTEMIS_ACTIVE_MQ);
 		}
 		IdAndStatus[] result = null;
 		try {

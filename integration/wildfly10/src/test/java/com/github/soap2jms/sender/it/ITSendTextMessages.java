@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.soap2jms.Constants;
+import com.github.soap2jms.common.serialization.SoapToJmsSerializer;
 import com.github.soap2jms.model.ResponseStatus;
 import com.github.soap2jms.model.S2JMessage;
 import com.github.soap2jms.model.S2JTextMessage;
@@ -61,7 +62,7 @@ public class ITSendTextMessages {
 	 * the server generates two different messageIds for these messages.
 	 */
 	@Test
-	public void testSendTextMessageServerGeneratedId() throws Exception {
+	public void sendTextMessageServerGeneratedId() throws Exception {
 		// TODO: map jms/soap2jms.reader to java:/comp/env/soap2jms in project
 		// project_customization (web.xml).
 		S2JTextMessage s2jt = new S2JTextMessage(null, Constants.DEFAULT_CONTENT);
@@ -87,7 +88,7 @@ public class ITSendTextMessages {
 	 * The server must deduplicate the message and queue only one.
 	 */
 	@Test
-	public void testDeduplicationWithClientMessageId() throws Exception {
+	public void deduplicationWithClientMessageId() throws Exception {
 		S2JTextMessage s2jt = new S2JTextMessage("1", Constants.DEFAULT_CONTENT);
 		ResponseStatus responseStatus = wsClient.sendMessages("soap2jms", new S2JMessage[] { s2jt });
 		assertEquals("ErrorCount", 0, responseStatus.getErrorCount());
@@ -101,7 +102,28 @@ public class ITSendTextMessages {
 		assertTrue("Message instanceof textMessage", message1 instanceof TextMessage);
 		TextMessage textMessage = (TextMessage) message1;
 		assertEquals("message content", DEFAULT_CONTENT, textMessage.getText());
-		assertEquals("Message has client Id", "1", textMessage.getJMSMessageID());
+		assertEquals("Message has client Id", "1", textMessage.getStringProperty(SoapToJmsSerializer.ACTIVEMQ_DUPLICATE_ID));
+	}
+
+	/**
+	 * Send one message with a client generated JMS id, check the message is
+	 * queued with the same jms message id.
+	 * 
+	 * The server must deduplicate the message and queue only one.
+	 */
+	@Test
+	public void clientMessageIdIsPreserved() throws Exception {
+		S2JTextMessage s2jt = new S2JTextMessage("3", Constants.DEFAULT_CONTENT);
+		ResponseStatus responseStatus = wsClient.sendMessages("soap2jms", new S2JMessage[] { s2jt });
+		assertEquals("ErrorCount", 0, responseStatus.getErrorCount());
+		assertEquals("Messages sent", 1, responseStatus.getTotalCount());
+		Message[] serverMessages = consumeMessages();
+		assertEquals("messages on server", 1, serverMessages.length);
+		Message message1 = serverMessages[0];
+		assertTrue("Message instanceof textMessage", message1 instanceof TextMessage);
+		TextMessage textMessage = (TextMessage) message1;
+		assertEquals("message content", DEFAULT_CONTENT, textMessage.getText());
+		assertEquals("Message has client Id", "3", textMessage.getStringProperty(SoapToJmsSerializer.ACTIVEMQ_DUPLICATE_ID));
 	}
 
 	private Message[] consumeMessages() throws NamingException {

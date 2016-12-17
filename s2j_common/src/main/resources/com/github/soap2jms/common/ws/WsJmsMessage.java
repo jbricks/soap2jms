@@ -3,8 +3,6 @@ package com.github.soap2jms.common.ws;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.activation.DataHandler;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -87,28 +85,6 @@ public class WsJmsMessage {
 	@XmlElement(required = true)
 	protected String messageClass;
 	protected DataHandler body;
-
-	public WsJmsMessage() {
-		
-	}
-	
-	public WsJmsMessage(List<Headers> headers, String jmsCorrelationId, int jmsDeliveryMode, Long jmsDeliveryTime,
-			long jmsExpiration, String jmsMessageId, Integer jmsPriority, boolean jmsRedelivered, long jmsTimestamp,
-			String jmsType, String clientId, String messageClass, DataHandler body) {
-		this.headers = headers;
-		this.jmsCorrelationId = jmsCorrelationId;
-		this.jmsDeliveryMode = jmsDeliveryMode;
-		this.jmsDeliveryTime = jmsDeliveryTime;
-		this.jmsExpiration = jmsExpiration;
-		this.jmsMessageId = jmsMessageId;
-		this.jmsPriority = jmsPriority;
-		this.jmsRedelivered = jmsRedelivered;
-		this.jmsTimestamp = jmsTimestamp;
-		this.jmsType = jmsType;
-		this.clientId = clientId;
-		this.messageClass = messageClass;
-		this.body = body;
-	}
 
 	/**
 	 * Gets the value of the headers property.
@@ -356,7 +332,7 @@ public class WsJmsMessage {
 	 * 
 	 * @return possible object is byte[]
 	 */
-	public DataHandler getBody() {
+	public byte[] getBody() {
 		return body;
 	}
 
@@ -366,7 +342,7 @@ public class WsJmsMessage {
 	 * @param value
 	 *            allowed object is byte[]
 	 */
-	public void setBody(DataHandler value) {
+	public void setBody(byte[] value) {
 		this.body = value;
 	}
 
@@ -401,15 +377,6 @@ public class WsJmsMessage {
 		protected String key;
 		@XmlElement(required = true)
 		protected String value;
-
-		public Headers() {
-
-		}
-
-		public Headers(String key, String value) {
-			this.key = key;
-			this.value = value;
-		}
 
 		/**
 		 * Gets the value of the key property.

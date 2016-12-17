@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>Soap To JMS Design - Reliability </title>
+		<author>Gabriele Contini</author>
+		<date>2016-10-05</date>
+	</properties>
+	<body>
+		<section name="Exception design">
+			<ul>
+				<li>S2JException : root of the hierarchy</li>
+				<li>
+					<ul>
+						<li>S2JProtocolException : This exception is threw when client and server 
+							are not the same version or some error marshalling/unmarshalling parameters happened.</li>
+						<li>S2JConfigurationException : This exception is threw when client parameters are not correct (the queue doesn't exist...).</li>
+						<li>S2JServerException : an exception happened server side while operating (none of the messages was delivered/acknowledge)</li>
+					</ul>
+				</li>
+			</ul>
+		</section>
+	</body>
+</document>

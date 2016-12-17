@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.jms.JMSException;
 import javax.jms.Message;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.github.soap2jms.common.JMSMessageClassEnum;
 import com.github.soap2jms.common.PropertyTypeEnum;
 import com.github.soap2jms.common.S2JProtocolException;
@@ -15,6 +17,8 @@ import com.github.soap2jms.common.ws.WsJmsMessage;
 import com.github.soap2jms.common.ws.WsJmsMessageAndStatus;
 
 public class SoapToJmsSerializer {
+	public static final String ACTIVEMQ_DUPLICATE_ID = "_AMQ_DUPL_ID";
+
 	public static Object deserializeValue(final String valueToBeParsed) {
 		final int separatorIndex = valueToBeParsed.indexOf(";");
 		if (separatorIndex == -1) {
@@ -76,26 +80,29 @@ public class SoapToJmsSerializer {
 		this.messageCreationByMessageType.put(JMSMessageClassEnum.MAP, new MapMessageStrategy());
 	}
 
-	public Message convertMessage(final JMSMessageFactory jmsMessageFactory, final WsJmsMessage wsMessage) {
-		return convertSingleMessage(jmsMessageFactory, wsMessage);
+	public Message convertMessage(final JMSMessageFactory jmsMessageFactory, final WsJmsMessage wsMessage,
+			JMSImplementation jmsImplementation) {
+		return convertSingleMessage(jmsMessageFactory, wsMessage, jmsImplementation);
 	}
 
 	public Message[] convertMessages(final JMSMessageFactory messageFactory,
-			final List<WsJmsMessageAndStatus> wsResponse) throws S2JProtocolException {
+			final List<WsJmsMessageAndStatus> wsResponse, JMSImplementation jmsImplementation)
+			throws S2JProtocolException {
 		final Message[] messages = new Message[wsResponse.size()];
 
 		for (int i = 0; i < wsResponse.size(); i++) {
 			// FIXME status
 			final WsJmsMessageAndStatus messageAndStatus = wsResponse.get(i);
 			final WsJmsMessage wsMessage = messageAndStatus.getWsJmsMessage();
-			final Message message = convertSingleMessage(messageFactory, wsMessage);
+			final Message message = convertSingleMessage(messageFactory, wsMessage, jmsImplementation);
 			messages[i] = message;
 		}
 
 		return messages;
 	}
 
-	public Message convertSingleMessage(final JMSMessageFactory messageFactory, final WsJmsMessage wsMessage) {
+	public Message convertSingleMessage(final JMSMessageFactory messageFactory, final WsJmsMessage wsMessage,
+			JMSImplementation implementation) {
 		final String messageType = wsMessage.getMessageClass();
 		final JMSMessageClassEnum messageTypeEnum = JMSMessageClassEnum.valueOf(messageType);
 		final MessageAndBodyStrategy creationStrategy = this.messageCreationByMessageType.get(messageTypeEnum);
@@ -106,18 +113,24 @@ public class SoapToJmsSerializer {
 		final Message message = creationStrategy.deserializeBody(messageFactory, wsMessage);
 		fillHeaders(message, wsMessage.getHeaders());
 		try {
-			if (wsMessage.getCorrelationId() != null) {
-				message.setJMSCorrelationID(wsMessage.getCorrelationId());
+			if (wsMessage.getJmsCorrelationId() != null) {
+				message.setJMSCorrelationID(wsMessage.getJmsCorrelationId());
 			}
-			if (wsMessage.getMessageId() != null) {
-				message.setJMSMessageID(wsMessage.getMessageId());
+			if (wsMessage.getJmsMessageId() != null) {
+				message.setJMSMessageID(wsMessage.getJmsMessageId());
 			}
-			message.setJMSTimestamp(wsMessage.getTimestamp());
-			message.setJMSExpiration(wsMessage.getExpiration());
-			message.setJMSPriority(wsMessage.getPriority());
-			message.setJMSDeliveryMode(wsMessage.getDeliveryMode());
-			message.setJMSRedelivered(wsMessage.isRedelivered());
-			message.setJMSType(wsMessage.getType());
+			message.setJMSDeliveryTime(wsMessage.getJmsDeliveryTime());
+			message.setJMSExpiration(wsMessage.getJmsExpiration());
+			message.setJMSPriority(wsMessage.getJmsPriority());
+			message.setJMSRedelivered(wsMessage.isJmsRedelivered());
+			message.setJMSTimestamp(wsMessage.getJmsTimestamp());
+			message.setJMSType(wsMessage.getJmsType());
+			final String clientId = wsMessage.getClientId();
+			if (JMSImplementation.ARTEMIS_ACTIVE_MQ.equals(implementation) && StringUtils.isNotEmpty(clientId)) {
+				message.setStringProperty(ACTIVEMQ_DUPLICATE_ID, clientId);
+			} else if (JMSImplementation.NONE.equals(implementation)) {
+				message.setJMSDeliveryMode(wsMessage.getJmsDeliveryMode());
+			}
 		} catch (final JMSException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

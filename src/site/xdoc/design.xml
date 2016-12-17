@@ -2,112 +2,73 @@
 <document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
 	<properties>
-		<title>Soap To JMS</title>
+		<title>Design - Reliability</title>
 		<author>Gabriele Contini</author>
 		<date>2016-10-05</date>
 	</properties>
 	<body>
-		<section name="Soap -> JMS">
+		<section name="Reliability">
 			<p>
-				The methods are "repeatable" (idempotent), if
-						the client is properly coded it can guarantee message delivery.
+				When implementing Soap2Jms a special attention has been placed to
+				reliability (the ability of the system to deliver messages over the
+				time) and resilience to temporary network failures. 
+				JMS has built-in error recovery features, implementing the
+				same feature using SOAP over HTTP requires extra coding effort.
 			</p>
-			<subsection name="Features">
+			<subsection name="Sending messages to a queue">
 				<p>
-					Main features of this library are:
+					A good reading on message sending can be found in the
+					<a
+						href="https://activemq.apache.org/artemis/docs/1.0.0/duplicate-detection.html">ActiveMQ guide</a>
+					.
+					Below an extract of the most important part:
 				</p>
-				<ul>
-					<li>It allows to read messages from a JMS queue using a SOAP over
-						HTTP web service.
-					</li>
-					<li>It allows to send messages to a JMS queue.
-					</li>
-					<li>It is reliable. The methods are "repeatable" (idempotent), if
-						the client is properly coded
-						it can acheive
-						See the design section for more information.
-					</li>
-				</ul>
+				<blockquote>
+					<p>When sending messages from a client to a server, if the target
+						server or connection fails sometime after sending the message, but
+						before the sender receives a response that the send (or commit)
+						was processed successfully then the sender cannot know for sure if
+						the message was sent successfully to the address.
+					</p>
+					<p>If the target server or connection failed after the send was
+						received and processed but before the response was sent back then
+						the message will have been sent to the address successfully, but
+						if the target server or connection failed before the send was
+						received
+						and finished processing then it will not have been sent to
+						the address successfully. From the senders point of view it's not
+						possible to distinguish these two cases.
+					</p>
+					<p>
+						When the server recovers this leaves the client in a difficult
+						situation. It knows the target server failed, but it does not know
+						if the last message reached its destination ok. If it decides to
+						resend the last message, then that could result in a duplicate
+						message being sent to the address.
+					</p>
+				</blockquote>
 				<p>
-					Clients don't have to depend on any JMS implementation libraries.
-					They are simple JAX-WS web service clients, that can be supported
-					by any JAX-WS implementation
-					(Any J2EE container or Apache CXF if
-					you
-					are in a standalone application).
-				</p>
-				<p>
-					It is not to be confused with "Soap over JMS".
-					Soap Over JMS
-					encapsulates a soap message into a JMS envelope.
-					It has the same
-					problems of JMS in terms of interoperability and it
-					requires a JMS
-					client implementation to connect to the server. In other words the
-					client must have the JMS client libraries of the right version (eg.
-					"jboss-client.jar")
+					What has been implemented in Soap2Jms is an Enterprise Pattern
+					called
+					<a
+						href="http://www.enterpriseintegrationpatterns.com/patterns/messaging/IdempotentReceiver.html">
+						Idempotent Receiver
+					</a>
+					.
+					The client can resend the message and only one copy will be placed
+					in the destination queue.
 				</p>
 			</subsection>
-			<subsection name="Requirements">
-				<p>Server requirements:</p>
-				<ul>
-					<li>Java 7/8</li>
-					<li>Jms 2.0, CDI (JavaEE 6)</li>
-					<li>Currently tested in wildfly 10. Any JavaEE 6 container should
-						be supported.</li>
-				</ul>
-				<p>In order to use the pre-built client</p>
-				<ul>
-					<li>Java 7/8</li>
-					<li>Any JAX-WS implementation (Apache CXF).</li>
-				</ul>
-				Clients that doesn't fulfill the requirements (eg. Axis or .NET)
-				must implement a client starting from the wsdl.
+			<subsection name="Duplicate message detection">
+				<p>
+					What we try to acheive is that each message is put exaclty once
+					in the destination queue.
+				</p>
+				<p>TODO: client generated id. Automatic generated id.</p>
 			</subsection>
-			<subsection name="What's next?">
-				<p>Have a 5 minutes tour of the features:</p>
+			<subsection name="References">
 				<ul>
-					<li>
-						Read the introduction on how to
-						<a href="OutputStream_to_InputStream.html">
-							'convert' an OutputStream into an
-							InputStream
-						</a>
-						.
-					</li>
-					<li>
-						Have a quick look at the
-						<a href="user_guide/user_guide.html">user guide</a>
-						, to have an overview of all the functions.
-					</li>
-					<li>
-						Learn how to
-						<a href="install.html">add the library</a>
-						to your project.
-					</li>
-					<li>
-						Post your doubts on the
-						<a href="http://sourceforge.net/p/io-tools/easystream/discussion">
-							users forum
-						</a>
-						. We will be glad to help you, and to answer your questions!
-						The
-						forum is moderated, and it has very few messages per year.
-						(Please
-						don't contact project administrators on private
-						email, your doubts
-						might be useful to other users.)
-					</li>
-					<li>Tell us your ideas. We're ready to implement them!
-					</li>
-					<li>
-						Show us your appreciation! Like us on Google+, write a
-						positive
-						<a
-							href="http://sourceforge.net/projects/easystream.io-tools.p/reviews/new">
-							review on SourceForge
-						</a>
-						, give us feedbacks.
+					<li>Brewer's theorem: https://en.wikipedia.org/wiki/CAP_theorem
 					</li>
 				</ul>
 			</subsection>

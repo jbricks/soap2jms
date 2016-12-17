@@ -1,5 +1,10 @@
 package com.github.soap2jms.model;
 
+/**
+ * This exception is threw when client parameters are not correct (the queue
+ * doesn't exist...).
+ *
+ */
 public class S2JConfigurationException extends S2JException {
 
 	/**

@@ -2,7 +2,7 @@
 <document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
 	<properties>
-		<title>Soap To JMS</title>
+		<title>Integrate SOAP over HTTP and Message Queue.</title>
 		<author>Gabriele Contini</author>
 		<date>2016-12-05</date>
 	</properties>
@@ -10,7 +10,7 @@
 		<section name="Soap To JMS">
 			<img src="https://travis-ci.org/jbricks/soap2jms.svg?branch=master" alt="build status" class="block-right"/>
 			<p>
-				Soap2JMS allows to access a JMS queue through a standard SOAP over
+				Soap2JMS integrates SOAP over HTTP and Message Queues allowing to access a JMS queue through a standard SOAP over
 				HTTP web service. 
 			</p>
 			<subsection name="Features">

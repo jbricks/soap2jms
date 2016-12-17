@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -19,12 +20,8 @@
 			<artifactId>s2j_client</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- dependency>
-			<groupId>com.github.jbricks.soap2jms</groupId>
-			<artifactId>s2j_server</artifactId>
-			<classifier>classes</classifier>
-			<scope>test</scope>
-		</dependency -->
+		<!-- dependency> <groupId>com.github.jbricks.soap2jms</groupId> <artifactId>s2j_server</artifactId> 
+			<classifier>classes</classifier> <scope>test</scope> </dependency -->
 		<dependency>
 			<groupId>org.wildfly</groupId>
 			<artifactId>wildfly-jms-client-bom</artifactId>
@@ -70,22 +67,14 @@
 					</execution>
 				</executions>
 			</plugin>
-			      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>3.0.0</version>
-        <!--configuration>
-          <overlays>
-            <overlay>
-              <groupId>com.example.projects</groupId>
-              <artifactId>my-webapp</artifactId>
-            </overlay>
-            <overlay>
-              
-            </overlay>
-          </overlays>
-        </configuration -->
-      </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.0.0</version>
+				<!--configuration> <overlays> <overlay> <groupId>com.example.projects</groupId> 
+					<artifactId>my-webapp</artifactId> </overlay> <overlay> </overlay> </overlays> 
+					</configuration -->
+			</plugin>
 			<!-- plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-ear-plugin</artifactId> 
 				<version>2.10.1</version> <configuration> <defaultLibBundleDir>APP-INF/lib</defaultLibBundleDir> 
 				<modules> <webModule> <groupId>com.github.jbricks.soap2jms</groupId> <artifactId>s2j_server</artifactId> 
@@ -129,11 +118,9 @@
 
 					<deployables>
 						<deployable>
-							<!-- pingURL>http://localhost:8080/s2j_server/jmsReaderSoap?wsdl</pingURL> 
-							<pingTimeout>120000</pingTimeout> 
-							<groupId>com.github.jbricks.soap2jms</groupId>
-							<artifactId>s2j_server</artifactId>
-							<type>war</type -->
+							<pingURL>http://localhost:8080/soap2jms-integration-wildfly10/soapToJmsReaderService?wsdl</pingURL>
+							<pingTimeout>120000</pingTimeout> <!-- groupId>com.github.jbricks.soap2jms</groupId> <artifactId>s2j_server</artifactId> 
+								<type>war</type -->
 						</deployable>
 					</deployables>
 				</configuration>

@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import com.github.soap2jms.common.StatusCodeEnum;
 import com.github.soap2jms.common.WsExceptionClass;
+import com.github.soap2jms.common.serialization.JMSImplementation;
 import com.github.soap2jms.common.serialization.JmsToSoapSerializer;
 import com.github.soap2jms.common.ws.MessageIdAndStatus;
 import com.github.soap2jms.common.ws.RetrieveMessageResponseType;
@@ -64,7 +65,8 @@ public class ReaderSOAPImpl implements ReaderSoap2Jms {
 			result.setComplete(!messages.moreMessages);
 
 			for (final Message msg : messages.result) {
-				result.getS2JMessageAndStatus().add(this.serializationUtils.jmsToSoapMessageAndStatus(msg));
+				result.getS2JMessageAndStatus().add(
+						this.serializationUtils.jmsToSoapMessageAndStatus(msg, JMSImplementation.ARTEMIS_ACTIVE_MQ));
 			}
 		} catch (final JMSException e) {
 			LOG.error("JMS error processing [" + queueName + "] filter[" + filter + "]", e);

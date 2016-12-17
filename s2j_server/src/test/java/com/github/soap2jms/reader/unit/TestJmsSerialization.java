@@ -14,6 +14,7 @@ import javax.jms.Message;
 import org.junit.Test;
 
 import com.github.soap2jms.common.S2JProtocolException;
+import com.github.soap2jms.common.serialization.JMSImplementation;
 import com.github.soap2jms.common.serialization.JmsToSoapSerializer;
 import com.github.soap2jms.common.serialization.SoapToJmsSerializer;
 import com.github.soap2jms.common.ws.RetrieveMessageResponseType;
@@ -27,11 +28,11 @@ public class TestJmsSerialization {
 
 	private S2JMessage serializeAndDeserializeMessage(final Message serverMessage)
 			throws JMSException, S2JProtocolException {
-		final WsJmsMessageAndStatus jms2soap = new JmsToSoapSerializer().jmsToSoapMessageAndStatus(serverMessage);
+		final WsJmsMessageAndStatus jms2soap = new JmsToSoapSerializer().jmsToSoapMessageAndStatus(serverMessage, JMSImplementation.ARTEMIS_ACTIVE_MQ);
 		final RetrieveMessageResponseType wsdlResponse = new RetrieveMessageResponseType();
 		wsdlResponse.getS2JMessageAndStatus().add(jms2soap);
 		final Message[] convertMessages = new SoapToJmsSerializer().convertMessages(new ClientMessageFactory(),
-				wsdlResponse.getS2JMessageAndStatus());
+				wsdlResponse.getS2JMessageAndStatus(), JMSImplementation.ARTEMIS_ACTIVE_MQ);
 		assertEquals("Deserialized message num", 1, convertMessages.length);
 		final S2JMessage message = (S2JMessage) convertMessages[0];
 		return message;

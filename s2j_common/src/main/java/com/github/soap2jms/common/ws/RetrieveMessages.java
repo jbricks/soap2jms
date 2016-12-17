@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
+ *         &lt;element name="clientIdentifier" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="queueName" type="{http://www.w3.org/2001/XMLSchema}NCName"/>
  *         &lt;element name="filter" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="maxItems" type="{http://www.w3.org/2001/XMLSchema}int"/>
@@ -35,10 +36,12 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "queueName", "filter", "maxItems" })
+@XmlType(name = "", propOrder = { "clientIdentifier", "queueName", "filter", "maxItems" })
 @XmlRootElement(name = "retrieveMessages")
 public class RetrieveMessages {
 
+	@XmlElement(required = true)
+	protected String clientIdentifier;
 	@XmlElement(required = true)
 	protected String filter;
 	protected int maxItems;
@@ -48,10 +51,20 @@ public class RetrieveMessages {
 	protected String queueName;
 
 	/**
-	 * Gets the value of the filter property.
-	 *
+	 * Gets the value of the clientIdentifier property.
+	 * 
 	 * @return possible object is {@link String }
-	 *
+	 * 
+	 */
+	public String getClientIdentifier() {
+		return this.clientIdentifier;
+	}
+
+	/**
+	 * Gets the value of the filter property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
 	 */
 	public String getFilter() {
 		return this.filter;
@@ -59,7 +72,7 @@ public class RetrieveMessages {
 
 	/**
 	 * Gets the value of the maxItems property.
-	 *
+	 * 
 	 */
 	public int getMaxItems() {
 		return this.maxItems;
@@ -67,20 +80,31 @@ public class RetrieveMessages {
 
 	/**
 	 * Gets the value of the queueName property.
-	 *
+	 * 
 	 * @return possible object is {@link String }
-	 *
+	 * 
 	 */
 	public String getQueueName() {
 		return this.queueName;
 	}
 
 	/**
-	 * Sets the value of the filter property.
-	 *
+	 * Sets the value of the clientIdentifier property.
+	 * 
 	 * @param value
 	 *            allowed object is {@link String }
-	 *
+	 * 
+	 */
+	public void setClientIdentifier(final String value) {
+		this.clientIdentifier = value;
+	}
+
+	/**
+	 * Sets the value of the filter property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
 	 */
 	public void setFilter(final String value) {
 		this.filter = value;
@@ -88,7 +112,7 @@ public class RetrieveMessages {
 
 	/**
 	 * Sets the value of the maxItems property.
-	 *
+	 * 
 	 */
 	public void setMaxItems(final int value) {
 		this.maxItems = value;
@@ -96,10 +120,10 @@ public class RetrieveMessages {
 
 	/**
 	 * Sets the value of the queueName property.
-	 *
+	 * 
 	 * @param value
 	 *            allowed object is {@link String }
-	 *
+	 * 
 	 */
 	public void setQueueName(final String value) {
 		this.queueName = value;
