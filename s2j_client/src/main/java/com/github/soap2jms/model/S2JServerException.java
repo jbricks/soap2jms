@@ -4,6 +4,7 @@ package com.github.soap2jms.model;
  * An exception happened server side while operating (none of the messages was
  * delivered/acknowledge)
  */
+@Deprecated
 public class S2JServerException extends S2JException {
 
 	private static final long serialVersionUID = -8931549885777031727L;

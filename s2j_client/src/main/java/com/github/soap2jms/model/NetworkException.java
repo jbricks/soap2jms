@@ -1,5 +1,6 @@
 package com.github.soap2jms.model;
 
+@Deprecated
 public class NetworkException extends S2JException {
 
 	/**

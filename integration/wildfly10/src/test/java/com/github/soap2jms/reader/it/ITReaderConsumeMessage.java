@@ -36,6 +36,7 @@ public class ITReaderConsumeMessage {
 	public void testReadTextMessage() throws Exception {
 		// send a message to a queue.
 		sendMessage(1);
+		
 		// read the message with webservice
 		SoapToJmsClient wsClient = new SoapToJmsClient(Constants.CTX_NAME);
 

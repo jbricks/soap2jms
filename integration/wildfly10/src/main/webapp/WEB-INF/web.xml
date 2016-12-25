@@ -4,9 +4,25 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
 	<display-name>Final configured app</display-name>
-
+	<servlet>
+		<servlet-name>slowws</servlet-name>
+		<servlet-class>com.github.soap2jms.test.SlowServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>slowws</servlet-name>
+		<url-pattern>/slow/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>servlet500</servlet-name>
+		<servlet-class>com.github.soap2jms.test.Servlet500</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>servlet500</servlet-name>
+		<url-pattern>/500/*</url-pattern>
+	</servlet-mapping>
 	<resource-ref>
-		<!-- name of the queue (the same parameter must be used in WS to map the queue) -->
+		<!-- name of the queue (the same parameter must be used in WS to map the 
+			queue) -->
 		<res-ref-name>soap2jms</res-ref-name>
 		<res-type>javax.jms.Queue</res-type>
 		<res-auth>Container</res-auth>

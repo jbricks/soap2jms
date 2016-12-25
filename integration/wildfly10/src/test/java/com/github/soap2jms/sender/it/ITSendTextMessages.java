@@ -1,6 +1,6 @@
 package com.github.soap2jms.sender.it;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -26,11 +26,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.soap2jms.Constants;
+import com.github.soap2jms.common.StatusCodeEnum;
 import com.github.soap2jms.common.serialization.SoapToJmsSerializer;
 import com.github.soap2jms.model.ResponseStatus;
+import com.github.soap2jms.model.ResponseStatus.MessageStatus;
 import com.github.soap2jms.model.S2JMessage;
 import com.github.soap2jms.model.S2JTextMessage;
 import com.github.soap2jms.pub.SoapToJmsClient;
+import com.github.soap2jms.pub.SoapToJmsConfiguration;
 
 public class ITSendTextMessages {
 	private static final Logger log = LoggerFactory.getLogger(ITSendTextMessages.class);
@@ -102,7 +105,8 @@ public class ITSendTextMessages {
 		assertTrue("Message instanceof textMessage", message1 instanceof TextMessage);
 		TextMessage textMessage = (TextMessage) message1;
 		assertEquals("message content", DEFAULT_CONTENT, textMessage.getText());
-		assertEquals("Message has client Id", "1", textMessage.getStringProperty(SoapToJmsSerializer.ACTIVEMQ_DUPLICATE_ID));
+		assertEquals("Message has client Id", "1",
+				textMessage.getStringProperty(SoapToJmsSerializer.ACTIVEMQ_DUPLICATE_ID));
 	}
 
 	/**
@@ -123,7 +127,51 @@ public class ITSendTextMessages {
 		assertTrue("Message instanceof textMessage", message1 instanceof TextMessage);
 		TextMessage textMessage = (TextMessage) message1;
 		assertEquals("message content", DEFAULT_CONTENT, textMessage.getText());
-		assertEquals("Message has client Id", "3", textMessage.getStringProperty(SoapToJmsSerializer.ACTIVEMQ_DUPLICATE_ID));
+		assertEquals("Message has client Id", "3",
+				textMessage.getStringProperty(SoapToJmsSerializer.ACTIVEMQ_DUPLICATE_ID));
+	}
+
+	/**
+	 * Send one message to a web service that has a connection timeout. Check
+	 * the status of delivery is UNDEFINED (Brewer's theorem)
+	 * 
+	 */
+	@Test
+	public void connectionTimeoutCauseMessageUndefined() throws Exception {
+		final String CLIENT_ID = "5235wt456dfg4";
+		SoapToJmsConfiguration config = new SoapToJmsConfiguration(Constants.CTX_NAME + "slow/", 10000, 10 // request
+																										// timeout
+		);
+		SoapToJmsClient slowClient = new SoapToJmsClient(config);
+		S2JTextMessage s2jt = new S2JTextMessage(CLIENT_ID, Constants.DEFAULT_CONTENT);
+		ResponseStatus responseStatus = null;
+		try {
+			responseStatus = slowClient.sendMessages("soap2jms", new S2JMessage[] { s2jt });
+		} catch (Exception e) {
+			e.printStackTrace();
+			Thread.sleep(5000);
+			fail("Client trhew exception" + e);
+		}
+		assertEquals("ErrorCount", 1, responseStatus.getErrorCount());
+		assertEquals("Messages sent", 1, responseStatus.getTotalCount());
+		MessageStatus[] inDoubt = responseStatus.getinDoubt();
+		assertEquals("in doubt", 1, inDoubt.length);
+		final MessageStatus messageAndStatus = inDoubt[0];
+		assertEquals("Client id", CLIENT_ID, messageAndStatus.getMessage().getClientId());
+		assertEquals("Error type", StatusCodeEnum.ERR_NETWORK, messageAndStatus.getStatusCode());
+		//the message will be delivered later
+		int waitcount = 40;
+		while (waitcount > 0) {
+			Message[] serverMessages = consumeMessages();
+			if (serverMessages.length > 0) {
+				break;
+			}
+			waitcount--;
+			Thread.sleep(500);
+		}
+		if (waitcount == 0) {
+			fail("the message should have been delivered to the server after the timeout");
+		}
 	}
 
 	private Message[] consumeMessages() throws NamingException {

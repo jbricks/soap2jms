@@ -122,6 +122,14 @@ public class WsJmsExceptionData {
 		this.exceptionClass = value;
 	}
 
+	public Integer getCode() {
+		return code;
+	}
+
+	public String getExceptionClass() {
+		return exceptionClass;
+	}
+
 	/**
 	 * Sets the value of the jmsCode property.
 	 *

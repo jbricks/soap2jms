@@ -20,6 +20,10 @@ public enum StatusCodeEnum {
 	/**
 	 *
 	 */
+	ERR_NETWORK(false, true, false, 104),
+	/**
+	 *
+	 */
 	OK(false, false, true, 0),
 	/**
 	 *

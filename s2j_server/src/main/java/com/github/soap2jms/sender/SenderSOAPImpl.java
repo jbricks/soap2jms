@@ -60,7 +60,7 @@ public class SenderSOAPImpl implements SenderSoap2Jms {
 			result = this.qi.sendMessages(queueName, jmsMessages);
 		} catch (final JMSException e) {
 			throw new WsJmsException("JMS problem. Queue " + queueName, e.getMessage(), StatusCodeEnum.ERR_JMS,
-					WsExceptionClass.JMS);
+					WsExceptionClass.OTHER);
 		} catch (final NamingException e) {
 			throw new WsJmsException("JMS problem. Queue " + queueName, e.getMessage(), StatusCodeEnum.ERR_JMS,
 					WsExceptionClass.CONFIGURATION);

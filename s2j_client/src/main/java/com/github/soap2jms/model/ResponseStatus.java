@@ -3,29 +3,104 @@ package com.github.soap2jms.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jms.JMSException;
+
 import com.github.soap2jms.common.StatusCodeEnum;
 import com.github.soap2jms.common.ws.MessageIdAndStatus;
 
 public class ResponseStatus {
+	public static class MessageStatus {
+		private final S2JMessage message;
+		private final MessageDeliveryStatus deliveryStatus;
+		private final StatusCodeEnum statusCode;
+		private final String reason;
 
-	private int errorCount = 0;
-	private final MessageIdAndStatus[] messages;
-	private int successCount = 0;
-	private int warnCount = 0;
+		public MessageStatus(S2JMessage message, MessageDeliveryStatus deliveryStatus, StatusCodeEnum statusCode,
+				String reason) {
+			this.message = message;
+			this.deliveryStatus = deliveryStatus;
+			this.statusCode = statusCode;
+			this.reason = reason;
+		}
 
-	public ResponseStatus(final List<MessageIdAndStatus> messageIds) {
-		this.messages = messageIds.toArray(new MessageIdAndStatus[messageIds.size()]);
-		for (int position = 0; position < messageIds.size(); position++) {
-			final MessageIdAndStatus messsageIdAndStatus = this.messages[position];
-			final StatusCodeEnum sce = messsageIdAndStatus.getStatus().getCodeEnum();
-			if (sce.isError()) {
-				this.errorCount++;
-			} else {
-				this.successCount++;
-				if (sce.isWarining()) {
-					this.warnCount++;
+		public S2JMessage getMessage() {
+			return message;
+		}
+
+		public MessageDeliveryStatus getDeliveryStatus() {
+			return deliveryStatus;
+		}
+
+		public StatusCodeEnum getStatusCode() {
+			return statusCode;
+		}
+
+		public String getReason() {
+			return reason;
+		}
+
+		@Override
+		public String toString() {
+			String result;
+			if (statusCode == StatusCodeEnum.OK) {
+				try {
+					result = "MessageStatus [message.clientId=" + message.getClientId() + ", message.jmsId="
+							+ message.getJMSMessageID() + ", statusCode=OK";
+				} catch (Exception e) {
+					result = "MessageStatus [message=" + message + ", statusCode=OK";
 				}
+			} else {
+				result = "MessageStatus [message=" + message + ", deliveryStatus=" + deliveryStatus + ", statusCode="
+						+ statusCode + ", reason=" + reason + "]";
 			}
+			return result;
+		}
+
+	}
+
+	private final List<MessageStatus> messageStatus = new ArrayList<MessageStatus>();
+	private final List<MessageStatus> delivered = new ArrayList<MessageStatus>();
+	private final List<MessageStatus> failed = new ArrayList<MessageStatus>();
+	private final List<MessageStatus> inDoubt = new ArrayList<MessageStatus>();
+
+
+
+	
+	private int errorCount;
+	private int warnCount;
+	private int deliveredCount;
+
+	public ResponseStatus() {
+	}
+
+	public void addMessage(S2JMessage message, MessageDeliveryStatus deliveryStatus, StatusCodeEnum statusCode,
+			String reason) {
+		final MessageStatus messageStatus = new MessageStatus(message, deliveryStatus, statusCode, reason);
+		this.messageStatus.add(messageStatus);
+		switch ( deliveryStatus) {
+		case DELIVERED:
+			if (statusCode == StatusCodeEnum.OK) {
+				deliveredCount++;
+				this.delivered.add(messageStatus);
+			} else if (statusCode.isWarining()) {
+				deliveredCount++;
+				warnCount++;
+				this.delivered.add(messageStatus);
+			} else {
+				errorCount++;
+				this.failed.add(messageStatus);
+			}
+		break;
+		case UNKNOWN:
+			this.inDoubt.add(messageStatus);
+			errorCount++;
+			break;
+		case NOT_DELIVERED:
+			this.failed.add(messageStatus);
+			errorCount++;
+			break;
+		default:
+			throw new UnsupportedOperationException("this isn't supposed to happen");
 		}
 	}
 
@@ -33,23 +108,28 @@ public class ResponseStatus {
 		return this.errorCount;
 	}
 
-	public MessageIdAndStatus[] getFailedMessages() {
-		final List<MessageIdAndStatus> failedMsg = new ArrayList<>();
-		for (final MessageIdAndStatus messageIdAndStat : this.messages) {
-			final StatusCodeEnum sce = messageIdAndStat.getStatus().getCodeEnum();
-			if (sce.isError()) {
-				failedMsg.add(messageIdAndStat);
-			}
-		}
-		return failedMsg.toArray(new MessageIdAndStatus[failedMsg.size()]);
+	public MessageStatus[] getAllMessageSstatus() {
+		return (MessageStatus[]) messageStatus.toArray(new MessageStatus[messageStatus.size()]);
 	}
 
+	public MessageStatus[] getDelivered() {
+		return (MessageStatus[]) delivered.toArray(new MessageStatus[delivered.size()]);
+	}
+	
+	public MessageStatus[] getFailed() {
+		return (MessageStatus[]) failed.toArray(new MessageStatus[failed.size()]);
+	}
+
+	public MessageStatus[] getinDoubt() {
+		return (MessageStatus[]) inDoubt.toArray(new MessageStatus[inDoubt.size()]);
+	}
+	
 	public int getSuccessCount() {
-		return this.successCount;
+		return this.deliveredCount;
 	}
 
 	public int getTotalCount() {
-		return this.messages.length;
+		return this.messageStatus.size();
 	}
 
 	public int getWarnCount() {

@@ -8,7 +8,7 @@
 	<groupId>com.github.jbricks.soap2jms</groupId>
 	<version>0.0.2-SNAPSHOT</version>
 	<name>Soap2Jms</name>
-	<description />
+	<description>A project that provides a SOAP api to a JMS queue</description>
 	<url>https://jbricks.github.io/soap2jms</url>
 	<packaging>pom</packaging>
 	<issueManagement>
@@ -33,6 +33,14 @@
 			<id>soap2jms.github1</id>
 			<url>scm:git:ssh://git@github.com/jbricks/soap2jms.git</url>
 		</site>
+		<snapshotRepository>
+			<id>jbricks-ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>jbricks-ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
 	</distributionManagement>
 	<developers>
 		<developer>
@@ -103,12 +111,6 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>javax.xml.ws</groupId>
-				<artifactId>jaxws-api</artifactId>
-				<version>2.2.11</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
 				<groupId>javax.jms</groupId>
 				<artifactId>javax.jms-api</artifactId>
 				<version>2.0</version>
@@ -153,6 +155,12 @@
 				<groupId>commons-beanutils</groupId>
 				<artifactId>commons-beanutils</artifactId>
 				<version>1.9.2</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>3.1.0</version>
+				<scope>provided</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -216,6 +224,11 @@
 						</dependency>
 					</dependencies>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>3.0.1</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -267,4 +280,61 @@
 			</plugin>
 		</plugins>
 	</reporting>
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.5</version>
+						<configuration>
+							<keyname>${gpg-jbricks-keyname}</keyname>
+							<passphrase>${gpg-jbricks-password}</passphrase>
+						</configuration>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-source-plugin</artifactId>
+							<version>3.0.1</version>
+							<executions>
+								<execution>
+									<id>attach-sources</id>
+									<phase>verify</phase>
+									<goals>
+										<goal>jar-no-fork</goal>
+									</goals>
+								</execution>
+							</executions>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-javadoc-plugin</artifactId>
+							<executions>
+								<execution>
+									<id>attach-javadocs</id>
+									<goals>
+										<goal>jar</goal>
+									</goals>
+								</execution>
+							</executions>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+	</profiles>
 </project>
