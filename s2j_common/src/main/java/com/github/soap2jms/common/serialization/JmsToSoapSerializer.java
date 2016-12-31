@@ -169,8 +169,7 @@ public class JmsToSoapSerializer {
 
 	public WsJmsMessageAndStatus jmsToSoapMessageAndStatus(final Message message,JMSImplementation jmsImplementation) throws JMSException {
 		final WsJmsMessage wsmessage = jmsToSoap(message, jmsImplementation);
-
-		return new WsJmsMessageAndStatus(wsmessage, new StatusCode("OK", null));
+		return new WsJmsMessageAndStatus(wsmessage, StatusCode.STATUS_OK);
 
 	}
 

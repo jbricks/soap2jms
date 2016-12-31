@@ -52,9 +52,9 @@ public class SendMessages {
 
 	/**
 	 * Gets the value of the clientIdentifier property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getClientIdentifier() {
 		return this.clientIdentifier;
@@ -62,26 +62,26 @@ public class SendMessages {
 
 	/**
 	 * Gets the value of the messages property.
-	 * 
+	 *
 	 * <p>
 	 * This accessor method returns a reference to the live list, not a
 	 * snapshot. Therefore any modification you make to the returned list will
 	 * be present inside the JAXB object. This is why there is not a
 	 * <CODE>set</CODE> method for the messages property.
-	 * 
+	 *
 	 * <p>
 	 * For example, to add a new item, do as follows:
-	 * 
+	 *
 	 * <pre>
 	 * getMessages().add(newItem);
 	 * </pre>
-	 * 
-	 * 
+	 *
+	 *
 	 * <p>
 	 * Objects of the following type(s) are allowed in the list
 	 * {@link WsJmsMessage }
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	public List<WsJmsMessage> getMessages() {
 		if (this.messages == null) {
@@ -92,9 +92,9 @@ public class SendMessages {
 
 	/**
 	 * Gets the value of the queueName property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getQueueName() {
 		return this.queueName;
@@ -102,10 +102,10 @@ public class SendMessages {
 
 	/**
 	 * Sets the value of the clientIdentifier property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setClientIdentifier(final String value) {
 		this.clientIdentifier = value;
@@ -113,10 +113,10 @@ public class SendMessages {
 
 	/**
 	 * Sets the value of the queueName property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setQueueName(final String value) {
 		this.queueName = value;

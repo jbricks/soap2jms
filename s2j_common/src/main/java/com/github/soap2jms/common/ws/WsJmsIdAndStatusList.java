@@ -40,26 +40,26 @@ public class WsJmsIdAndStatusList {
 
 	/**
 	 * Gets the value of the messageIdAndStatus property.
-	 * 
+	 *
 	 * <p>
 	 * This accessor method returns a reference to the live list, not a
 	 * snapshot. Therefore any modification you make to the returned list will
 	 * be present inside the JAXB object. This is why there is not a
 	 * <CODE>set</CODE> method for the messageIdAndStatus property.
-	 * 
+	 *
 	 * <p>
 	 * For example, to add a new item, do as follows:
-	 * 
+	 *
 	 * <pre>
 	 * getMessageIdAndStatus().add(newItem);
 	 * </pre>
-	 * 
-	 * 
+	 *
+	 *
 	 * <p>
 	 * Objects of the following type(s) are allowed in the list
 	 * {@link MessageIdAndStatus }
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	public List<MessageIdAndStatus> getMessageIdAndStatus() {
 		if (this.messageIdAndStatus == null) {

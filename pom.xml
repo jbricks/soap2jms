@@ -283,6 +283,13 @@
 	<profiles>
 		<profile>
 			<id>release</id>
+			<activation>
+				<!-- set by release plugin during release -->
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
 			<build>
 				<plugins>
 					<plugin>
@@ -304,7 +311,8 @@
 						</executions>
 					</plugin>
 				</plugins>
-				<pluginManagement>
+				<!-- should not be needed -->
+				<!-- pluginManagement>
 					<plugins>
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
@@ -333,7 +341,7 @@
 							</executions>
 						</plugin>
 					</plugins>
-				</pluginManagement>
+				</pluginManagement -->
 			</build>
 		</profile>
 	</profiles>

@@ -9,12 +9,16 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 
+import com.github.soap2jms.common.S2JProtocolException;
+import com.github.soap2jms.common.S2JProviderException;
+import com.github.soap2jms.common.StatusCodeEnum;
 import com.github.soap2jms.common.ws.WsJmsMessage;
 
 public class MapMessageStrategy implements MessageAndBodyStrategy {
 
 	@Override
-	public Message deserializeBody(final JMSMessageFactory messageFactory, final WsJmsMessage wsMessage) {
+	public Message deserializeBody(final JMSMessageFactory messageFactory, final WsJmsMessage wsMessage)
+			throws S2JProviderException,S2JProtocolException {
 		final DataHandler dataHandler = wsMessage.getBody();
 		final Properties props = new Properties();
 		try {
@@ -32,8 +36,8 @@ public class MapMessageStrategy implements MessageAndBodyStrategy {
 			try {
 				mapMsg.setObject(name, deserializedValue);
 			} catch (final JMSException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new S2JProviderException(StatusCodeEnum.ERR_JMS,
+						"Error setting property [" + name + "] to [" + deserializedValue + "]", e.getErrorCode(), e);
 			}
 		}
 		return mapMsg;

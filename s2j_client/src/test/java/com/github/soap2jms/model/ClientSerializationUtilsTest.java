@@ -1,10 +1,6 @@
 package com.github.soap2jms.model;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.activation.DataHandler;
 import javax.jms.Message;
@@ -17,10 +13,7 @@ import com.github.soap2jms.common.JMSMessageClassEnum;
 import com.github.soap2jms.common.serialization.JMSImplementation;
 import com.github.soap2jms.common.serialization.JMSMessageFactory;
 import com.github.soap2jms.common.serialization.SoapToJmsSerializer;
-import com.github.soap2jms.common.ws.RetrieveMessageResponseType;
-import com.github.soap2jms.common.ws.StatusCode;
 import com.github.soap2jms.common.ws.WsJmsMessage;
-import com.github.soap2jms.common.ws.WsJmsMessageAndStatus;
 import com.github.soap2jms.pub.ClientSerializationUtils;
 
 public class ClientSerializationUtilsTest {
@@ -32,22 +25,17 @@ public class ClientSerializationUtilsTest {
 	 */
 	@Test
 	public void testClientSoapToJmsS2J() throws Exception {
-		final List<WsJmsMessageAndStatus> messagesIn = new ArrayList<>();
 		final DataHandler body = new DataHandler(new ByteArrayDataSource("test".getBytes(), "text/html"));
 		final WsJmsMessage s2jMessage = new WsJmsMessage(null, // headers
 				"correlationId", 1, 0L, 0L, // expiration
 				"messageId", 1, // priority
 				true, 1000L, // timestamp
 				"type", "clientId", JMSMessageClassEnum.TEXT.name(), body);
-		final StatusCode messageStatus = new StatusCode("OK", null);
-		messagesIn.add(new WsJmsMessageAndStatus(s2jMessage, messageStatus));
-		final RetrieveMessageResponseType wsdlResponse = new RetrieveMessageResponseType(messagesIn, false);
+		
 		final JMSMessageFactory messageFactory = new ClientMessageFactory();
-		final Message[] messages = new SoapToJmsSerializer().convertMessages(messageFactory,
-				wsdlResponse.getS2JMessageAndStatus(), JMSImplementation.NONE);
-		assertNotNull("Result is not null", messages);
-		assertEquals("Messages deserialized", 1, messages.length);
-		final S2JMessage message = (S2JMessage) messages[0];
+		final Message message1 = new SoapToJmsSerializer().convertMessage(messageFactory,
+				s2jMessage, JMSImplementation.NONE);
+		final S2JMessage message = (S2JMessage) message1;
 		assertEquals("Message class", S2JTextMessage.class, message.getClass());
 		assertEquals("Message body", "test", ((S2JTextMessage) message).getText());
 		assertEquals("MessageId ", "messageId", message.getJMSMessageID());

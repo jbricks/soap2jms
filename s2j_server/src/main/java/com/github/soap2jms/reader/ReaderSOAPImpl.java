@@ -71,11 +71,11 @@ public class ReaderSOAPImpl implements ReaderSoap2Jms {
 		} catch (final JMSException e) {
 			LOG.error("JMS error processing [" + queueName + "] filter[" + filter + "]", e);
 			throw new WsJmsException("Internal server processing [" + queueName + "] filter[" + filter + "]",
-					e.toString(), StatusCodeEnum.ERR_GENERIC, WsExceptionClass.OTHER);
+					e.toString(), StatusCodeEnum.ERR_GENERIC, e.getErrorCode(), WsExceptionClass.OTHER);
 		} catch (final Exception ex) {
 			LOG.error("Generic error processing [" + queueName + "] filter[" + filter + "]", ex);
 			throw new WsJmsException("Internal server processing [" + queueName + "] filter[" + filter + "]",
-					ex.toString(), StatusCodeEnum.ERR_GENERIC, WsExceptionClass.OTHER);
+					ex.toString(), StatusCodeEnum.ERR_GENERIC, null, WsExceptionClass.OTHER);
 		}
 		return result;
 	}

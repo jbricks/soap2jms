@@ -45,12 +45,18 @@ public class MessageIdAndStatus {
 
 	public MessageIdAndStatus(final String messageId) {
 		this.messageId = messageId;
-		this.status = new StatusCode("OK", null);
+		this.status = new StatusCode(StatusCodeEnum.OK, null, null);
 	}
 
-	public MessageIdAndStatus(final String messageId, final StatusCodeEnum status, final String reason) {
+	public MessageIdAndStatus(final String messageId, final StatusCodeEnum status, final String reason,
+			final String jmsCode) {
 		this.messageId = messageId;
-		this.status = new StatusCode(status.name(), reason);
+		this.status = new StatusCode(status, jmsCode, reason);
+	}
+
+	public MessageIdAndStatus(String messageId, StatusCode status) {
+		this.messageId = messageId;
+		this.status = status;
 	}
 
 	/**

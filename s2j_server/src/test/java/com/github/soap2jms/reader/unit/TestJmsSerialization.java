@@ -2,7 +2,7 @@ package com.github.soap2jms.reader.unit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,10 +14,10 @@ import javax.jms.Message;
 import org.junit.Test;
 
 import com.github.soap2jms.common.S2JProtocolException;
+import com.github.soap2jms.common.S2JProviderException;
 import com.github.soap2jms.common.serialization.JMSImplementation;
 import com.github.soap2jms.common.serialization.JmsToSoapSerializer;
 import com.github.soap2jms.common.serialization.SoapToJmsSerializer;
-import com.github.soap2jms.common.ws.RetrieveMessageResponseType;
 import com.github.soap2jms.common.ws.WsJmsMessageAndStatus;
 import com.github.soap2jms.model.ClientMessageFactory;
 import com.github.soap2jms.model.S2JMapMessage;
@@ -27,15 +27,14 @@ import com.github.soap2jms.model.S2JTextMessage;
 public class TestJmsSerialization {
 
 	private S2JMessage serializeAndDeserializeMessage(final Message serverMessage)
-			throws JMSException, S2JProtocolException {
-		final WsJmsMessageAndStatus jms2soap = new JmsToSoapSerializer().jmsToSoapMessageAndStatus(serverMessage, JMSImplementation.ARTEMIS_ACTIVE_MQ);
-		final RetrieveMessageResponseType wsdlResponse = new RetrieveMessageResponseType();
-		wsdlResponse.getS2JMessageAndStatus().add(jms2soap);
-		final Message[] convertMessages = new SoapToJmsSerializer().convertMessages(new ClientMessageFactory(),
-				wsdlResponse.getS2JMessageAndStatus(), JMSImplementation.ARTEMIS_ACTIVE_MQ);
-		assertEquals("Deserialized message num", 1, convertMessages.length);
-		final S2JMessage message = (S2JMessage) convertMessages[0];
-		return message;
+			throws JMSException, S2JProtocolException, S2JProviderException {
+		final WsJmsMessageAndStatus jms2soap = new JmsToSoapSerializer().jmsToSoapMessageAndStatus(serverMessage,
+				JMSImplementation.ARTEMIS_ACTIVE_MQ);
+
+		final Message convertMessages = new SoapToJmsSerializer().convertMessage(new ClientMessageFactory(),
+				jms2soap.getWsJmsMessage(), JMSImplementation.ARTEMIS_ACTIVE_MQ);
+		assertNotNull("Message not null", convertMessages);
+		return (S2JMessage) convertMessages;
 	}
 
 	@Test

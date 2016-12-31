@@ -69,7 +69,7 @@ public class ITSendTextMessages {
 		// TODO: map jms/soap2jms.reader to java:/comp/env/soap2jms in project
 		// project_customization (web.xml).
 		S2JTextMessage s2jt = new S2JTextMessage(null, Constants.DEFAULT_CONTENT);
-		ResponseStatus responseStatus = wsClient.sendMessages("soap2jms", new S2JMessage[] { s2jt, s2jt });
+		ResponseStatus<S2JMessage> responseStatus = wsClient.sendMessages("soap2jms", new S2JMessage[] { s2jt, s2jt });
 		assertEquals("ErrorCount", 0, responseStatus.getErrorCount());
 		assertEquals("Messages sent", 2, responseStatus.getTotalCount());
 		Message[] serverMessages = consumeMessages();
@@ -93,7 +93,7 @@ public class ITSendTextMessages {
 	@Test
 	public void deduplicationWithClientMessageId() throws Exception {
 		S2JTextMessage s2jt = new S2JTextMessage("1", Constants.DEFAULT_CONTENT);
-		ResponseStatus responseStatus = wsClient.sendMessages("soap2jms", new S2JMessage[] { s2jt });
+		ResponseStatus<S2JMessage> responseStatus = wsClient.sendMessages("soap2jms", new S2JMessage[] { s2jt });
 		assertEquals("ErrorCount", 0, responseStatus.getErrorCount());
 		assertEquals("Messages sent", 1, responseStatus.getTotalCount());
 		responseStatus = wsClient.sendMessages("soap2jms", new S2JMessage[] { s2jt });
@@ -118,7 +118,13 @@ public class ITSendTextMessages {
 	@Test
 	public void clientMessageIdIsPreserved() throws Exception {
 		S2JTextMessage s2jt = new S2JTextMessage("3", Constants.DEFAULT_CONTENT);
-		ResponseStatus responseStatus = wsClient.sendMessages("soap2jms", new S2JMessage[] { s2jt });
+		ResponseStatus<S2JMessage> responseStatus = null;
+		try {
+			responseStatus = wsClient.sendMessages("soap2jms", new S2JMessage[] { s2jt });
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("Unexpected exception " + e + " occurred.");
+		}
 		assertEquals("ErrorCount", 0, responseStatus.getErrorCount());
 		assertEquals("Messages sent", 1, responseStatus.getTotalCount());
 		Message[] serverMessages = consumeMessages();
@@ -139,12 +145,12 @@ public class ITSendTextMessages {
 	@Test
 	public void connectionTimeoutCauseMessageUndefined() throws Exception {
 		final String CLIENT_ID = "5235wt456dfg4";
-		SoapToJmsConfiguration config = new SoapToJmsConfiguration(Constants.CTX_NAME + "slow/", 10000, 10 // request
-																										// timeout
+		SoapToJmsConfiguration config = new SoapToJmsConfiguration(Constants.CTX_NAME + "slow/", 10000, 100 // request
+																											// timeout
 		);
 		SoapToJmsClient slowClient = new SoapToJmsClient(config);
 		S2JTextMessage s2jt = new S2JTextMessage(CLIENT_ID, Constants.DEFAULT_CONTENT);
-		ResponseStatus responseStatus = null;
+		ResponseStatus<S2JMessage> responseStatus = null;
 		try {
 			responseStatus = slowClient.sendMessages("soap2jms", new S2JMessage[] { s2jt });
 		} catch (Exception e) {
@@ -154,13 +160,13 @@ public class ITSendTextMessages {
 		}
 		assertEquals("ErrorCount", 1, responseStatus.getErrorCount());
 		assertEquals("Messages sent", 1, responseStatus.getTotalCount());
-		MessageStatus[] inDoubt = responseStatus.getinDoubt();
+		MessageStatus<S2JMessage>[] inDoubt = responseStatus.getinDoubt();
 		assertEquals("in doubt", 1, inDoubt.length);
-		final MessageStatus messageAndStatus = inDoubt[0];
+		final MessageStatus<S2JMessage> messageAndStatus = inDoubt[0];
 		assertEquals("Client id", CLIENT_ID, messageAndStatus.getMessage().getClientId());
 		assertEquals("Error type", StatusCodeEnum.ERR_NETWORK, messageAndStatus.getStatusCode());
-		//the message will be delivered later
-		int waitcount = 40;
+		// the message will be delivered later
+		int waitcount = 20;
 		while (waitcount > 0) {
 			Message[] serverMessages = consumeMessages();
 			if (serverMessages.length > 0) {

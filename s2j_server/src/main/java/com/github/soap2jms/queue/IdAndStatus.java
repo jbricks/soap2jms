@@ -4,24 +4,24 @@ import com.github.soap2jms.common.StatusCodeEnum;
 
 public class IdAndStatus {
 
-	private final String messageId;
+	private final String jmsCode;
 	private final String reason;
 	private final StatusCodeEnum statusCode;
 
-	public IdAndStatus(final StatusCodeEnum statusCode, final String messageId, final String reason) {
+	public IdAndStatus(final StatusCodeEnum statusCode, final String jmsCode, final String reason) {
 		this.statusCode = statusCode;
-		this.messageId = messageId;
+		this.jmsCode = jmsCode;
 		this.reason = reason;
 	}
 
 	public IdAndStatus(final String messageId) {
-		this.messageId = messageId;
+		this.jmsCode = messageId;
 		this.statusCode = StatusCodeEnum.OK;
 		this.reason = null;
 	}
 
-	public String getMessageId() {
-		return this.messageId;
+	public String getJmsCode() {
+		return this.jmsCode;
 	}
 
 	public String getReason() {

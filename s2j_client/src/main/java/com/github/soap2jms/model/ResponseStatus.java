@@ -3,19 +3,16 @@ package com.github.soap2jms.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jms.JMSException;
-
 import com.github.soap2jms.common.StatusCodeEnum;
-import com.github.soap2jms.common.ws.MessageIdAndStatus;
 
-public class ResponseStatus {
-	public static class MessageStatus {
-		private final S2JMessage message;
+public class ResponseStatus<T> {
+	public static class MessageStatus<T> {
+		private final T message;
 		private final MessageDeliveryStatus deliveryStatus;
 		private final StatusCodeEnum statusCode;
 		private final String reason;
 
-		public MessageStatus(S2JMessage message, MessageDeliveryStatus deliveryStatus, StatusCodeEnum statusCode,
+		public MessageStatus(T message, MessageDeliveryStatus deliveryStatus, StatusCodeEnum statusCode,
 				String reason) {
 			this.message = message;
 			this.deliveryStatus = deliveryStatus;
@@ -23,7 +20,7 @@ public class ResponseStatus {
 			this.reason = reason;
 		}
 
-		public S2JMessage getMessage() {
+		public T getMessage() {
 			return message;
 		}
 
@@ -43,12 +40,7 @@ public class ResponseStatus {
 		public String toString() {
 			String result;
 			if (statusCode == StatusCodeEnum.OK) {
-				try {
-					result = "MessageStatus [message.clientId=" + message.getClientId() + ", message.jmsId="
-							+ message.getJMSMessageID() + ", statusCode=OK";
-				} catch (Exception e) {
-					result = "MessageStatus [message=" + message + ", statusCode=OK";
-				}
+				result = "MessageStatus [message=" + message + ", statusCode=OK";
 			} else {
 				result = "MessageStatus [message=" + message + ", deliveryStatus=" + deliveryStatus + ", statusCode="
 						+ statusCode + ", reason=" + reason + "]";
@@ -58,10 +50,10 @@ public class ResponseStatus {
 
 	}
 
-	private final List<MessageStatus> messageStatus = new ArrayList<MessageStatus>();
-	private final List<MessageStatus> delivered = new ArrayList<MessageStatus>();
-	private final List<MessageStatus> failed = new ArrayList<MessageStatus>();
-	private final List<MessageStatus> inDoubt = new ArrayList<MessageStatus>();
+	private final List<MessageStatus<T>> messageStatus = new ArrayList<MessageStatus<T>>();
+	private final List<MessageStatus<T>> delivered = new ArrayList<MessageStatus<T>>();
+	private final List<MessageStatus<T>> failed = new ArrayList<MessageStatus<T>>();
+	private final List<MessageStatus<T>> inDoubt = new ArrayList<MessageStatus<T>>();
 
 
 
@@ -73,9 +65,9 @@ public class ResponseStatus {
 	public ResponseStatus() {
 	}
 
-	public void addMessage(S2JMessage message, MessageDeliveryStatus deliveryStatus, StatusCodeEnum statusCode,
+	public void addMessage(T message, MessageDeliveryStatus deliveryStatus, StatusCodeEnum statusCode,
 			String reason) {
-		final MessageStatus messageStatus = new MessageStatus(message, deliveryStatus, statusCode, reason);
+		final MessageStatus<T> messageStatus = new MessageStatus<T>(message, deliveryStatus, statusCode, reason);
 		this.messageStatus.add(messageStatus);
 		switch ( deliveryStatus) {
 		case DELIVERED:
@@ -108,20 +100,20 @@ public class ResponseStatus {
 		return this.errorCount;
 	}
 
-	public MessageStatus[] getAllMessageSstatus() {
+	public MessageStatus<T>[] getAllMessageSstatus() {
 		return (MessageStatus[]) messageStatus.toArray(new MessageStatus[messageStatus.size()]);
 	}
 
-	public MessageStatus[] getDelivered() {
-		return (MessageStatus[]) delivered.toArray(new MessageStatus[delivered.size()]);
+	public MessageStatus<T>[] getDelivered() {
+		return (MessageStatus<T>[]) delivered.toArray(new MessageStatus[delivered.size()]);
 	}
 	
-	public MessageStatus[] getFailed() {
-		return (MessageStatus[]) failed.toArray(new MessageStatus[failed.size()]);
+	public MessageStatus<T>[] getFailed() {
+		return (MessageStatus<T>[]) failed.toArray(new MessageStatus[failed.size()]);
 	}
 
-	public MessageStatus[] getinDoubt() {
-		return (MessageStatus[]) inDoubt.toArray(new MessageStatus[inDoubt.size()]);
+	public MessageStatus<T>[] getinDoubt() {
+		return (MessageStatus<T>[]) inDoubt.toArray(new MessageStatus[inDoubt.size()]);
 	}
 	
 	public int getSuccessCount() {

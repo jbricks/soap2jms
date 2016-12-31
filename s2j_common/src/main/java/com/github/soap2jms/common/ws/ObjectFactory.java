@@ -30,14 +30,14 @@ public class ObjectFactory {
 	/**
 	 * Create a new ObjectFactory that can be used to create new instances of
 	 * schema derived classes for package: com.github.soap2jms.common.ws
-	 * 
+	 *
 	 */
 	public ObjectFactory() {
 	}
 
 	/**
 	 * Create an instance of {@link AcknowledgeMessages }
-	 * 
+	 *
 	 */
 	public AcknowledgeMessages createAcknowledgeMessages() {
 		return new AcknowledgeMessages();
@@ -46,17 +46,16 @@ public class ObjectFactory {
 	/**
 	 * Create an instance of {@link JAXBElement
 	 * }{@code <}{@link WsJmsIdAndStatusList }{@code >}}
-	 * 
+	 *
 	 */
 	@XmlElementDecl(namespace = "http://soap2jms.github.com/common/ws", name = "acknowledgeMessagesResponse")
 	public JAXBElement<WsJmsIdAndStatusList> createAcknowledgeMessagesResponse(final WsJmsIdAndStatusList value) {
-		return new JAXBElement<>(_AcknowledgeMessagesResponse_QNAME, WsJmsIdAndStatusList.class,
-				null, value);
+		return new JAXBElement<>(_AcknowledgeMessagesResponse_QNAME, WsJmsIdAndStatusList.class, null, value);
 	}
 
 	/**
 	 * Create an instance of {@link MessageIdAndStatus }
-	 * 
+	 *
 	 */
 	public MessageIdAndStatus createMessageIdAndStatus() {
 		return new MessageIdAndStatus();
@@ -64,7 +63,7 @@ public class ObjectFactory {
 
 	/**
 	 * Create an instance of {@link RetrieveMessageResponseType }
-	 * 
+	 *
 	 */
 	public RetrieveMessageResponseType createRetrieveMessageResponseType() {
 		return new RetrieveMessageResponseType();
@@ -72,7 +71,7 @@ public class ObjectFactory {
 
 	/**
 	 * Create an instance of {@link RetrieveMessages }
-	 * 
+	 *
 	 */
 	public RetrieveMessages createRetrieveMessages() {
 		return new RetrieveMessages();
@@ -80,7 +79,7 @@ public class ObjectFactory {
 
 	/**
 	 * Create an instance of {@link RetrieveMessagesResponse }
-	 * 
+	 *
 	 */
 	public RetrieveMessagesResponse createRetrieveMessagesResponse() {
 		return new RetrieveMessagesResponse();
@@ -88,7 +87,7 @@ public class ObjectFactory {
 
 	/**
 	 * Create an instance of {@link SendMessages }
-	 * 
+	 *
 	 */
 	public SendMessages createSendMessages() {
 		return new SendMessages();
@@ -97,17 +96,16 @@ public class ObjectFactory {
 	/**
 	 * Create an instance of {@link JAXBElement
 	 * }{@code <}{@link WsJmsIdAndStatusList }{@code >}}
-	 * 
+	 *
 	 */
 	@XmlElementDecl(namespace = "http://soap2jms.github.com/common/ws", name = "sendMessagesResponse")
 	public JAXBElement<WsJmsIdAndStatusList> createSendMessagesResponse(final WsJmsIdAndStatusList value) {
-		return new JAXBElement<>(_SendMessagesResponse_QNAME, WsJmsIdAndStatusList.class, null,
-				value);
+		return new JAXBElement<>(_SendMessagesResponse_QNAME, WsJmsIdAndStatusList.class, null, value);
 	}
 
 	/**
 	 * Create an instance of {@link StatusCode }
-	 * 
+	 *
 	 */
 	public StatusCode createStatusCode() {
 		return new StatusCode();
@@ -116,7 +114,7 @@ public class ObjectFactory {
 	/**
 	 * Create an instance of {@link JAXBElement
 	 * }{@code <}{@link WsJmsExceptionData }{@code >}}
-	 * 
+	 *
 	 */
 	@XmlElementDecl(namespace = "http://soap2jms.github.com/common/ws", name = "wsJmsException")
 	public JAXBElement<WsJmsExceptionData> createWsJmsException(final WsJmsExceptionData value) {
@@ -125,7 +123,7 @@ public class ObjectFactory {
 
 	/**
 	 * Create an instance of {@link WsJmsExceptionData }
-	 * 
+	 *
 	 */
 	public WsJmsExceptionData createWsJmsExceptionData() {
 		return new WsJmsExceptionData();
@@ -133,7 +131,7 @@ public class ObjectFactory {
 
 	/**
 	 * Create an instance of {@link WsJmsIdAndStatusList }
-	 * 
+	 *
 	 */
 	public WsJmsIdAndStatusList createWsJmsIdAndStatusList() {
 		return new WsJmsIdAndStatusList();
@@ -141,7 +139,7 @@ public class ObjectFactory {
 
 	/**
 	 * Create an instance of {@link WsJmsMessage }
-	 * 
+	 *
 	 */
 	public WsJmsMessage createWsJmsMessage() {
 		return new WsJmsMessage();
@@ -149,7 +147,7 @@ public class ObjectFactory {
 
 	/**
 	 * Create an instance of {@link WsJmsMessageAndStatus }
-	 * 
+	 *
 	 */
 	public WsJmsMessageAndStatus createWsJmsMessageAndStatus() {
 		return new WsJmsMessageAndStatus();
@@ -157,7 +155,7 @@ public class ObjectFactory {
 
 	/**
 	 * Create an instance of {@link WsJmsMessage.Headers }
-	 * 
+	 *
 	 */
 	public WsJmsMessage.Headers createWsJmsMessageHeaders() {
 		return new WsJmsMessage.Headers();

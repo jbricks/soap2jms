@@ -13,11 +13,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for wsJmsMessage complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="wsJmsMessage">
  *   &lt;complexContent>
@@ -62,8 +62,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "wsJmsMessage", propOrder = { "headers", "jmsCorrelationId", "jmsDeliveryMode", "jmsDeliveryTime",
@@ -71,6 +71,93 @@ import javax.xml.bind.annotation.XmlType;
 		"messageClass", "body" })
 public class WsJmsMessage {
 
+	/**
+	 * <p>
+	 * Java class for anonymous complex type.
+	 *
+	 * <p>
+	 * The following schema fragment specifies the expected content contained
+	 * within this class.
+	 *
+	 * <pre>
+	 * &lt;complexType>
+	 *   &lt;complexContent>
+	 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+	 *       &lt;sequence>
+	 *         &lt;element name="key" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="value" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *       &lt;/sequence>
+	 *     &lt;/restriction>
+	 *   &lt;/complexContent>
+	 * &lt;/complexType>
+	 * </pre>
+	 *
+	 *
+	 */
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@XmlType(name = "", propOrder = { "key", "value" })
+	public static class Headers {
+
+		@XmlElement(required = true)
+		protected String key;
+		@XmlElement(required = true)
+		protected String value;
+
+		public Headers() {
+
+		}
+
+		public Headers(final String key, final String value) {
+			this.key = key;
+			this.value = value;
+		}
+
+		/**
+		 * Gets the value of the key property.
+		 *
+		 * @return possible object is {@link String }
+		 *
+		 */
+		public String getKey() {
+			return this.key;
+		}
+
+		/**
+		 * Gets the value of the value property.
+		 *
+		 * @return possible object is {@link String }
+		 *
+		 */
+		public String getValue() {
+			return this.value;
+		}
+
+		/**
+		 * Sets the value of the key property.
+		 *
+		 * @param value
+		 *            allowed object is {@link String }
+		 *
+		 */
+		public void setKey(final String value) {
+			this.key = value;
+		}
+
+		/**
+		 * Sets the value of the value property.
+		 *
+		 * @param value
+		 *            allowed object is {@link String }
+		 *
+		 */
+		public void setValue(final String value) {
+			this.value = value;
+		}
+
+	}
+
+	protected DataHandler body;
+	protected String clientId;
 	@XmlElement(required = true)
 	protected List<WsJmsMessage.Headers> headers;
 	protected String jmsCorrelationId;
@@ -83,18 +170,18 @@ public class WsJmsMessage {
 	protected long jmsTimestamp;
 	@XmlElement(required = true)
 	protected String jmsType;
-	protected String clientId;
+
 	@XmlElement(required = true)
 	protected String messageClass;
-	protected DataHandler body;
 
 	public WsJmsMessage() {
-		
+
 	}
-	
-	public WsJmsMessage(List<Headers> headers, String jmsCorrelationId, int jmsDeliveryMode, Long jmsDeliveryTime,
-			long jmsExpiration, String jmsMessageId, Integer jmsPriority, boolean jmsRedelivered, long jmsTimestamp,
-			String jmsType, String clientId, String messageClass, DataHandler body) {
+
+	public WsJmsMessage(final List<Headers> headers, final String jmsCorrelationId, final int jmsDeliveryMode,
+			final Long jmsDeliveryTime, final long jmsExpiration, final String jmsMessageId, final Integer jmsPriority,
+			final boolean jmsRedelivered, final long jmsTimestamp, final String jmsType, final String clientId,
+			final String messageClass, final DataHandler body) {
 		this.headers = headers;
 		this.jmsCorrelationId = jmsCorrelationId;
 		this.jmsDeliveryMode = jmsDeliveryMode;
@@ -111,348 +198,263 @@ public class WsJmsMessage {
 	}
 
 	/**
+	 * Gets the value of the body property.
+	 *
+	 * @return possible object is byte[]
+	 */
+	public DataHandler getBody() {
+		return this.body;
+	}
+
+	/**
+	 * Gets the value of the clientId property.
+	 *
+	 * @return possible object is {@link String }
+	 *
+	 */
+	public String getClientId() {
+		return this.clientId;
+	}
+
+	/**
 	 * Gets the value of the headers property.
-	 * 
+	 *
 	 * <p>
 	 * This accessor method returns a reference to the live list, not a
 	 * snapshot. Therefore any modification you make to the returned list will
 	 * be present inside the JAXB object. This is why there is not a
 	 * <CODE>set</CODE> method for the headers property.
-	 * 
+	 *
 	 * <p>
 	 * For example, to add a new item, do as follows:
-	 * 
+	 *
 	 * <pre>
 	 * getHeaders().add(newItem);
 	 * </pre>
-	 * 
-	 * 
+	 *
+	 *
 	 * <p>
 	 * Objects of the following type(s) are allowed in the list
 	 * {@link WsJmsMessage.Headers }
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	public List<WsJmsMessage.Headers> getHeaders() {
-		if (headers == null) {
-			headers = new ArrayList<WsJmsMessage.Headers>();
+		if (this.headers == null) {
+			this.headers = new ArrayList<>();
 		}
 		return this.headers;
 	}
 
 	/**
 	 * Gets the value of the jmsCorrelationId property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getJmsCorrelationId() {
-		return jmsCorrelationId;
-	}
-
-	/**
-	 * Sets the value of the jmsCorrelationId property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setJmsCorrelationId(String value) {
-		this.jmsCorrelationId = value;
+		return this.jmsCorrelationId;
 	}
 
 	/**
 	 * Gets the value of the jmsDeliveryMode property.
-	 * 
+	 *
 	 */
 	public int getJmsDeliveryMode() {
-		return jmsDeliveryMode;
-	}
-
-	/**
-	 * Sets the value of the jmsDeliveryMode property.
-	 * 
-	 */
-	public void setJmsDeliveryMode(int value) {
-		this.jmsDeliveryMode = value;
+		return this.jmsDeliveryMode;
 	}
 
 	/**
 	 * Gets the value of the jmsDeliveryTime property.
-	 * 
+	 *
 	 * @return possible object is {@link Long }
-	 * 
+	 *
 	 */
 	public Long getJmsDeliveryTime() {
-		return jmsDeliveryTime;
-	}
-
-	/**
-	 * Sets the value of the jmsDeliveryTime property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link Long }
-	 * 
-	 */
-	public void setJmsDeliveryTime(Long value) {
-		this.jmsDeliveryTime = value;
+		return this.jmsDeliveryTime;
 	}
 
 	/**
 	 * Gets the value of the jmsExpiration property.
-	 * 
+	 *
 	 */
 	public long getJmsExpiration() {
-		return jmsExpiration;
-	}
-
-	/**
-	 * Sets the value of the jmsExpiration property.
-	 * 
-	 */
-	public void setJmsExpiration(long value) {
-		this.jmsExpiration = value;
+		return this.jmsExpiration;
 	}
 
 	/**
 	 * Gets the value of the jmsMessageId property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getJmsMessageId() {
-		return jmsMessageId;
-	}
-
-	/**
-	 * Sets the value of the jmsMessageId property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setJmsMessageId(String value) {
-		this.jmsMessageId = value;
+		return this.jmsMessageId;
 	}
 
 	/**
 	 * Gets the value of the jmsPriority property.
-	 * 
+	 *
 	 * @return possible object is {@link Integer }
-	 * 
+	 *
 	 */
 	public Integer getJmsPriority() {
-		return jmsPriority;
-	}
-
-	/**
-	 * Sets the value of the jmsPriority property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link Integer }
-	 * 
-	 */
-	public void setJmsPriority(Integer value) {
-		this.jmsPriority = value;
-	}
-
-	/**
-	 * Gets the value of the jmsRedelivered property.
-	 * 
-	 */
-	public boolean isJmsRedelivered() {
-		return jmsRedelivered;
-	}
-
-	/**
-	 * Sets the value of the jmsRedelivered property.
-	 * 
-	 */
-	public void setJmsRedelivered(boolean value) {
-		this.jmsRedelivered = value;
+		return this.jmsPriority;
 	}
 
 	/**
 	 * Gets the value of the jmsTimestamp property.
-	 * 
+	 *
 	 */
 	public long getJmsTimestamp() {
-		return jmsTimestamp;
-	}
-
-	/**
-	 * Sets the value of the jmsTimestamp property.
-	 * 
-	 */
-	public void setJmsTimestamp(long value) {
-		this.jmsTimestamp = value;
+		return this.jmsTimestamp;
 	}
 
 	/**
 	 * Gets the value of the jmsType property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getJmsType() {
-		return jmsType;
-	}
-
-	/**
-	 * Sets the value of the jmsType property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setJmsType(String value) {
-		this.jmsType = value;
-	}
-
-	/**
-	 * Gets the value of the clientId property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getClientId() {
-		return clientId;
-	}
-
-	/**
-	 * Sets the value of the clientId property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setClientId(String value) {
-		this.clientId = value;
+		return this.jmsType;
 	}
 
 	/**
 	 * Gets the value of the messageClass property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getMessageClass() {
-		return messageClass;
+		return this.messageClass;
 	}
 
 	/**
-	 * Sets the value of the messageClass property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
+	 * Gets the value of the jmsRedelivered property.
+	 *
 	 */
-	public void setMessageClass(String value) {
-		this.messageClass = value;
-	}
-
-	/**
-	 * Gets the value of the body property.
-	 * 
-	 * @return possible object is byte[]
-	 */
-	public DataHandler getBody() {
-		return body;
+	public boolean isJmsRedelivered() {
+		return this.jmsRedelivered;
 	}
 
 	/**
 	 * Sets the value of the body property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is byte[]
 	 */
-	public void setBody(DataHandler value) {
+	public void setBody(final DataHandler value) {
 		this.body = value;
 	}
 
 	/**
-	 * <p>
-	 * Java class for anonymous complex type.
-	 * 
-	 * <p>
-	 * The following schema fragment specifies the expected content contained
-	 * within this class.
-	 * 
-	 * <pre>
-	 * &lt;complexType>
-	 *   &lt;complexContent>
-	 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-	 *       &lt;sequence>
-	 *         &lt;element name="key" type="{http://www.w3.org/2001/XMLSchema}string"/>
-	 *         &lt;element name="value" type="{http://www.w3.org/2001/XMLSchema}string"/>
-	 *       &lt;/sequence>
-	 *     &lt;/restriction>
-	 *   &lt;/complexContent>
-	 * &lt;/complexType>
-	 * </pre>
-	 * 
-	 * 
+	 * Sets the value of the clientId property.
+	 *
+	 * @param value
+	 *            allowed object is {@link String }
+	 *
 	 */
-	@XmlAccessorType(XmlAccessType.FIELD)
-	@XmlType(name = "", propOrder = { "key", "value" })
-	public static class Headers {
+	public void setClientId(final String value) {
+		this.clientId = value;
+	}
 
-		@XmlElement(required = true)
-		protected String key;
-		@XmlElement(required = true)
-		protected String value;
+	/**
+	 * Sets the value of the jmsCorrelationId property.
+	 *
+	 * @param value
+	 *            allowed object is {@link String }
+	 *
+	 */
+	public void setJmsCorrelationId(final String value) {
+		this.jmsCorrelationId = value;
+	}
 
-		public Headers() {
+	/**
+	 * Sets the value of the jmsDeliveryMode property.
+	 *
+	 */
+	public void setJmsDeliveryMode(final int value) {
+		this.jmsDeliveryMode = value;
+	}
 
-		}
+	/**
+	 * Sets the value of the jmsDeliveryTime property.
+	 *
+	 * @param value
+	 *            allowed object is {@link Long }
+	 *
+	 */
+	public void setJmsDeliveryTime(final Long value) {
+		this.jmsDeliveryTime = value;
+	}
 
-		public Headers(String key, String value) {
-			this.key = key;
-			this.value = value;
-		}
+	/**
+	 * Sets the value of the jmsExpiration property.
+	 *
+	 */
+	public void setJmsExpiration(final long value) {
+		this.jmsExpiration = value;
+	}
 
-		/**
-		 * Gets the value of the key property.
-		 * 
-		 * @return possible object is {@link String }
-		 * 
-		 */
-		public String getKey() {
-			return key;
-		}
+	/**
+	 * Sets the value of the jmsMessageId property.
+	 *
+	 * @param value
+	 *            allowed object is {@link String }
+	 *
+	 */
+	public void setJmsMessageId(final String value) {
+		this.jmsMessageId = value;
+	}
 
-		/**
-		 * Sets the value of the key property.
-		 * 
-		 * @param value
-		 *            allowed object is {@link String }
-		 * 
-		 */
-		public void setKey(String value) {
-			this.key = value;
-		}
+	/**
+	 * Sets the value of the jmsPriority property.
+	 *
+	 * @param value
+	 *            allowed object is {@link Integer }
+	 *
+	 */
+	public void setJmsPriority(final Integer value) {
+		this.jmsPriority = value;
+	}
 
-		/**
-		 * Gets the value of the value property.
-		 * 
-		 * @return possible object is {@link String }
-		 * 
-		 */
-		public String getValue() {
-			return value;
-		}
+	/**
+	 * Sets the value of the jmsRedelivered property.
+	 *
+	 */
+	public void setJmsRedelivered(final boolean value) {
+		this.jmsRedelivered = value;
+	}
 
-		/**
-		 * Sets the value of the value property.
-		 * 
-		 * @param value
-		 *            allowed object is {@link String }
-		 * 
-		 */
-		public void setValue(String value) {
-			this.value = value;
-		}
+	/**
+	 * Sets the value of the jmsTimestamp property.
+	 *
+	 */
+	public void setJmsTimestamp(final long value) {
+		this.jmsTimestamp = value;
+	}
 
+	/**
+	 * Sets the value of the jmsType property.
+	 *
+	 * @param value
+	 *            allowed object is {@link String }
+	 *
+	 */
+	public void setJmsType(final String value) {
+		this.jmsType = value;
+	}
+
+	/**
+	 * Sets the value of the messageClass property.
+	 *
+	 * @param value
+	 *            allowed object is {@link String }
+	 *
+	 */
+	public void setMessageClass(final String value) {
+		this.messageClass = value;
 	}
 
 }

@@ -24,6 +24,14 @@ public enum StatusCodeEnum {
 	/**
 	 *
 	 */
+	ERR_QUEUE_NOT_FOUND(false, true, false, 200),
+	/**
+	 *
+	 */
+	ERR_MALFORMED_URL(false, true, false, 210),
+	/**
+	 *
+	 */
 	OK(false, false, true, 0),
 	/**
 	 *

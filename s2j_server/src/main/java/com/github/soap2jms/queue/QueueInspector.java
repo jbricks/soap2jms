@@ -9,16 +9,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.jms.BytesMessage;
-import javax.jms.InvalidDestinationRuntimeException;
 import javax.jms.JMSConsumer;
 import javax.jms.JMSContext;
 import javax.jms.JMSException;
-import javax.jms.JMSProducer;
-import javax.jms.JMSRuntimeException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
-import javax.jms.MessageFormatRuntimeException;
-import javax.jms.MessageNotWriteableRuntimeException;
 import javax.jms.ObjectMessage;
 import javax.jms.Queue;
 import javax.jms.QueueBrowser;
@@ -56,7 +51,7 @@ public class QueueInspector {
 					// msg.acknowledge();
 					messageResult.add(new MessageIdAndStatus(messageId));
 				} else {
-					messageResult.add(new MessageIdAndStatus(messageId, StatusCodeEnum.WARN_MSG_NOT_FOUND, ""));
+					messageResult.add(new MessageIdAndStatus(messageId, StatusCodeEnum.WARN_MSG_NOT_FOUND, "", null));
 				}
 				browser.close();
 			}
@@ -135,38 +130,5 @@ public class QueueInspector {
 		return messageResult;
 	}
 
-	public IdAndStatus[] sendMessages(final String queueName, final Message[] messages)
-			throws JMSException, NamingException {
-		final IdAndStatus[] result = new IdAndStatus[messages.length];
-		InitialContext ictx = null;
-		JMSProducer producer = null;
-		try {
-			ictx = new InitialContext();
-			final String jndiName = JNDI_LOCAL + queueName;
-			final Queue queue = (Queue) ictx.lookup(jndiName);
-
-			producer = this.ctx.createProducer();
-			for (int i = 0; i < messages.length; i++) {
-				final Message message = messages[i];
-				try {
-					producer.send(queue, message);
-					result[i] = new IdAndStatus(message.getJMSMessageID());
-				} catch (final MessageFormatRuntimeException e) {
-					e.printStackTrace();
-				} catch (final InvalidDestinationRuntimeException e) {
-					final String errmessage = "Destination " + queue + " is not valid. Name [" + queueName
-							+ "] jndiName [" + jndiName + "]";
-					LOGGER.error(errmessage, e);
-				} catch (final MessageNotWriteableRuntimeException e) {
-				} catch (final JMSRuntimeException e) {
-				} catch (final RuntimeException e) {
-
-				}
-			}
-		} finally {
-			ictx.close();
-		}
-		return result;
-	}
 
 }

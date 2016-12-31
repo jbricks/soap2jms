@@ -26,14 +26,15 @@ public class WsJmsException extends Exception {
 	private final WsJmsExceptionData faultInfo;
 
 	/**
+	 * 
 	 *
 	 * @param faultInfo
 	 * @param message
 	 */
 	public WsJmsException(final String message, final String originalException, final StatusCodeEnum code,
-			final WsExceptionClass exceptionType) {
+			final String jmsCode, final WsExceptionClass exceptionType) {
 		super(message);
-		this.faultInfo = new WsJmsExceptionData(message, originalException, code.getErrorCode(), null, exceptionType);
+		this.faultInfo = new WsJmsExceptionData(code, exceptionType, originalException, jmsCode, null);
 	}
 
 	/**
