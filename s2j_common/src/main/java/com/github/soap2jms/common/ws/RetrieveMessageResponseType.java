@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="s2jMessageAndStatus" type="{http://soap2jms.github.com/common/ws}wsJmsMessageAndStatus" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="s2jMessages" type="{http://soap2jms.github.com/common/ws}wsJmsMessage" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="complete" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -33,54 +33,55 @@ import javax.xml.bind.annotation.XmlType;
  *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "retrieveMessageResponseType", propOrder = { "s2JMessageAndStatus", "complete" })
+@XmlType(name = "retrieveMessageResponseType", propOrder = { "s2JMessages", "complete" })
 public class RetrieveMessageResponseType {
 
 	protected boolean complete;
-	@XmlElement(name = "s2jMessageAndStatus")
-	protected List<WsJmsMessageAndStatus> s2JMessageAndStatus;
+	@XmlElement(name = "s2jMessages")
+	protected List<WsJmsMessage> s2JMessages;
 
 	public RetrieveMessageResponseType() {
+
 	}
 
-	public RetrieveMessageResponseType(final List<WsJmsMessageAndStatus> s2jMessageAndStatus, final boolean complete) {
-		this.s2JMessageAndStatus = s2jMessageAndStatus;
+	public RetrieveMessageResponseType(final List<WsJmsMessage> s2jMessages, final boolean complete) {
+		this.s2JMessages = s2jMessages;
 		this.complete = complete;
 	}
 
 	/**
-	 * Gets the value of the s2JMessageAndStatus property.
-	 *
+	 * Gets the value of the s2JMessages property.
+	 * 
 	 * <p>
 	 * This accessor method returns a reference to the live list, not a
 	 * snapshot. Therefore any modification you make to the returned list will
 	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the s2JMessageAndStatus property.
-	 *
+	 * <CODE>set</CODE> method for the s2JMessages property.
+	 * 
 	 * <p>
 	 * For example, to add a new item, do as follows:
-	 *
+	 * 
 	 * <pre>
-	 * getS2JMessageAndStatus().add(newItem);
+	 * getS2JMessages().add(newItem);
 	 * </pre>
-	 *
-	 *
+	 * 
+	 * 
 	 * <p>
 	 * Objects of the following type(s) are allowed in the list
-	 * {@link WsJmsMessageAndStatus }
-	 *
-	 *
+	 * {@link WsJmsMessage }
+	 * 
+	 * 
 	 */
-	public List<WsJmsMessageAndStatus> getS2JMessageAndStatus() {
-		if (this.s2JMessageAndStatus == null) {
-			this.s2JMessageAndStatus = new ArrayList<>();
+	public List<WsJmsMessage> getS2JMessages() {
+		if (this.s2JMessages == null) {
+			this.s2JMessages = new ArrayList<>();
 		}
-		return this.s2JMessageAndStatus;
+		return this.s2JMessages;
 	}
 
 	/**
 	 * Gets the value of the complete property.
-	 *
+	 * 
 	 */
 	public boolean isComplete() {
 		return this.complete;
@@ -88,7 +89,7 @@ public class RetrieveMessageResponseType {
 
 	/**
 	 * Sets the value of the complete property.
-	 *
+	 * 
 	 */
 	public void setComplete(final boolean value) {
 		this.complete = value;

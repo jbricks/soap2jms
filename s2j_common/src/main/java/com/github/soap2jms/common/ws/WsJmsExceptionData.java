@@ -61,9 +61,9 @@ public class WsJmsExceptionData {
 
 	}
 
-	public WsJmsExceptionData(final StatusCodeEnum code, WsExceptionClass exceptionClass, String jmsCode, String originalException,
-			String reason) {
-		this.code = code == null? StatusCodeEnum.ERR_GENERIC.name() : code.name();
+	public WsJmsExceptionData(final StatusCodeEnum code, final WsExceptionClass exceptionClass, final String jmsCode,
+			final String originalException, final String reason) {
+		this.code = code == null ? StatusCodeEnum.ERR_GENERIC.name() : code.name();
 		this.exceptionClass = exceptionClass == null ? WsExceptionClass.OTHER.name() : exceptionClass.name();
 		this.jmsCode = jmsCode;
 		this.originalException = originalException;
@@ -72,9 +72,9 @@ public class WsJmsExceptionData {
 
 	/**
 	 * Gets the value of the code property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getCode() {
 		return this.code;
@@ -82,9 +82,9 @@ public class WsJmsExceptionData {
 
 	/**
 	 * Gets the value of the exceptionClass property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getExceptionClass() {
 		return this.exceptionClass;
@@ -92,9 +92,9 @@ public class WsJmsExceptionData {
 
 	/**
 	 * Gets the value of the jmsCode property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getJmsCode() {
 		return this.jmsCode;
@@ -102,9 +102,9 @@ public class WsJmsExceptionData {
 
 	/**
 	 * Gets the value of the originalException property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getOriginalException() {
 		return this.originalException;
@@ -112,9 +112,9 @@ public class WsJmsExceptionData {
 
 	/**
 	 * Gets the value of the reason property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	@Deprecated
 	public String getReason() {
@@ -123,10 +123,10 @@ public class WsJmsExceptionData {
 
 	/**
 	 * Sets the value of the code property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setCode(final String value) {
 		this.code = value;
@@ -134,10 +134,10 @@ public class WsJmsExceptionData {
 
 	/**
 	 * Sets the value of the exceptionClass property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setExceptionClass(final String value) {
 		this.exceptionClass = value;
@@ -145,10 +145,10 @@ public class WsJmsExceptionData {
 
 	/**
 	 * Sets the value of the jmsCode property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setJmsCode(final String value) {
 		this.jmsCode = value;
@@ -156,10 +156,10 @@ public class WsJmsExceptionData {
 
 	/**
 	 * Sets the value of the originalException property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setOriginalException(final String value) {
 		this.originalException = value;
@@ -167,10 +167,10 @@ public class WsJmsExceptionData {
 
 	/**
 	 * Sets the value of the reason property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setReason(final String value) {
 		this.reason = value;

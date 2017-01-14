@@ -14,7 +14,6 @@ import javax.xml.ws.WebServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.soap2jms.common.MessageAndStatus;
 import com.github.soap2jms.common.S2JConfigurationException;
 import com.github.soap2jms.common.S2JProtocolException;
 import com.github.soap2jms.common.S2JProviderException;
@@ -29,7 +28,6 @@ import com.github.soap2jms.common.ws.RetrieveMessageResponseType;
 import com.github.soap2jms.common.ws.StatusCode;
 import com.github.soap2jms.common.ws.WsJmsExceptionData;
 import com.github.soap2jms.common.ws.WsJmsMessage;
-import com.github.soap2jms.common.ws.WsJmsMessageAndStatus;
 import com.github.soap2jms.model.ClientMessageFactory;
 import com.github.soap2jms.model.MessageDeliveryStatus;
 import com.github.soap2jms.model.ResponseStatus;
@@ -194,7 +192,17 @@ public class SoapToJmsClient {
 		}
 		return acknolwedge(queueName, msgIds);
 	}
-
+	/**
+	 * 
+	 * @param queueName
+	 * @param filter
+	 * @param msgMax
+	 * @return
+	 * 			the returned message can be null in case of error.
+	 * @throws S2JProtocolException
+	 * @throws S2JConfigurationException
+	 * @throws S2JProviderException
+	 */
 	public Message[] readMessages(final String queueName, final String filter, final int msgMax)
 			throws S2JProtocolException, S2JConfigurationException, S2JProviderException {
 
@@ -205,26 +213,23 @@ public class SoapToJmsClient {
 			handleWsException(e);
 		}
 		this.isComplete.set(wsResponse.isComplete());
-		// return convertMessages(new ClientMessageFactory(),
-		// wsResponse.getS2JMessageAndStatus(), JMSImplementation.NONE);
-		// FIXME
-		return null;
+		return convertMessages(new ClientMessageFactory(), wsResponse.getS2JMessages(), JMSImplementation.NONE);
 	}
 
-	public Message[] convertMessages(final JMSMessageFactory messageFactory,
-			final List<WsJmsMessageAndStatus> wsResponse, JMSImplementation jmsImplementation)
-			throws S2JProtocolException {
+	public Message[] convertMessages(final JMSMessageFactory messageFactory, final List<WsJmsMessage> wsResponse,
+			JMSImplementation jmsImplementation) throws S2JProtocolException {
 		final Message[] messages = new Message[wsResponse.size()];
 
 		for (int i = 0; i < wsResponse.size(); i++) {
-			// FIXME status
-			final WsJmsMessageAndStatus messageAndStatus = wsResponse.get(i);
-			final WsJmsMessage wsMessage = messageAndStatus.getWsJmsMessage();
-			// final Message message =
-			// this.soap2JmsSerializer.convertSingleMessage(messageFactory,
-			// wsMessage,
-			// jmsImplementation);
-			// messages[i] = message;
+			final WsJmsMessage wsMessage = wsResponse.get(i);
+			Message message = null;
+			try {
+				message = this.soap2JmsSerializer.convertMessage(messageFactory, wsMessage, jmsImplementation);
+			} catch (S2JProviderException e) {
+				LOGGER.error("Error deserializing message " + wsMessage + " message position:" + i + " messageClientId:"
+						+ wsMessage.getClientId(), e);
+			}
+			messages[i] = message;
 		}
 
 		return messages;

@@ -25,7 +25,7 @@ import com.github.soap2jms.common.ws.RetrieveMessageResponseType;
 public interface ReaderSoap2Jms {
 
 	/**
-	 * 
+	 *
 	 * @param queueName
 	 * @param messageIds
 	 * @return returns
@@ -41,7 +41,7 @@ public interface ReaderSoap2Jms {
 			@WebParam(name = "messageIds", targetNamespace = "") List<String> messageIds) throws WsJmsException;
 
 	/**
-	 * 
+	 *
 	 * @param filter
 	 * @param maxItems
 	 * @param queueName

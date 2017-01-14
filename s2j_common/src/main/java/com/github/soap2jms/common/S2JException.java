@@ -33,7 +33,7 @@ public class S2JException extends Exception {
 
 	@Override
 	public String toString() {
-		return super.toString() + ",statusCode=" + statusCode + " ";
+		return super.toString() + ",statusCode=" + this.statusCode + " ";
 	}
 
 }

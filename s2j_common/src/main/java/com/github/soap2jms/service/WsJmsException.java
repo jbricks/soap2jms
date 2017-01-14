@@ -26,7 +26,7 @@ public class WsJmsException extends Exception {
 	private final WsJmsExceptionData faultInfo;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @param faultInfo
 	 * @param message

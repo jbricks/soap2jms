@@ -11,12 +11,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.github.soap2jms.common.JMSMessageClassEnum;
 import com.github.soap2jms.common.PropertyTypeEnum;
-import com.github.soap2jms.common.S2JException;
 import com.github.soap2jms.common.S2JProtocolException;
 import com.github.soap2jms.common.S2JProviderException;
 import com.github.soap2jms.common.StatusCodeEnum;
 import com.github.soap2jms.common.ws.WsJmsMessage;
-import com.github.soap2jms.common.ws.WsJmsMessageAndStatus;
 
 public class SoapToJmsSerializer {
 	public static final String ACTIVEMQ_DUPLICATE_ID = "_AMQ_DUPL_ID";
@@ -64,7 +62,7 @@ public class SoapToJmsSerializer {
 	}
 
 	public Message convertMessage(final JMSMessageFactory messageFactory, final WsJmsMessage wsMessage,
-			JMSImplementation implementation) throws S2JProviderException, S2JProtocolException {
+			final JMSImplementation implementation) throws S2JProviderException, S2JProtocolException {
 		final String messageType = wsMessage.getMessageClass();
 		final JMSMessageClassEnum messageTypeEnum = JMSMessageClassEnum.valueOf(messageType);
 		final MessageAndBodyStrategy creationStrategy = this.messageCreationByMessageType.get(messageTypeEnum);

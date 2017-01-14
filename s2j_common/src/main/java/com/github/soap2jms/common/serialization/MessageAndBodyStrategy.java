@@ -7,5 +7,6 @@ import com.github.soap2jms.common.S2JProviderException;
 import com.github.soap2jms.common.ws.WsJmsMessage;
 
 public interface MessageAndBodyStrategy {
-	Message deserializeBody(JMSMessageFactory messageFact, WsJmsMessage wsMessage) throws S2JProviderException,S2JProtocolException;
+	Message deserializeBody(JMSMessageFactory messageFact, WsJmsMessage wsMessage)
+			throws S2JProviderException, S2JProtocolException;
 }

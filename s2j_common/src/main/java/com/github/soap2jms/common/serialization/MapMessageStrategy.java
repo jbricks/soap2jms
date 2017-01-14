@@ -18,7 +18,7 @@ public class MapMessageStrategy implements MessageAndBodyStrategy {
 
 	@Override
 	public Message deserializeBody(final JMSMessageFactory messageFactory, final WsJmsMessage wsMessage)
-			throws S2JProviderException,S2JProtocolException {
+			throws S2JProviderException, S2JProtocolException {
 		final DataHandler dataHandler = wsMessage.getBody();
 		final Properties props = new Properties();
 		try {

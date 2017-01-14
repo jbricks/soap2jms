@@ -5,5 +5,5 @@ package com.github.soap2jms.common;
  * be threw client side
  */
 public enum WsExceptionClass {
-	CONFIGURATION, PROTOCOL, OTHER
+	CONFIGURATION, OTHER, PROTOCOL
 }

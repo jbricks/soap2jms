@@ -16,7 +16,7 @@ public enum StatusCodeEnum {
 	/**
 	 *
 	 */
-	ERR_SERIALIZATION(false, true, true, 103),
+	ERR_MALFORMED_URL(false, true, false, 210),
 	/**
 	 *
 	 */
@@ -28,7 +28,7 @@ public enum StatusCodeEnum {
 	/**
 	 *
 	 */
-	ERR_MALFORMED_URL(false, true, false, 210),
+	ERR_SERIALIZATION(false, true, true, 103),
 	/**
 	 *
 	 */

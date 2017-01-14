@@ -11,11 +11,11 @@ import com.github.soap2jms.common.StatusCodeEnum;
 /**
  * <p>
  * Java class for statusCode complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="statusCode">
  *   &lt;complexContent>
@@ -39,8 +39,8 @@ import com.github.soap2jms.common.StatusCodeEnum;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "statusCode", propOrder = { "code", "jmsCode", "reason" })
@@ -56,78 +56,78 @@ public class StatusCode {
 	public StatusCode() {
 	}
 
-	public StatusCode(String code, String jmsCode, String reason) {
-		this.code = code;
+	public StatusCode(final StatusCodeEnum code, final String jmsCode, final String reason) {
+		this.code = code.name();
 		this.jmsCode = jmsCode;
 		this.reason = reason;
 	}
 
-	public StatusCode(StatusCodeEnum code, String jmsCode, String reason) {
-		this.code = code.name();
+	public StatusCode(final String code, final String jmsCode, final String reason) {
+		this.code = code;
 		this.jmsCode = jmsCode;
 		this.reason = reason;
 	}
 
 	/**
 	 * Gets the value of the code property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getCode() {
-		return code;
-	}
-
-	/**
-	 * Sets the value of the code property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setCode(String value) {
-		this.code = value;
+		return this.code;
 	}
 
 	/**
 	 * Gets the value of the jmsCode property.
-	 * 
+	 *
 	 * @return possible object is {@link Integer }
-	 * 
+	 *
 	 */
 	public String getJmsCode() {
-		return jmsCode;
-	}
-
-	/**
-	 * Sets the value of the jmsCode property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link Integer }
-	 * 
-	 */
-	public void setJmsCode(String value) {
-		this.jmsCode = value;
+		return this.jmsCode;
 	}
 
 	/**
 	 * Gets the value of the reason property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getReason() {
-		return reason;
+		return this.reason;
+	}
+
+	/**
+	 * Sets the value of the code property.
+	 *
+	 * @param value
+	 *            allowed object is {@link String }
+	 *
+	 */
+	public void setCode(final String value) {
+		this.code = value;
+	}
+
+	/**
+	 * Sets the value of the jmsCode property.
+	 *
+	 * @param value
+	 *            allowed object is {@link Integer }
+	 *
+	 */
+	public void setJmsCode(final String value) {
+		this.jmsCode = value;
 	}
 
 	/**
 	 * Sets the value of the reason property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
-	public void setReason(String value) {
+	public void setReason(final String value) {
 		this.reason = value;
 	}
 

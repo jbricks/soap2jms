@@ -2,7 +2,8 @@ package com.github.soap2jms.reader.unit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +19,7 @@ import com.github.soap2jms.common.S2JProviderException;
 import com.github.soap2jms.common.serialization.JMSImplementation;
 import com.github.soap2jms.common.serialization.JmsToSoapSerializer;
 import com.github.soap2jms.common.serialization.SoapToJmsSerializer;
-import com.github.soap2jms.common.ws.WsJmsMessageAndStatus;
+import com.github.soap2jms.common.ws.WsJmsMessage;
 import com.github.soap2jms.model.ClientMessageFactory;
 import com.github.soap2jms.model.S2JMapMessage;
 import com.github.soap2jms.model.S2JMessage;
@@ -28,11 +29,11 @@ public class TestJmsSerialization {
 
 	private S2JMessage serializeAndDeserializeMessage(final Message serverMessage)
 			throws JMSException, S2JProtocolException, S2JProviderException {
-		final WsJmsMessageAndStatus jms2soap = new JmsToSoapSerializer().jmsToSoapMessageAndStatus(serverMessage,
+		final WsJmsMessage jms2soap = new JmsToSoapSerializer().jmsToSoap(serverMessage,
 				JMSImplementation.ARTEMIS_ACTIVE_MQ);
 
 		final Message convertMessages = new SoapToJmsSerializer().convertMessage(new ClientMessageFactory(),
-				jms2soap.getWsJmsMessage(), JMSImplementation.ARTEMIS_ACTIVE_MQ);
+				jms2soap, JMSImplementation.ARTEMIS_ACTIVE_MQ);
 		assertNotNull("Message not null", convertMessages);
 		return (S2JMessage) convertMessages;
 	}

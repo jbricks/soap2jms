@@ -22,10 +22,8 @@ import javax.jms.TextMessage;
 import com.github.soap2jms.common.ByteArrayDataSource;
 import com.github.soap2jms.common.JMSMessageClassEnum;
 import com.github.soap2jms.common.PropertyTypeEnum;
-import com.github.soap2jms.common.ws.StatusCode;
 import com.github.soap2jms.common.ws.WsJmsMessage;
 import com.github.soap2jms.common.ws.WsJmsMessage.Headers;
-import com.github.soap2jms.common.ws.WsJmsMessageAndStatus;
 
 public class JmsToSoapSerializer {
 
@@ -142,7 +140,7 @@ public class JmsToSoapSerializer {
 		return body;
 	}
 
-	public WsJmsMessage jmsToSoap(final Message message, JMSImplementation impl) throws JMSException {
+	public WsJmsMessage jmsToSoap(final Message message, final JMSImplementation impl) throws JMSException {
 		JMSMessageClassEnum messageType = JMSMessageClassEnum.UNSUPPORTED;
 
 		for (final Map.Entry<Class<? extends Message>, JMSMessageClassEnum> entry : ENUM_BY_CLASS.entrySet()) {
@@ -166,13 +164,5 @@ public class JmsToSoapSerializer {
 				clientId, messageType.toString(), bodyStream);
 		return wsmessage;
 	}
-
-	public WsJmsMessageAndStatus jmsToSoapMessageAndStatus(final Message message,JMSImplementation jmsImplementation) throws JMSException {
-		final WsJmsMessage wsmessage = jmsToSoap(message, jmsImplementation);
-		return new WsJmsMessageAndStatus(wsmessage, StatusCode.STATUS_OK);
-
-	}
-
-
 
 }

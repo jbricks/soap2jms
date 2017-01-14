@@ -48,15 +48,15 @@ public class MessageIdAndStatus {
 		this.status = new StatusCode(StatusCodeEnum.OK, null, null);
 	}
 
+	public MessageIdAndStatus(final String messageId, final StatusCode status) {
+		this.messageId = messageId;
+		this.status = status;
+	}
+
 	public MessageIdAndStatus(final String messageId, final StatusCodeEnum status, final String reason,
 			final String jmsCode) {
 		this.messageId = messageId;
 		this.status = new StatusCode(status, jmsCode, reason);
-	}
-
-	public MessageIdAndStatus(String messageId, StatusCode status) {
-		this.messageId = messageId;
-		this.status = status;
 	}
 
 	/**

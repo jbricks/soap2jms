@@ -12,15 +12,15 @@ public class S2JConfigurationException extends S2JException {
 	 */
 	private static final long serialVersionUID = -2744675911702559397L;
 
-	public S2JConfigurationException(StatusCodeEnum statusCode, final String message) {
+	public S2JConfigurationException(final StatusCodeEnum statusCode, final String message) {
 		super(statusCode, message);
 	}
 
-	public S2JConfigurationException(StatusCodeEnum statusCode,final String message, final Throwable cause) {
+	public S2JConfigurationException(final StatusCodeEnum statusCode, final String message, final Throwable cause) {
 		super(statusCode, message, cause);
 	}
 
-	public S2JConfigurationException(StatusCodeEnum statusCode,final Throwable cause) {
+	public S2JConfigurationException(final StatusCodeEnum statusCode, final Throwable cause) {
 		super(cause, statusCode);
 	}
 
