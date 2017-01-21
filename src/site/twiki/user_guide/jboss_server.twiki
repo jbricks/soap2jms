@@ -1,0 +1,28 @@
+---+ Jboss EAP / Wildfly configuration
+
+---++ Requirements
+
+The minimum version supported is Wildfly 8 / Jboss EAP 7
+
+
+---++ web.xml
+
+
+---++ jboss-web.xml
+
+
+   * =!InputStream= and =Reader= are two abstract classes that you use as a _source_ of data. You use them when reading data from a file, a database a socket... The data is "coming in" your application to be processed. 
+<literal>
+	<img src="img/istream.gif" alt="Representation of an InputStream"/>
+</literal>
+   * =!OutputStream= and =Writer= are two abstract classes that you use as a _sink_ of data. You use them when writing data to a file a database, a socket... The data is "going out" your application after it has been processed. 
+<literal>
+	<img src="img/ostream.gif" alt="Representation of an OutputStream"/>
+</literal>
+
+<literal>
+	<a href="outputstream_to_inputstream/definition_of_the_problem.html" 
+		style="float:right; display:block;">
+		<img src="img/arrow-right.png" alt="Next"/>
+	</a>	
+</literal>

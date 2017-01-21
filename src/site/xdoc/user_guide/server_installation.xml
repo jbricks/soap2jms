@@ -55,16 +55,32 @@
 
 				</pre>
 				<p>
-				A complete working project is included in integration tests. For instance a wildfly integration is available at 
-					/usr/local/prj/misc/soap2jms/integration/wildfly10
+					A complete working project is included in integration tests. For
+					instance a wildfly integration is available at
+					<a
+						href="https://github.com/jbricks/soap2jms/tree/master/integration/wildfly10">wildfly 10 integration tests.</a>
 				</p>
 			</subsection>
 			<subsection name="Web application structure">
+				<p>
+					The server project follow a standard web application structure.
+				</p>
+				<img src="../img/server_project_structure.png" alt="server project" />
 			</subsection>
-			<subsection name="Configuration of ejb-jar.xml">
+			<subsection name="Container specific configuration">
+				<p>
+					Below
+				</p>
+				<ul>
+					<li>
+						Wildfly / Jboss EAP configuration
+						<a href="jboss_server.html" style="display:inline-block;">
+							<img src="../img/arrow-right.png" alt="jboss server" />
+						</a>
+					</li>
+				</ul>
 			</subsection>
-			<!-- subsection name="Web application structure">
-			</subsection-->
+			<!-- subsection name="Web application structure"> </subsection -->
 
 		</section>
 	</body>

@@ -7,7 +7,7 @@
 		<date>2016-12-05</date>
 	</properties>
 	<body>
-		<section name="Soap frontend to JMS broker">
+		<section name="SOAP frontend to JMS broker">
 			<p>
 				SOAP frontend to JMS (aka soap2jms) integrates SOAP over HTTP and Message Queues allowing to access a JMS queue through a standard SOAP over
 				HTTP web service. 

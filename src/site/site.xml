@@ -70,6 +70,6 @@
 			<item name="Design" href="/design.html" />
 			<item name="License (MIT)" href="license.html" />
 		</menu>
-
+		<menu name="Maven reports" ref="reports" />
 	</body>
 </project>
