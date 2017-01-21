@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="Date-Revision-yyyymmdd" content="20170121" />
     <meta http-equiv="Content-Language" content="en" />
-    <title>[soap2jms] &#x2013; Issue Management</title>
+    <title>[soap2jms] &#x2013; Client installation</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido-1.6.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -41,7 +41,7 @@
 </li>
           <li id="projectVersion">Version: 0.0.2-SNAPSHOT<span class="divider">|</span></li>
         <li class=""><a href="index.html" title="Soap To Jms">Soap To Jms</a><span class="divider">/</span></li>
-    <li class="active ">Issue Management</li>
+    <li class="active ">Client installation</li>
       <li class="pull-right"><span class="divider">|</span>
 <a href="https://github.com/jbricks/soap2jms" class="externalLink" title="Github project">Github project</a></li>
       <li class="pull-right"><a href="" title="">                                              <img class="imageLink" src="https://travis-ci.org/jbricks/soap2jms.svg?branch=master" alt="build status"/>
@@ -64,20 +64,11 @@
       </ul>
   </li>
     <li><a href="design.html" title="Design"><span class="none"></span>Design</a>  </li>
-    <li><a href="protocol.html" title="Protocol"><span class="none"></span>Protocol</a>  </li>
+    <li class="active"><a href="#"><span class="none"></span>Protocol</a>
+  </li>
     <li><a href="license.html" title="License (MIT)"><span class="none"></span>License (MIT)</a>  </li>
           <li class="nav-header">Maven reports</li>
-    <li><a href="project-info.html" title="Project Information"><span class="icon-chevron-down"></span>Project Information</a>
-      <ul class="nav nav-list">
-    <li><a href="team-list.html" title="Team"><span class="none"></span>Team</a>  </li>
-    <li><a href="integration.html" title="CI Management"><span class="none"></span>CI Management</a>  </li>
-    <li class="active"><a href="#"><span class="none"></span>Issue Management</a>
-  </li>
-    <li><a href="license.html" title="Licenses"><span class="none"></span>Licenses</a>  </li>
-    <li><a href="source-repository.html" title="Source Code Management"><span class="none"></span>Source Code Management</a>  </li>
-    <li><a href="dependency-info.html" title="Dependency Information"><span class="none"></span>Dependency Information</a>  </li>
-      </ul>
-  </li>
+    <li><a href="project-info.html" title="Project Information"><span class="icon-chevron-right"></span>Project Information</a>  </li>
     <li><a href="project-reports.html" title="Project Reports"><span class="icon-chevron-right"></span>Project Reports</a>  </li>
   </ul>
           <hr />
@@ -94,12 +85,15 @@
         </div>
         <div id="bodyColumn"  class="span7" >
 <div class="section">
-<h2><a name="Overview"></a>Overview</h2><a name="Overview"></a>
-<p>This project uses GitHub Issues to manage its issues.</p></div>
+<h2><a name="Client_installation"></a>Client installation</h2>
+<p>This section explains how to integrate the client project s2j_client.  This project is a thin layer over the JAX-WS web service and provides a more friendly interface.</p></div>
 <div class="section">
-<h2><a name="Issue_Management"></a>Issue Management</h2><a name="Issue_Management"></a>
-<p>Issues, bugs, and feature requests should be submitted to the following issue management system for this project.</p>
-<div class="source"><pre class="prettyprint"><a class="externalLink" href="https://github.com/jbricks/soap2jms/issues">https://github.com/jbricks/soap2jms/issues</a></pre></div></div>
+<h3><a name="Requirements"></a>Requirements</h3>
+<p>The client is a standard JAX-WS implementation and has no special requirements except Java 6. It can use Apache CXF as a client library.</p>
+<p>If your project doesn't meet the requirements, for instance it is a .NET project or it uses Apache Axis with  a java version lower than 6 consider implementing your own client (See the [[protocol section.)</p></div>
+<div class="section">
+<h3><a name="Features"></a>Features</h3>
+<p><literal> 	<p class="block-left"> 	<a href="jboss_server.html"> 		<img src="../img/arrow-left.png" alt="Home"> 	</a> 	Jboss server 	</p> 	<p class="block-right">... 		<a href="#" > 			<img src="../img/arrow-right.png" alt="Next"/> 		</a>	 	</p> </literal></p></div>
         </div>
       </div>
     </div>
