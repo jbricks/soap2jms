@@ -40,9 +40,9 @@ menu
     padding-top: 20px;
 }
 
-/*code {
-    background-color: white;
-} */
+pre {
+    background-color: light-gray;
+} 
 
 tt {
     background-color: white;
