@@ -58,16 +58,18 @@
 		</breadcrumbs>
 
 		<menu name="Community">
+			<item name="Home" href="https://github.com/jbricks/soap2jms" />
 			<item name="GitHub Project" href="https://github.com/jbricks/soap2jms" />
-			<item name="Team" href="team-list.html" />
 		</menu>
 		<menu name="Documents">
 			<item name="Guide">
 				<item name="Server installation" href="/user_guide/server_installation.html"/>
 				<!-- item name="Server configuration" href="/user_guide/server_installation.html"/ -->
-				<!-- item name="Client configuration" href="/user_guide/server_installation.html"/ -->
+				<item name="Client Overview" href="/user_guide/client_overview.html"/>
+				<item name="Client Usage" href="/user_guide/client_usage.html"/>
 			</item>
 			<item name="Design" href="/design.html" />
+			<item name="Protocol" href="/protocol.html"/>
 			<item name="License (MIT)" href="license.html" />
 		</menu>
 		<menu name="Maven reports" ref="reports" />

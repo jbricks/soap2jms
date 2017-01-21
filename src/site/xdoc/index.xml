@@ -30,7 +30,7 @@
 					</li>
 					<li>
 						It is resilient to communication failure. See the
-						<a href="/design.html">design section</a>
+						<a href="design.html">design section</a>
 						for more information.
 					</li>
 				</ul>
@@ -81,7 +81,7 @@
 					</li>
 					<li>
 						Learn how to 
-						<a href="deploy.html">deploy the library</a>
+						<a href="user_guide/server_installation.html">deploy the library</a>
 						into your project, and customize it to your need.
 					</li>
 					<li>

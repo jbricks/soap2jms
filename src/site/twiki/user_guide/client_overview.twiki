@@ -1,0 +1,31 @@
+---+ Pre-built Client Overview
+
+This section explains how to integrate the client project s2j_client. 
+This project is a thin layer over the JAX-WS web service and provides a more friendly interface. 
+
+---++ Requirements
+
+The client is a standard JAX-WS implementation and has no special requirements except Java 6.
+It can use Apache CXF as a client library.
+
+If the provided client doesn't meet the requirement of your project, 
+for instance it is a .NET environment or it uses Apache Axis with 
+a java version lower than 6 consider implementing your own client. See the [[../protocol][protocol]] section.
+
+---++ Features
+
+
+
+<literal>
+	<p class="block-left">
+	<a href="jboss_server.html">
+		<img src="../img/arrow-left.png" alt="Home">
+	</a>
+	Jboss Server
+	</p>
+	<p class="block-right">Client Usage
+		<a href="#" >
+			<img src="../img/arrow-right.png" alt="Next"/>
+		</a>	
+	</p>
+</literal>

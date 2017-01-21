@@ -2,7 +2,7 @@
 
 ---++ Requirements
 
-The minimum version supported is Wildfly 8 / Jboss EAP 7
+The minimum version supported is Wildfly 8 / Jboss EAP 7.
 
 
 ---++ web.xml
@@ -21,8 +21,15 @@ The minimum version supported is Wildfly 8 / Jboss EAP 7
 </literal>
 
 <literal>
-	<a href="outputstream_to_inputstream/definition_of_the_problem.html" 
-		style="float:right; display:block;">
-		<img src="img/arrow-right.png" alt="Next"/>
-	</a>	
+	<p class="block-left">
+	<a href="server_installation.html">
+		<img src="../img/arrow-left.png" alt="Home">
+	</a>
+	Server Installation
+	</p>
+	<p class="block-right">Client Overview
+		<a href="client_overview.html" >
+			<img src="../img/arrow-right.png" alt="Next"/>
+		</a>	
+	</p>
 </literal>

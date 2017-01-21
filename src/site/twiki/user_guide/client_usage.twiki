@@ -1,0 +1,23 @@
+---+ Client Usage
+
+This section explains how to use the client s2j_client. 
+
+---++ Read messages from a queue
+
+
+---++ Send messages to a queue
+
+
+<literal>
+	<p class="block-left">
+	<a href="client_overview.html">
+		<img src="../img/arrow-left.png" alt="Home">
+	</a>
+	Client Overview
+	</p>
+	<p class="block-right">...
+		<a href="#" >
+			<img src="../img/arrow-right.png" alt="Next"/>
+		</a>	
+	</p>
+</literal>

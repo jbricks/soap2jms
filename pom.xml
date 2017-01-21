@@ -247,7 +247,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
-				<inherited>false</inherited>
 				<configuration>
 					<skip>false</skip>
 				</configuration>
@@ -285,7 +284,6 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>taglist-maven-plugin</artifactId>
 				<version>2.4</version>
-				<inherited>false</inherited>
 				<configuration>
 					<aggregate>true</aggregate>
 				</configuration>

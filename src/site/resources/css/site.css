@@ -35,6 +35,10 @@ img.external-link {
    vertical-align: baseline;
 }
 
+img.small {
+   width: 50%;
+}
+
 menu
 {
     padding-top: 20px;

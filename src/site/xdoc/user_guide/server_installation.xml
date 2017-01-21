@@ -69,13 +69,13 @@
 			</subsection>
 			<subsection name="Container specific configuration">
 				<p>
-					Below
+					Below a list of supported server configurations.
 				</p>
 				<ul>
 					<li>
 						Wildfly / Jboss EAP configuration
 						<a href="jboss_server.html" style="display:inline-block;">
-							<img src="../img/arrow-right.png" alt="jboss server" />
+							<img src="../img/arrow-right.png" alt="jboss server" class="small" />
 						</a>
 					</li>
 				</ul>
