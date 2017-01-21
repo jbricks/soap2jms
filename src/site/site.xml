@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="[soap2jms]"
-	xmlns="http://maven.apache.org/DECORATION/1.7.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/DECORATION/1.7.0 http://maven.apache.org/xsd/decoration-1.7.0.xsd">
+<project name="[soap2jms]" xmlns="http://maven.apache.org/DECORATION/1.7.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/DECORATION/1.7.0 http://maven.apache.org/xsd/decoration-1.7.0.xsd">
 	<skin>
 		<groupId>org.apache.maven.skins</groupId>
 		<artifactId>maven-fluido-skin</artifactId>
@@ -11,8 +11,8 @@
 		<fluidoSkin>
 			<!-- googleSearch / -->
 			<googlePlusOne />
-      		<leftColumnClass>span3</leftColumnClass>
-      		<bodyColumnClass>span7</bodyColumnClass>
+			<leftColumnClass>span3</leftColumnClass>
+			<bodyColumnClass>span7</bodyColumnClass>
 			<ohloh>
 				<projectId>soap2jms</projectId>
 				<widget>factoids</widget>
@@ -21,15 +21,11 @@
 	</custom>
 	<bannerLeft>
 		<name>[soap over jms]</name>
-		<src>img/soap2jms-banner.png</src>
+		<src>img/messages.png</src>
 		<href>https://jbricks.github.com/soap2jms/index.html</href>
 	</bannerLeft>
-	<!-- bannerRight>
-		<name>SourceForge</name>
-		<src>http://sourceforge.net/sflogo.php
-		</src>
-		<href>http://sourceforge.net</href>
-	</bannerRight-->
+	<!-- bannerRight> <name>SourceForge</name> <src>http://sourceforge.net/sflogo.php 
+		</src> <href>http://sourceforge.net</href> </bannerRight -->
 	<!--poweredBy> <logo name="java.net" href="http://www.java.net" img="http://java.net/images/javanet_button_90.gif"/> 
 		</poweredBy -->
 
@@ -52,22 +48,28 @@
 		</head>
 
 		<links>
+			<item img="https://travis-ci.org/jbricks/soap2jms.svg?branch=master"
+				alt="build status" title="build status" name="" />
 			<item name="Github project" href="https://github.com/jbricks/soap2jms" />
 		</links>
 
 		<breadcrumbs>
 			<item name="Soap To Jms" href="/index.html" />
 		</breadcrumbs>
-	
+
 		<menu name="Community">
 			<item name="GitHub Project" href="https://github.com/jbricks/soap2jms" />
 			<item name="Team" href="team-list.html" />
 		</menu>
 		<menu name="Documents">
-			<item name="Deploy" href="/deploy.html" />
+			<item name="Guide">
+				<item name="Server installation" href="/user_guide/server_installation.html"/>
+				<!-- item name="Server configuration" href="/user_guide/server_installation.html"/ -->
+				<!-- item name="Client configuration" href="/user_guide/server_installation.html"/ -->
+			</item>
 			<item name="Design" href="/design.html" />
 			<item name="License (MIT)" href="license.html" />
 		</menu>
-		
+
 	</body>
 </project>

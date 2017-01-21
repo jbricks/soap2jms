@@ -2,20 +2,19 @@
 <document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
 	<properties>
-		<title>JMS over SOAP</title>
+		<title>SOAP frontend to JMS broker</title>
 		<author>Gabriele Contini</author>
 		<date>2016-12-05</date>
 	</properties>
 	<body>
-		<section name="Soap To JMS">
-			<img src="https://travis-ci.org/jbricks/soap2jms.svg?branch=master" alt="build status" class="block-right"/>
+		<section name="Soap frontend to JMS broker">
 			<p>
-				JMS over Soap (aka soap2jms) integrates SOAP over HTTP and Message Queues allowing to access a JMS queue through a standard SOAP over
+				SOAP frontend to JMS (aka soap2jms) integrates SOAP over HTTP and Message Queues allowing to access a JMS queue through a standard SOAP over
 				HTTP web service. 
 			</p>
 			<p>
-				It is not to be confused with "Soap over JMS". 
-				Soap Over JMS encapsulates a soap message into a JMS envelope. 
+				It is not to be confused with "SOAP over JMS". 
+				Soap over JMS encapsulates a soap message into a JMS envelope. 
 				It has the same problems of JMS in terms of interoperability and it requires a JMS client implementation 
 				to connect to the server. (link)
 			</p>
@@ -66,7 +65,7 @@
 				<p>In order to use the pre-built client</p>
 				<ul>
 					<li>Java 7/8</li>
-					<li>Any JAX-WS implementation (Apache CXF).</li>
+					<li>Any JAX-WS implementation (Apache CXF, or the one provided with the JDK).</li>
 				</ul>
 				<p>Clients that don't fulfill the requirements (eg. Axis or .NET)
 					must implement a client starting from the wsdl.

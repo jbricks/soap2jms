@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>Server Installation</title>
+		<author>Gabriele Contini</author>
+		<date>2017-01-14</date>
+	</properties>
+	<body>
+		<section name="Soap2Jms server installation.">
+			<p>
+				This section describe how to install the server side part of
+				Soap2Jms.
+				You should already have an ear project, using a jms queue.
+			</p>
+			<subsection name="Maven configuration">
+				<p>
+					Prepare a new war project. A minimal pom.xml is shown below.
+				</p>
+				<pre>
+<![CDATA[				
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<groupId>my.application.groupId</groupId>
+	<artifactId>soap2jms</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<dependencies>
+		<dependency>
+    		<groupId>ch.qos.logback</groupId>
+    		<artifactId>logback-classic</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.github.jbricks.soap2jms</groupId>
+			<artifactId>s2j_server</artifactId>
+			<version></version>
+			<type>war</type>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+	
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.0.0</version>
+			</plugin>
+		</plugins>
+	</build>
+</project>
+]]>
+
+				</pre>
+				<p>
+				A complete working project is included in integration tests. For instance a wildfly integration is available at 
+					/usr/local/prj/misc/soap2jms/integration/wildfly10
+				</p>
+			</subsection>
+			<subsection name="Web application structure">
+			</subsection>
+			<subsection name="Configuration of ejb-jar.xml">
+			</subsection>
+			<!-- subsection name="Web application structure">
+			</subsection-->
+
+		</section>
+	</body>
+</document>

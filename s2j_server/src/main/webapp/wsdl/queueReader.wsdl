@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:cls="http://soap2jms.github.com/common/ws"
+	xmlns:tns="http://soap2jms.github.com/service" targetNamespace="http://soap2jms.github.com/service">
+	<wsdl:types>
+		<xsd:schema>
+            <xsd:import namespace="http://soap2jms.github.com/common/ws" schemaLocation="datatypes.xsd" />             
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="retrieveMessagesRequest">
+		<wsdl:part name="parameters" element="cls:retrieveMessages"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="retrieveMessagesResponse">
+		<wsdl:part name="parameters" element="cls:retrieveMessagesResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="acknowledgeMessagesRequest">
+		<wsdl:part name="parameters" element="cls:acknowledgeMessages"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="acknowledgeMessagesResponse">
+		<wsdl:part name="parameters" element="cls:acknowledgeMessagesResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="wsJmsException">
+		<wsdl:part name="parameters" element="cls:wsJmsException" />
+	</wsdl:message>
+	<wsdl:portType name="reader.soap2jms">
+		<wsdl:operation name="retrieveMessages">
+			<wsdl:input message="tns:retrieveMessagesRequest" />
+			<wsdl:output message="tns:retrieveMessagesResponse" />
+			<wsdl:fault name="wsJmsException" message="tns:wsJmsException" />
+		</wsdl:operation>
+		<wsdl:operation name="acknowledgeMessages">
+			<wsdl:input message="tns:acknowledgeMessagesRequest" />
+			<wsdl:output message="tns:acknowledgeMessagesResponse" />
+			<wsdl:fault name="wsJmsException" message="tns:wsJmsException" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="readerSOAP" type="tns:reader.soap2jms">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="acknowledgeMessages">
+			<soap:operation soapAction="http://soap2jms.github.com/acknowledgeMessages" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="wsJmsException">
+				<soap:fault name="wsJmsException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="retrieveMessages">
+			<soap:operation soapAction="http://soap2jms.github.com/retrieveMessages" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="wsJmsException">
+				<soap:fault name="wsJmsException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="soapToJmsReaderService">
+		<wsdl:port binding="tns:readerSOAP" name="readerSOAP">
+			<soap:address location="http://www.example.org/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
