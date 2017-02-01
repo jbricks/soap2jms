@@ -10,19 +10,18 @@ import javax.jms.TextMessage;
 import org.apache.commons.io.IOUtils;
 
 import com.github.soap2jms.common.ByteArrayDataSource;
-import com.github.soap2jms.common.JMSMessageClassEnum;
 
 public class S2JTextMessage extends S2JMessage implements TextMessage {
 
 	public S2JTextMessage(final String correlationId, final int deliveryMode, final long expiration,
 			final Map<String, Object> headers, final String clientId, final String messageId, final Integer priority,
 			final boolean redelivered, final long timestamp, final String type, final String body) {
-		super(correlationId, deliveryMode, expiration, headers, clientId, messageId, JMSMessageClassEnum.TEXT.name(),
-				priority, redelivered, timestamp, type, new DataHandler(new ByteArrayDataSource(body)));
+		super(correlationId, deliveryMode, expiration, headers, clientId, messageId, priority, redelivered, timestamp,
+				type, new DataHandler(new ByteArrayDataSource(body)));
 	}
 
 	public S2JTextMessage(final String clientId, final String body) {
-		super(JMSMessageClassEnum.TEXT.name(), clientId, new DataHandler(new ByteArrayDataSource(body)));
+		super(clientId, new DataHandler(new ByteArrayDataSource(body)));
 	}
 
 	@Override

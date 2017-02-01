@@ -1,0 +1,58 @@
+---+ Jboss EAP / Wildfly configuration
+
+The minimum version supported is Wildfly 8 / Jboss EAP 7.
+
+---+ Configuration
+To configure the server users must map the global jndi name of the queue to a local name, and enable CDI for that project. 
+This is an application server specific operation.
+
+After having prepared a new project (as explained before) the new project must be added to your enterprise application configuration.
+In the =webapp/WEB-INF= folder users are required to place three files 
+   * bean.xml (can be empty)
+   * web.xml
+   * jboss-web.xml
+    
+---++ jboss-web.xml
+Let's say we want to send messages to a global queue named _java:jboss/exported/jms/soap2jms.reader_
+First of all we need to map the queue to a local resource.
+
+<literal>
+<pre>
+	<resource-ref>
+		<res-ref-name>soap2jms</res-ref-name>
+		<jndi-name>java:jboss/exported/jms/soap2jms.reader</jndi-name>
+	</resource-ref>
+</pre>
+</literal>
+
+---++ web.xml
+
+In web.xml it is necessary to declare the following lines.
+<literal>
+<pre>
+	<resource-ref>
+		<!-- name of the queue (the same parameter must be used in WS to map the 
+			queue) -->
+		<res-ref-name>soap2jms</res-ref-name>
+		<res-type>javax.jms.Queue</res-type>
+		<res-auth>Container</res-auth>
+		<res-sharing-scope>Shareable</res-sharing-scope>
+	</resource-ref>
+</pre>
+</literal>
+
+The content of the =<res-ref-name>= tag must be used by the client to read or send messages to the queue. See 
+parameter queueName in [[..][SoapToJmsClient]] javadoc.
+<literal>
+	<p class="block-left">
+	<a href="server_installation.html">
+		<img src="../img/arrow-left.png" alt="Home">
+	</a>
+	Server Installation
+	</p>
+	<p class="block-right">Client Overview
+		<a href="client_overview.html" >
+			<img src="../img/arrow-right.png" alt="Next"/>
+		</a>	
+	</p>
+</literal>

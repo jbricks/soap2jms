@@ -58,7 +58,7 @@
 		</breadcrumbs>
 
 		<menu name="Community">
-			<item name="Home" href="https://github.com/jbricks/soap2jms" />
+			<item name="Home" href="/index.html" />
 			<item name="GitHub Project" href="https://github.com/jbricks/soap2jms" />
 		</menu>
 		<menu name="Documents">

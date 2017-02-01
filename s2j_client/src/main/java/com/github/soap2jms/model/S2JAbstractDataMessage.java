@@ -12,8 +12,6 @@ import javax.jms.MessageFormatException;
 import javax.jms.MessageNotReadableException;
 import javax.jms.MessageNotWriteableException;
 
-import com.github.soap2jms.common.JMSMessageClassEnum;
-
 public class S2JAbstractDataMessage extends S2JMessage {
 
 	protected IOException initializeBodyException = null;
@@ -21,7 +19,7 @@ public class S2JAbstractDataMessage extends S2JMessage {
 	private boolean readonly;
 
 	public S2JAbstractDataMessage(final String messageId, final DataHandler body) {
-		super(JMSMessageClassEnum.BYTE.name(), messageId, body);
+		super(messageId, body);
 		try {
 			this.instream = new DataInputStream(body.getInputStream());
 		} catch (final IOException e) {
@@ -33,8 +31,8 @@ public class S2JAbstractDataMessage extends S2JMessage {
 	public S2JAbstractDataMessage(final String correlationId, final int deliveryMode, final long expiration,
 			final Map<String, Object> headers, final String clientId, final String messageId, final Integer priority,
 			final boolean redelivered, final long timestamp, final String type, final DataHandler body) {
-		super(correlationId, deliveryMode, expiration, headers, clientId, messageId, JMSMessageClassEnum.BYTE.name(),
-				priority, redelivered, timestamp, type, body);
+		super(correlationId, deliveryMode, expiration, headers, clientId, messageId, priority, redelivered, timestamp,
+				type, body);
 		try {
 			this.instream = new DataInputStream(body.getInputStream());
 		} catch (final IOException e) {

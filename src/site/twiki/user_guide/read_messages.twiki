@@ -1,0 +1,49 @@
+---+ Client Usage
+
+This section explains how to use the client s2j_client. 
+
+---++ Get an instance of the client
+Before reading or sending messages to a queue it is necessary to get an instance of 
+the public web service interface. 
+<literal>
+<code>
+	 SoapToJmsClient wsClient = new SoapToJmsClient("http://server.location/contextPath");
+</code>
+</literal>
+
+To configure more parameters the constructor with =Soap2JmsConfiguration= can be used.
+
+---++ Send messages to a queue
+
+<literal>
+<code>
+	 String queueName = "...";
+	 S2JMessage[] messages = ...;
+	 ResponseStatus result = wsClient.sendMessages(queueName, messages);
+</code>
+</literal>
+  
+   * `queueName` is the name of the queue that is configured on the server. It may be a symbolic name. 
+   If not configured differently it corresponds to the jndi name of the queue (if the queue is mapped to "java:/comp/env/sendQueue" `queueName` is `sendQueue`)
+   see [[jboss_server][server configuration]]
+   * `messages` is an array of =S2JMessage=. You should instantiate the subclass corresponding to the type of the message you want to send.
+      * Use =!S2JTextMessage= to send a Text Message
+      * Use =!S2JMapMessage= to send a Map Message
+      * ...
+      
+
+ 
+    
+<literal>
+	<p class="block-left">
+	<a href="client_overview.html">
+		<img src="../img/arrow-left.png" alt="Home">
+	</a>
+	Client Overview
+	</p>
+	<p class="block-right">...
+		<a href="#" >
+			<img src="../img/arrow-right.png" alt="Next"/>
+		</a>	
+	</p>
+</literal>

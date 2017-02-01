@@ -27,29 +27,27 @@ public abstract class S2JMessage implements Message {
 	boolean jmsRedelivered;
 	private long jmsTimestamp;
 	private String jmsType;
-	private final String messageClass;
+
+	protected S2JMessage(final String clientId, final DataHandler body) {
+		this(null, 0, 0, new HashMap<String, Object>(), clientId, null, 0, false, System.currentTimeMillis(), null,
+				body);
+	}
 
 	public S2JMessage(final String jmsCorrelationId, final int jmsDeliveryMode, final long jmsExpiration,
 			final Map<String, Object> headers, final String clientId, final String jmsMessageId,
-			final String messageClass, final Integer jmsPriority, final boolean jmsRedelivered, final long jmsTimestamp,
-			final String type, final DataHandler body) {
+			final Integer jmsPriority, final boolean jmsRedelivered, final long jmsTimestamp, final String type,
+			final DataHandler body) {
 		this.jmsCorrelationId = jmsCorrelationId;
 		this.jmsDeliveryMode = jmsDeliveryMode;
 		this.jmsExpiration = jmsExpiration;
 		this.headers = headers;
 		this.jmsMessageId = jmsMessageId;
 		this.clientId = clientId;
-		this.messageClass = messageClass;
 		this.jmsPriority = jmsPriority;
 		this.jmsRedelivered = jmsRedelivered;
 		this.jmsTimestamp = jmsTimestamp;
 		this.jmsType = type;
 		this.body = body;
-	}
-
-	protected S2JMessage(final String messageClass, final String clientId, final DataHandler body) {
-		this(null, 0, 0, new HashMap<String, Object>(), clientId, null, messageClass, 0, false,
-				System.currentTimeMillis(), null, body);
 	}
 
 	@Override

@@ -10,8 +10,6 @@ import javax.jms.MessageFormatException;
 
 import org.apache.commons.collections4.iterators.IteratorEnumeration;
 
-import com.github.soap2jms.common.JMSMessageClassEnum;
-
 public class S2JMapMessage extends S2JMessage implements MapMessage {
 
 	private final Map<String, Object> body;
@@ -19,13 +17,13 @@ public class S2JMapMessage extends S2JMessage implements MapMessage {
 	public S2JMapMessage(final String correlationId, final int deliveryMode, final long expiration,
 			final Map<String, Object> headers, final String clientId, final String messageId, final Integer priority,
 			final boolean redelivered, final long timestamp, final String type, final Map<String, Object> body) {
-		super(correlationId, deliveryMode, expiration, headers, clientId, messageId, JMSMessageClassEnum.MAP.name(),
-				priority, redelivered, timestamp, type, null);
+		super(correlationId, deliveryMode, expiration, headers, clientId, messageId, priority, redelivered, timestamp,
+				type, null);
 		this.body = body;
 	}
 
 	public S2JMapMessage(final String clientId, final Map<String, Object> body) {
-		super(JMSMessageClassEnum.MAP.name(), clientId, null);
+		super(clientId, null);
 		this.body = (body == null ? new HashMap<>() : body);
 	}
 

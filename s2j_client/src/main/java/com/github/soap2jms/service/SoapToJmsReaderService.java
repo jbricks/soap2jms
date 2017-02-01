@@ -43,7 +43,7 @@ public class SoapToJmsReaderService extends Service {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return returns ReaderSoap2Jms
 	 */
 	@WebEndpoint(name = "readerSOAP")

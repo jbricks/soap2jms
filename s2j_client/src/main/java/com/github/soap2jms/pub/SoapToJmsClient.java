@@ -41,52 +41,37 @@ import com.github.soap2jms.service.WsJmsException;
 /**
  * This is the main class that should be used to send or read messages from a
  * remote queue.
- * 
- * 
+ *
+ *
  * <p>
  * Methods are reentrant, a single instance can be shared by multiple threads
  * </p>
- * 
+ *
  * @author g.contini
  *
  */
 public class SoapToJmsClient {
+	private static final Logger LOGGER = LoggerFactory.getLogger(SoapToJmsClient.class);
+	private final SoapToJmsConfiguration configuration;
 	private final ThreadLocal<Boolean> isComplete = new ThreadLocal<Boolean>() {
 		@Override
 		protected Boolean initialValue() {
 			return Boolean.TRUE;
 		}
 	};
-	private static final Logger LOGGER = LoggerFactory.getLogger(SoapToJmsClient.class);
-	private final SoapToJmsConfiguration configuration;
+	private final ClientSerializationUtils jms2SoapSerializer;
 	private final ReaderSoap2Jms readerSoapPort;
 	private final SenderSoap2Jms senderSoapPort;
 	private final SoapToJmsSerializer soap2JmsSerializer;
-	private final ClientSerializationUtils jms2SoapSerializer;
 
-	public SoapToJmsClient(final SoapToJmsReaderService readerService, final SoapToJmsSenderService senderService,
-			SoapToJmsSerializer s2jser, JmsToSoapSerializer jms2SoapSerializer) {
-
-		this.readerSoapPort = readerService == null ? null : readerService.getReaderSOAP();
-		this.senderSoapPort = senderService == null ? null : senderService.getSenderSOAP();
-		// FIXME
-		this.configuration = new SoapToJmsConfiguration(readerService.getWSDLDocumentLocation().toString());
-		this.soap2JmsSerializer = s2jser;
-		this.jms2SoapSerializer = new ClientSerializationUtils();
-	}
-
-	public SoapToJmsClient(final String contextBase) throws S2JConfigurationException {
-		this(new SoapToJmsConfiguration(contextBase));
-	}
-
-	public SoapToJmsClient(SoapToJmsConfiguration config) throws S2JConfigurationException {
+	public SoapToJmsClient(final SoapToJmsConfiguration config) throws S2JConfigurationException {
 		this(config, true, true);
 	}
 
 	public SoapToJmsClient(final SoapToJmsConfiguration config, final boolean initReader, final boolean initSender)
 			throws S2JConfigurationException {
 		this.configuration = config;
-		String contextBase = config.getContextBase();
+		final String contextBase = config.getContextUrl();
 		final String contextBaseNorm = contextBase.endsWith("/") ? contextBase : contextBase + "/";
 		if (initReader) {
 			final String readerUrl = contextBaseNorm + "soapToJmsReaderService?wsdl";
@@ -107,7 +92,7 @@ public class SoapToJmsClient {
 			try {
 				final SoapToJmsSenderService soap2JmsService = new SoapToJmsSenderService(senderUrl);
 				this.senderSoapPort = soap2JmsService.getSenderSOAP();
-				BindingProvider spAsBindingProvider = (BindingProvider) this.senderSoapPort;
+				final BindingProvider spAsBindingProvider = (BindingProvider) this.senderSoapPort;
 				setTimeouts(spAsBindingProvider);
 			} catch (final MalformedURLException e) {
 				throw new S2JConfigurationException(StatusCodeEnum.ERR_MALFORMED_URL,
@@ -120,27 +105,29 @@ public class SoapToJmsClient {
 		this.jms2SoapSerializer = new ClientSerializationUtils();
 	}
 
-	/**
-	 * @see https://java.net/jira/browse/JAX_WS-1166
-	 * @param spAsBindingProvider
-	 */
-	public void setTimeouts(BindingProvider spAsBindingProvider) {
-		final Map<String, Object> requestContext = spAsBindingProvider.getRequestContext();
-		if (configuration.getConnectionTimeout() != null) {
-			// wildfly
-			requestContext.put("javax.xml.ws.client.connectionTimeout", configuration.getConnectionTimeout());
-			requestContext.put("com.sun.xml.ws.connect.timeout", configuration.getRequestTimeout());
-			// must be Integer
-			requestContext.put("com.sun.xml.internal.ws.connect.timeout", configuration.getRequestTimeout());
-		}
-		if (configuration.getRequestTimeout() != null) {
-			// wildfly
-			requestContext.put("javax.xml.ws.client.receiveTimeout", configuration.getRequestTimeout());
-			requestContext.put("com.sun.xml.ws.request.timeout", configuration.getRequestTimeout());
-			// must be Integer
-			requestContext.put("com.sun.xml.internal.ws.request.timeout", configuration.getRequestTimeout());
-		}
+	public SoapToJmsClient(final SoapToJmsReaderService readerService, final SoapToJmsSenderService senderService,
+			final SoapToJmsSerializer s2jser, final JmsToSoapSerializer jms2SoapSerializer) {
 
+		this.readerSoapPort = readerService == null ? null : readerService.getReaderSOAP();
+		this.senderSoapPort = senderService == null ? null : senderService.getSenderSOAP();
+		// FIXME
+		this.configuration = new SoapToJmsConfiguration(readerService.getWSDLDocumentLocation().toString());
+		this.soap2JmsSerializer = s2jser;
+		this.jms2SoapSerializer = new ClientSerializationUtils();
+	}
+
+	/**
+	 * This is the simplest constructor to get an instance of the client.
+	 *
+	 * @param contextUrl
+	 *            the complete url of the web application where the server is
+	 *            deployed.
+	 *
+	 * @throws S2JConfigurationException
+	 *
+	 */
+	public SoapToJmsClient(final String contextUrl) throws S2JConfigurationException {
+		this(new SoapToJmsConfiguration(contextUrl));
 	}
 
 	public ResponseStatus<String> acknolwedge(final String queueName, final List<String> messageIds)
@@ -152,29 +139,8 @@ public class SoapToJmsClient {
 			handleWsException(e);
 			// we never arrive here
 		}
-		ResponseStatus<String> result = convertAckResponse(messageIds, wsResult);
+		final ResponseStatus<String> result = convertAckResponse(messageIds, wsResult);
 		return result;
-	}
-
-	// FIXME same as convertStatus. Inheritancnce in wsdl can help?
-	private ResponseStatus<String> convertAckResponse(final List<String> messages, List<MessageIdAndStatus> result) {
-		ResponseStatus<String> rspStatus = new ResponseStatus<>();
-		for (int i = 0; i < messages.size(); i++) {
-			String message = messages.get(i);
-			MessageIdAndStatus status = result.get(i);
-			final StatusCode statusCodeAndReason = status.getStatus();
-			if (statusCodeAndReason != null) {
-				StatusCodeEnum statusCodeEnum = StatusCodeEnum.valueOf(statusCodeAndReason.getCode());
-				MessageDeliveryStatus deliveryStatus = statusCodeEnum.isError() ? MessageDeliveryStatus.NOT_DELIVERED
-						: MessageDeliveryStatus.DELIVERED;
-				rspStatus.addMessage(message, deliveryStatus, statusCodeEnum, statusCodeAndReason.getReason());
-			} else {
-				LOGGER.warn("Remote server returned statusCode null " + message + ", messageIdAndStatus:" + status);
-				rspStatus.addMessage(message, MessageDeliveryStatus.UNKNOWN, StatusCodeEnum.ERR_SERIALIZATION,
-						"server protocol error");
-			}
-		}
-		return rspStatus;
 	}
 
 	public ResponseStatus<String> acknowledge(final String queueName, final Message[] messages)
@@ -184,7 +150,7 @@ public class SoapToJmsClient {
 			if (message != null) {
 				try {
 					msgIds.add(message.getJMSMessageID());
-				} catch (JMSException e) {
+				} catch (final JMSException e) {
 					throw new S2JProviderException(StatusCodeEnum.ERR_JMS, "Error getting message id for " + message,
 							e.getErrorCode(), e);
 				}
@@ -192,13 +158,125 @@ public class SoapToJmsClient {
 		}
 		return acknolwedge(queueName, msgIds);
 	}
+
+	// FIXME same as convertStatus. Inheritancnce in wsdl can help?
+	private ResponseStatus<String> convertAckResponse(final List<String> messages,
+			final List<MessageIdAndStatus> result) {
+		final ResponseStatus<String> rspStatus = new ResponseStatus<>();
+		for (int i = 0; i < messages.size(); i++) {
+			final String message = messages.get(i);
+			final MessageIdAndStatus status = result.get(i);
+			final StatusCode statusCodeAndReason = status.getStatus();
+			if (statusCodeAndReason != null) {
+				final StatusCodeEnum statusCodeEnum = StatusCodeEnum.valueOf(statusCodeAndReason.getCode());
+				final MessageDeliveryStatus deliveryStatus = statusCodeEnum.isError()
+						? MessageDeliveryStatus.NOT_DELIVERED : MessageDeliveryStatus.DELIVERED;
+				rspStatus.addMessage(message, deliveryStatus, statusCodeEnum, statusCodeAndReason.getReason());
+			} else {
+				LOGGER.warn("Remote server returned statusCode null " + message + ", messageIdAndStatus:" + status);
+				rspStatus.addMessage(message, MessageDeliveryStatus.IN_DOUBT, StatusCodeEnum.ERR_SERIALIZATION,
+						"server protocol error");
+			}
+		}
+		return rspStatus;
+	}
+
+	public Message[] convertMessages(final JMSMessageFactory messageFactory, final List<WsJmsMessage> wsResponse,
+			final JMSImplementation jmsImplementation) throws S2JProtocolException {
+		final Message[] messages = new Message[wsResponse.size()];
+
+		for (int i = 0; i < wsResponse.size(); i++) {
+			final WsJmsMessage wsMessage = wsResponse.get(i);
+			Message message = null;
+			try {
+				message = this.soap2JmsSerializer.convertMessage(messageFactory, wsMessage, jmsImplementation);
+			} catch (final S2JProviderException e) {
+				LOGGER.error("Error deserializing message " + wsMessage + " message position:" + i + " messageClientId:"
+						+ wsMessage.getClientId(), e);
+			}
+			messages[i] = message;
+		}
+
+		return messages;
+	}
+
+	// FIXME same as ackresponse
+	private ResponseStatus<S2JMessage> convertStatus(final S2JMessage[] messages,
+			final List<MessageIdAndStatus> result) {
+		final ResponseStatus<S2JMessage> rspStatus = new ResponseStatus<>();
+		for (int i = 0; i < messages.length; i++) {
+			final S2JMessage message = messages[i];
+			final MessageIdAndStatus status = result.get(i);
+			final StatusCode statusCodeAndReason = status.getStatus();
+			if (statusCodeAndReason != null) {
+				final StatusCodeEnum statusCodeEnum = StatusCodeEnum.valueOf(statusCodeAndReason.getCode());
+				final MessageDeliveryStatus deliveryStatus = statusCodeEnum.isError()
+						? MessageDeliveryStatus.NOT_DELIVERED : MessageDeliveryStatus.DELIVERED;
+				rspStatus.addMessage(message, deliveryStatus, statusCodeEnum, statusCodeAndReason.getReason());
+			} else {
+				LOGGER.warn("Remote server returned statusCode null " + message + ", messageIdAndStatus:" + status);
+				rspStatus.addMessage(message, MessageDeliveryStatus.IN_DOUBT, StatusCodeEnum.ERR_SERIALIZATION,
+						"server protocol error");
+			}
+		}
+		return rspStatus;
+	}
+
+	private ResponseStatus<S2JMessage> fillStatus(final S2JMessage[] messages,
+			final MessageDeliveryStatus deliveryStatus, final StatusCodeEnum errNetwork, final String messageStr) {
+		final ResponseStatus<S2JMessage> rspStatus = new ResponseStatus<>();
+		for (final S2JMessage message : messages) {
+			rspStatus.addMessage(message, deliveryStatus, errNetwork, messageStr);
+		}
+		return rspStatus;
+	}
+
 	/**
-	 * 
+	 * This method decodes a wsdl exception into a program exception. it always
+	 * throws exception.
+	 *
+	 * @param e
+	 * @throws S2JConfigurationException
+	 * @throws S2JProtocolException
+	 * @throws S2JProviderException
+	 */
+	private void handleWsException(final WsJmsException e)
+			throws S2JConfigurationException, S2JProtocolException, S2JProviderException {
+		final WsJmsExceptionData info = e.getFaultInfo();
+		WsExceptionClass excClassEnum;
+		try {
+			final String excClass = info.getExceptionClass();
+			excClassEnum = WsExceptionClass.valueOf(excClass);
+		} catch (final RuntimeException e1) {
+			LOGGER.warn("Error in protocol, exception class not found ", e1);
+			excClassEnum = WsExceptionClass.OTHER;
+		}
+		final String statusCode = info.getCode();
+		StatusCodeEnum sc;
+		try {
+			sc = StatusCodeEnum.valueOf(statusCode);
+		} catch (final RuntimeException e1) {
+			LOGGER.warn("Error in protocol, StatusCode not recognized " + statusCode + " " + e1);
+			sc = StatusCodeEnum.ERR_GENERIC;
+		}
+		switch (excClassEnum) {
+		case CONFIGURATION:
+			throw new S2JConfigurationException(sc, e.getMessage(), e);
+		case PROTOCOL:
+			throw new S2JProtocolException(sc, e.getMessage(), e);
+		case OTHER:
+			throw new S2JProviderException(sc, e.getMessage(), info.getJmsCode(), e);
+		default:
+			throw new S2JProtocolException(sc, "Unknown exception type" + e.getMessage(), e);
+		}
+	}
+
+	/**
+	 *
 	 * @param queueName
 	 * @param filter
 	 * @param msgMax
-	 * @return
-	 * 			the returned message can be null in case of error.
+	 * @return the returned message can be null in case of error.
 	 * @throws S2JProtocolException
 	 * @throws S2JConfigurationException
 	 * @throws S2JProviderException
@@ -216,50 +294,32 @@ public class SoapToJmsClient {
 		return convertMessages(new ClientMessageFactory(), wsResponse.getS2JMessages(), JMSImplementation.NONE);
 	}
 
-	public Message[] convertMessages(final JMSMessageFactory messageFactory, final List<WsJmsMessage> wsResponse,
-			JMSImplementation jmsImplementation) throws S2JProtocolException {
-		final Message[] messages = new Message[wsResponse.size()];
-
-		for (int i = 0; i < wsResponse.size(); i++) {
-			final WsJmsMessage wsMessage = wsResponse.get(i);
-			Message message = null;
-			try {
-				message = this.soap2JmsSerializer.convertMessage(messageFactory, wsMessage, jmsImplementation);
-			} catch (S2JProviderException e) {
-				LOGGER.error("Error deserializing message " + wsMessage + " message position:" + i + " messageClientId:"
-						+ wsMessage.getClientId(), e);
-			}
-			messages[i] = message;
-		}
-
-		return messages;
-	}
-
 	public boolean retrieveComplete() {
 		return this.isComplete.get();
 	}
 
 	/**
 	 * <p>
-	 * This method allows to send messages to a remote queue.
+	 * This method allow to send messages to a remote queue.
 	 * </p>
-	 * 
+	 *
 	 * <p>
 	 * Exception semantics. If exception is thrown means that:
 	 * <ul>
 	 * <li>The whole call failed. All the messages were not delivered.</li>
 	 * <li>The service was called in a way that is not correct. Subsequent calls
 	 * will result in an exception.</li>
-	 * <li>Developer's attention is required: libraries upgrade or p</li>
 	 * </ul>
 	 * </p>
-	 * 
+	 *
 	 * @param queueName
 	 *            name of the queue, may be a symbolic name. If null the
 	 *            messages will be sent to the default queue on server.
 	 * @param messages
+	 *            An array of S2JMessage. Users should instantiate the subclass
+	 *            corresponding to the type of the message they want to send.
 	 * @return
-	 * 
+	 *
 	 * @throws S2JProtocolException
 	 *             This exception is threw when client and server are not the
 	 *             same version or some error marshalling/unmarshalling
@@ -272,26 +332,26 @@ public class SoapToJmsClient {
 	 *             permanent. Don't retry to send messages, unless the
 	 *             parameters are changed.
 	 * @throws S2JProviderException
+	 *             General exception used for an unexpected error condition.
 	 */
 	public ResponseStatus<S2JMessage> sendMessages(final String queueName, final S2JMessage[] messages)
 			throws S2JProtocolException, S2JConfigurationException, S2JProviderException {
 		List<WsJmsMessage> messages1;
 		try {
-			messages1 = jms2SoapSerializer.messagesToWs(messages);
+			messages1 = this.jms2SoapSerializer.messagesToWs(messages);
 		} catch (final JMSException e1) {
 			throw new S2JProtocolException(StatusCodeEnum.ERR_SERIALIZATION, "Error serializing messages", e1);
 		}
 		ResponseStatus<S2JMessage> rspStatus = null;
 		try {
-			List<MessageIdAndStatus> result = this.senderSoapPort.sendMessages(null, queueName, messages1);
+			final List<MessageIdAndStatus> result = this.senderSoapPort.sendMessages(null, queueName, messages1);
 			rspStatus = convertStatus(messages, result);
-			// } catch (ProtocolException se){
-		} catch (WebServiceException se) {
+		} catch (final WebServiceException se) {
 			if (se.getCause() instanceof IOException) {
-				rspStatus = fillStatus(messages, MessageDeliveryStatus.UNKNOWN, StatusCodeEnum.ERR_NETWORK,
+				rspStatus = fillStatus(messages, MessageDeliveryStatus.IN_DOUBT, StatusCodeEnum.ERR_NETWORK,
 						se.getCause().getMessage());
 			} else {
-				rspStatus = fillStatus(messages, MessageDeliveryStatus.UNKNOWN, StatusCodeEnum.ERR_GENERIC,
+				rspStatus = fillStatus(messages, MessageDeliveryStatus.IN_DOUBT, StatusCodeEnum.ERR_GENERIC,
 						se.getCause().getMessage());
 			}
 			LOGGER.warn("Received exception invoking ws sendMessages.", se);
@@ -302,73 +362,25 @@ public class SoapToJmsClient {
 	}
 
 	/**
-	 * This method decodes a wsdl exception into a program exception. it always
-	 * throws exception.
-	 * 
-	 * @param e
-	 * @throws S2JConfigurationException
-	 * @throws S2JProtocolException
-	 * @throws S2JProviderException
+	 * @see https://java.net/jira/browse/JAX_WS-1166
+	 * @param spAsBindingProvider
 	 */
-	private void handleWsException(final WsJmsException e)
-			throws S2JConfigurationException, S2JProtocolException, S2JProviderException {
-		WsJmsExceptionData info = e.getFaultInfo();
-		WsExceptionClass excClassEnum;
-		try {
-			String excClass = info.getExceptionClass();
-			excClassEnum = WsExceptionClass.valueOf(excClass);
-		} catch (RuntimeException e1) {
-			LOGGER.warn("Error in protocol, exception class not found ", e1);
-			excClassEnum = WsExceptionClass.OTHER;
+	private void setTimeouts(final BindingProvider spAsBindingProvider) {
+		final Map<String, Object> requestContext = spAsBindingProvider.getRequestContext();
+		if (this.configuration.getConnectionTimeout() != null) {
+			// wildfly
+			requestContext.put("javax.xml.ws.client.connectionTimeout", this.configuration.getConnectionTimeout());
+			requestContext.put("com.sun.xml.ws.connect.timeout", this.configuration.getRequestTimeout());
+			// must be Integer
+			requestContext.put("com.sun.xml.internal.ws.connect.timeout", this.configuration.getRequestTimeout());
 		}
-		String statusCode = info.getCode();
-		StatusCodeEnum sc;
-		try {
-			sc = StatusCodeEnum.valueOf(statusCode);
-		} catch (RuntimeException e1) {
-			LOGGER.warn("Error in protocol, StatusCode not recognized " + statusCode + " " + e1);
-			sc = StatusCodeEnum.ERR_GENERIC;
+		if (this.configuration.getRequestTimeout() != null) {
+			// wildfly
+			requestContext.put("javax.xml.ws.client.receiveTimeout", this.configuration.getRequestTimeout());
+			requestContext.put("com.sun.xml.ws.request.timeout", this.configuration.getRequestTimeout());
+			// must be Integer
+			requestContext.put("com.sun.xml.internal.ws.request.timeout", this.configuration.getRequestTimeout());
 		}
-		switch (excClassEnum) {
-		case CONFIGURATION:
-			throw new S2JConfigurationException(sc, e.getMessage(), e);
-		case PROTOCOL:
-			throw new S2JProtocolException(sc, e.getMessage(), e);
-		case OTHER:
-			throw new S2JProviderException(sc, e.getMessage(), info.getJmsCode(), e);
-		default:
-			throw new S2JProtocolException(sc, "Unknown exception type" + e.getMessage(), e);
-		}
-	}
 
-	private ResponseStatus<S2JMessage> fillStatus(S2JMessage[] messages, MessageDeliveryStatus deliveryStatus,
-			StatusCodeEnum errNetwork, String messageStr) {
-		ResponseStatus<S2JMessage> rspStatus = new ResponseStatus<S2JMessage>();
-		for (int i = 0; i < messages.length; i++) {
-			S2JMessage message = messages[i];
-			rspStatus.addMessage(message, deliveryStatus, errNetwork, messageStr);
-		}
-		return rspStatus;
-	}
-
-	// FIXME same as ackresponse
-	private ResponseStatus<S2JMessage> convertStatus(S2JMessage[] messages, List<MessageIdAndStatus> result) {
-		ResponseStatus<S2JMessage> rspStatus = new ResponseStatus<S2JMessage>();
-		for (int i = 0; i < messages.length; i++) {
-			S2JMessage message = messages[i];
-			MessageIdAndStatus status = result.get(i);
-			final StatusCode statusCodeAndReason = status.getStatus();
-			if (statusCodeAndReason != null) {
-				StatusCodeEnum statusCodeEnum = StatusCodeEnum.valueOf(statusCodeAndReason.getCode());
-				MessageDeliveryStatus deliveryStatus = statusCodeEnum.isError() ? MessageDeliveryStatus.NOT_DELIVERED
-						: MessageDeliveryStatus.DELIVERED;
-				rspStatus.addMessage(message, deliveryStatus, statusCodeEnum, statusCodeAndReason.getReason());
-			} else {
-				LOGGER.warn("Remote server returned statusCode null " + message + ", messageIdAndStatus:" + status);
-				rspStatus.addMessage(message, MessageDeliveryStatus.UNKNOWN, StatusCodeEnum.ERR_SERIALIZATION,
-						"server protocol error");
-			}
-		}
-		return rspStatus;
 	}
 }

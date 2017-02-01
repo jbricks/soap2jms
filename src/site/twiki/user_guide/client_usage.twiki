@@ -2,11 +2,84 @@
 
 This section explains how to use the client s2j_client. 
 
----++ Read messages from a queue
+---++ Configure an instance of the client
+Before reading or sending messages to a queue it is necessary to get an instance of 
+the public web service interface. 
+<literal>
+<pre>
+	 SoapToJmsClient wsClient = new SoapToJmsClient("http://server.location/contextPath");
+</pre>
+</literal>
 
+To configure more parameters the constructor with =Soap2JmsConfiguration= can be used.
 
 ---++ Send messages to a queue
 
+<literal>
+<pre>
+	 String queueName = "...";
+	 S2JMessage[] messages = ...;
+	 ResponseStatus result = wsClient.sendMessages(queueName, messages);
+</pre>
+</literal>
+  
+   * =queueName= is the name of the queue that is configured on the server. It may be a symbolic name. 
+   If not configured differently it corresponds to the jndi name of the queue (if the queue is mapped to "java:/comp/env/sendQueue" =queueName= is =sendQueue=)
+   see [[jboss_server][server configuration]]
+   * =messages= is an array of =S2JMessage=. You should instantiate the subclass corresponding to the type of the message you want to send.
+      * Use =!S2JTextMessage= to send a Text Message
+      * Use =!S2JMapMessage= to send a Map Message
+      * ...
+
+
+---+++ Message instantiation
+
+A simple text message can be created as follow: 
+<literal>
+<pre>
+	 S2JMessage message = new S2JTextMessage(null, "test content");
+</pre>
+</literal>
+
+
+Properties that can not be set sending a message:
+   * =jmsMessageId= : this will be set by the JMS queue once the message is inserted.
+   * =jmsRedelivered= : this is used by the JMS provider.
+
+      
+---+++ Error handling
+
+<literal>
+<pre>
+	 ResponseStatus result = null;
+	 try {
+	 	...
+	  	result = wsClient.sendMessages(queueName, messages);
+	 } catch (Exception e) {
+	 	// if exception is threw means that there is a protocol or configuration error.
+	 	// none of the messages has been delivered
+	 }
+	 if (result.getErrorCount() == 0) {
+	 	//everything all right, all messages were delivered.
+	 }
+</pre>
+</literal>
+
+Message delivery status can be one of:
+   * =OK= : Message was delivered. 
+   * =IN_DOUBT= : There was a network error during message sending. It is impossible to know if the server received the message. 
+   * =ERROR= : Message was not delivered, most probably due to a JMS provider exception. 
+   
+See MessageDeliveryStatus for more information.
+Messages with status =IN_DOUBT= should be retransmitted. In case the consumer (server side) it is not idempotent, users can specify a parameter =clientId= when creating the message. It can be any sort of message identifier (for instance a primary key on the database).
+
+	 String clientId = ..; //some client generated identifier
+	 S2JMessage message = new S2JTextMessage(clientId, "test content");
+</pre>
+</literal>
+The server will not enqueue two messages with the same client id.
+
+Messages with status =ERROR= can be retransmitted. If it is the case it is important to implement a retransmission counter to prevent a message to be retransmitted forever. 
 
 <literal>
 	<p class="block-left">
@@ -15,8 +88,8 @@ This section explains how to use the client s2j_client.
 	</a>
 	Client Overview
 	</p>
-	<p class="block-right">...
-		<a href="#" >
+	<p class="block-right">Read messages
+		<a href="read_messages.html" >
 			<img src="../img/arrow-right.png" alt="Next"/>
 		</a>	
 	</p>

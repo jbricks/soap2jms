@@ -1,9 +1,11 @@
+---+ Protocol
+This section explains the low level details of the protocol. This is especially usefull if you want to integrate 
+the project with a .NET client.
+
 ---+ Send messages to a queue
 
-This section explains how to integrate the client project s2j_client. 
-This project is a thin layer over the JAX-WS web service and provides a more friendly interface. 
 
----+ Read nessages from a queue
+---+ Read messages from a queue
 
 The client is a standard JAX-WS implementation and has no special requirements except Java 6.
 It can use Apache CXF as a client library.

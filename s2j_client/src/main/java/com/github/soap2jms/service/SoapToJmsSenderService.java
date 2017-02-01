@@ -43,7 +43,7 @@ public class SoapToJmsSenderService extends Service {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return returns SenderSoap2Jms
 	 */
 	@WebEndpoint(name = "senderSOAP")
@@ -52,7 +52,7 @@ public class SoapToJmsSenderService extends Service {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param features
 	 *            A list of {@link javax.xml.ws.WebServiceFeature} to configure
 	 *            on the proxy. Supported features not in the
