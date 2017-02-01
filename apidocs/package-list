@@ -1,0 +1,10 @@
+com.github.soap2jms.common
+com.github.soap2jms.common.serialization
+com.github.soap2jms.common.ws
+com.github.soap2jms.model
+com.github.soap2jms.pub
+com.github.soap2jms.queue
+com.github.soap2jms.reader
+com.github.soap2jms.sender
+com.github.soap2jms.service
+com.github.soap2jms.test
