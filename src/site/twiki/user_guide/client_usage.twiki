@@ -73,6 +73,8 @@ Message delivery status can be one of:
 See MessageDeliveryStatus for more information.
 Messages with status =IN_DOUBT= should be retransmitted. In case the consumer (server side) it is not idempotent, users can specify a parameter =clientId= when creating the message. It can be any sort of message identifier (for instance a primary key on the database).
 
+<literal>
+<pre>
 	 String clientId = ..; //some client generated identifier
 	 S2JMessage message = new S2JTextMessage(clientId, "test content");
 </pre>

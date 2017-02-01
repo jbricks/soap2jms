@@ -14,17 +14,21 @@ a java version lower than 6 consider implementing your own client. See the [[../
 
 ---++ Features
 
+   * Simplified message creation.
+   * Simplified exception decoding.
+   * Separation of network exception from application exception. Handling of =IN_DOUBT= delivery state 
+   
 
 
 <literal>
 	<p class="block-left">
-	<a href="jboss_server.html">
+	<a href="Jboss_server.html">
 		<img src="../img/arrow-left.png" alt="Home">
 	</a>
 	Jboss Server
 	</p>
 	<p class="block-right">Client Usage
-		<a href="#" >
+		<a href="client_usage.html" >
 			<img src="../img/arrow-right.png" alt="Next"/>
 		</a>	
 	</p>

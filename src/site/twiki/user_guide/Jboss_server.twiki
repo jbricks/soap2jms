@@ -18,10 +18,10 @@ First of all we need to map the queue to a local resource.
 
 <literal>
 <pre>
-	<resource-ref>
-		<res-ref-name>soap2jms</res-ref-name>
-		<jndi-name>java:jboss/exported/jms/soap2jms.reader</jndi-name>
-	</resource-ref>
+	&lt;resource-ref&gt;
+		&lt;res-ref-name&gt;soap2jms&lt;/res-ref-name&gt;
+		&lt;jndi-name&gt;java:jboss/exported/jms/soap2jms.reader&lt;/jndi-name&gt;
+	&lt;/resource-ref&gt;
 </pre>
 </literal>
 
@@ -30,14 +30,14 @@ First of all we need to map the queue to a local resource.
 In web.xml it is necessary to declare the following lines.
 <literal>
 <pre>
-	<resource-ref>
-		<!-- name of the queue (the same parameter must be used in WS to map the 
-			queue) -->
-		<res-ref-name>soap2jms</res-ref-name>
-		<res-type>javax.jms.Queue</res-type>
-		<res-auth>Container</res-auth>
-		<res-sharing-scope>Shareable</res-sharing-scope>
-	</resource-ref>
+	&lt;resource-ref&gt;
+		&lt;!-- name of the queue (the same parameter must be used in WS to map the 
+			queue) --&gt;
+		&lt;res-ref-name&gt;soap2jms&lt;/res-ref-name&gt;
+		&lt;res-type&gt;javax.jms.Queue&lt;/res-type&gt;
+		&lt;res-auth&gt;Container&lt;/res-auth&gt;
+		&lt;res-sharing-scope&gt;Shareable&lt;/res-sharing-scope&gt;
+	&lt;/resource-ref&gt;
 </pre>
 </literal>
 
