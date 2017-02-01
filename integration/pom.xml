@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>soap2jms</artifactId>
 		<groupId>com.github.jbricks.soap2jms</groupId>
-		<version>0.1.0</version>
+		<version>0.1.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>soap2jms-integration</artifactId>
 	<groupId>com.github.jbricks.soap2jms.integration-tests</groupId>
