@@ -1,1 +1,71 @@
-/* You can override this file with your own styles */
+h1,h2,h3,h4,h5,h6
+{
+    border: none;
+    background-color: white;
+    font-family: Palatino, Linotype, Georgia, "Times New Roman", Times, serif;
+    font-weight: normal;
+    color: #b00000;
+}
+
+#breadcrumbs
+{
+    border: none;
+    background-color: #f0f0f0;
+    border-top: 1px solid #a0a0a0;
+    color: #c0c0c0;
+}
+
+a:link
+{
+    color: #0060A0;
+}
+
+a:visited
+{
+    color: #0060A0;
+}
+
+
+menu li img
+{
+   vertical-align: middle;
+}
+
+img.external-link {
+   vertical-align: baseline;
+}
+
+img.small {
+   width: 50%;
+}
+
+menu
+{
+    padding-top: 20px;
+}
+
+pre {
+    background-color: light-gray;
+} 
+
+tt {
+    background-color: white;
+}
+
+.block-left {
+	float: left;
+}
+.block-right {
+	float: right;
+}
+
+/*patches to the default style*/
+body.topBarDisabled {
+    padding-top: 0px;
+}
+
+/*sometimes the bottom line come on the left of the central content */
+
+div.row-fluid hr {
+	clear: left;
+}
