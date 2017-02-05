@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.soap2jms.common.StatusCodeEnum;
-import com.github.soap2jms.common.WsExceptionClass;
 import com.github.soap2jms.common.serialization.JMSImplementation;
 import com.github.soap2jms.common.serialization.JmsToSoapSerializer;
 import com.github.soap2jms.common.ws.MessageIdAndStatus;
@@ -55,6 +54,16 @@ public class ReaderSOAPImpl implements ReaderSoap2Jms {
 		}
 	}
 
+	public String getMessageIdOrNull(final Message msg) {
+		String jmsMessageID = null;
+		try {
+			jmsMessageID = msg.getJMSMessageID();
+		} catch (final JMSException e1) {
+			LOG.error("Error getting messageid from  [" + msg + "]", e1);
+		}
+		return jmsMessageID;
+	}
+
 	@Override
 	public RetrieveMessageResponseType retrieveMessages(final String queueName, final String filter, final int maxItems)
 			throws WsJmsException {
@@ -66,11 +75,11 @@ public class ReaderSOAPImpl implements ReaderSoap2Jms {
 		} catch (final JMSException e) {
 			LOG.error("JMS error processing [" + queueName + "] filter[" + filter + "]", e);
 			throw new WsJmsException("Internal server processing [" + queueName + "] filter[" + filter + "]",
-					e.toString(), StatusCodeEnum.ERR_GENERIC, e.getErrorCode(), WsExceptionClass.OTHER);
+					e.toString(), StatusCodeEnum.ERR_GENERIC, e.getErrorCode());
 		} catch (final Exception ex) {
 			LOG.error("Generic error processing [" + queueName + "] filter[" + filter + "]", ex);
 			throw new WsJmsException("Internal server processing [" + queueName + "] filter[" + filter + "]",
-					ex.toString(), StatusCodeEnum.ERR_GENERIC, null, WsExceptionClass.OTHER);
+					ex.toString(), StatusCodeEnum.ERR_GENERIC, null);
 		}
 
 		final List<WsJmsMessage> s2jMessages = result.getS2JMessages();
@@ -81,23 +90,13 @@ public class ReaderSOAPImpl implements ReaderSoap2Jms {
 				final WsJmsMessage soapMessage = this.serializationUtils.jmsToSoap(msg,
 						JMSImplementation.ARTEMIS_ACTIVE_MQ);
 				s2jMessages.add(soapMessage);
-			} catch (JMSException e) {
-				String jmsMessageID = getMessageIdOrNull(msg);
+			} catch (final JMSException e) {
+				final String jmsMessageID = getMessageIdOrNull(msg);
 				LOG.error("provider error serializing message [" + msg + "] messageId[" + jmsMessageID + "] queue["
 						+ queueName + "] filter[" + filter + "]", e);
 			}
 		}
 		return result;
-	}
-
-	public String getMessageIdOrNull(final Message msg) {
-		String jmsMessageID = null;
-		try {
-			jmsMessageID = msg.getJMSMessageID();
-		} catch (JMSException e1) {
-			LOG.error("Error getting messageid from  [" + msg + "]", e1);
-		}
-		return jmsMessageID;
 	}
 
 }

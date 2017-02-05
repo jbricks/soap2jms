@@ -20,7 +20,7 @@
 		</fluidoSkin>
 	</custom>
 	<bannerLeft>
-		<name>[soap over jms]</name>
+		<name>SOAP over JMS</name>
 		<src>img/messages.png</src>
 		<href>https://jbricks.github.com/soap2jms/index.html</href>
 	</bannerLeft>
@@ -69,7 +69,10 @@
 				<item name="Client Usage" href="/user_guide/client_usage.html"/>
 			</item>
 			<item name="Design" href="/design.html" />
-			<item name="Protocol" href="/protocol.html"/>
+			<item name="Protocol details" href="/protocol/Protocol.html" collapse="true">
+				<item name="Send Messages" href="/protocol/Send_messages.html"/>
+				<item name="Read Messages" href="/protocol/Read_messages.html"/>
+			</item>
 			<item name="License (MIT)" href="license.html" />
 		</menu>
 		<menu name="Maven reports" ref="reports" />

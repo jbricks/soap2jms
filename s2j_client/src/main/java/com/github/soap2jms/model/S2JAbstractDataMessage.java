@@ -14,9 +14,9 @@ import javax.jms.MessageNotWriteableException;
 
 public class S2JAbstractDataMessage extends S2JMessage {
 
+	private boolean readonly;
 	protected IOException initializeBodyException = null;
 	protected DataInputStream instream;
-	private boolean readonly;
 
 	public S2JAbstractDataMessage(final String messageId, final DataHandler body) {
 		super(messageId, body);
@@ -41,18 +41,6 @@ public class S2JAbstractDataMessage extends S2JMessage {
 		}
 	}
 
-	private void checkBodyReadable() throws JMSException {
-		if (!this.readonly) {
-			throw new MessageNotReadableException("The message " + getJMSMessageID() + " is not in readable state");
-		}
-		if (this.initializeBodyException != null) {
-			final MessageFormatException e1 = new MessageFormatException(
-					"Problem reading body for " + getJMSMessageID());
-			e1.initCause(this.initializeBodyException);
-			throw e1;
-		}
-	}
-
 	public long getBodyLength() throws JMSException {
 		checkBodyReadable();
 		int result = 0;
@@ -64,18 +52,6 @@ public class S2JAbstractDataMessage extends S2JMessage {
 		}
 
 		return result;
-	}
-
-	private void handleException(final String cause, final IOException e) throws JMSException {
-		JMSException e1;
-		if (e instanceof EOFException) {
-			e1 = new MessageEOFException(cause);
-		} else {
-			e1 = new MessageFormatException(cause);
-		}
-		e1.initCause(e);
-		e1.setLinkedException(e);
-		throw e1;
 	}
 
 	@Override
@@ -298,6 +274,30 @@ public class S2JAbstractDataMessage extends S2JMessage {
 		}
 		throw new UnsupportedOperationException();
 
+	}
+
+	private void checkBodyReadable() throws JMSException {
+		if (!this.readonly) {
+			throw new MessageNotReadableException("The message " + getJMSMessageID() + " is not in readable state");
+		}
+		if (this.initializeBodyException != null) {
+			final MessageFormatException e1 = new MessageFormatException(
+					"Problem reading body for " + getJMSMessageID());
+			e1.initCause(this.initializeBodyException);
+			throw e1;
+		}
+	}
+
+	private void handleException(final String cause, final IOException e) throws JMSException {
+		JMSException e1;
+		if (e instanceof EOFException) {
+			e1 = new MessageEOFException(cause);
+		} else {
+			e1 = new MessageFormatException(cause);
+		}
+		e1.initCause(e);
+		e1.setLinkedException(e);
+		throw e1;
 	}
 
 }

@@ -1,3 +1,4 @@
+
 package com.github.soap2jms.service;
 
 import java.util.List;
@@ -24,9 +25,9 @@ import com.github.soap2jms.common.ws.WsJmsMessage;
 public interface SenderSoap2Jms {
 
 	/**
+	 * This operation is to send messages to a JMSqueue
 	 *
 	 * @param queueName
-	 * @param clientIdentifier
 	 * @param messages
 	 * @return returns
 	 *         java.util.List<com.github.soap2jms.common.ws.MessageIdAndStatus>
@@ -36,9 +37,7 @@ public interface SenderSoap2Jms {
 	@WebResult(name = "messageIdAndStatus", targetNamespace = "")
 	@RequestWrapper(localName = "sendMessages", targetNamespace = "http://soap2jms.github.com/common/ws", className = "com.github.soap2jms.common.ws.SendMessages")
 	@ResponseWrapper(localName = "sendMessagesResponse", targetNamespace = "http://soap2jms.github.com/common/ws", className = "com.github.soap2jms.common.ws.WsJmsIdAndStatusList")
-	public List<MessageIdAndStatus> sendMessages(
-			@WebParam(name = "clientIdentifier", targetNamespace = "") String clientIdentifier,
-			@WebParam(name = "queueName", targetNamespace = "") String queueName,
+	public List<MessageIdAndStatus> sendMessages(@WebParam(name = "queueName", targetNamespace = "") String queueName,
 			@WebParam(name = "messages", targetNamespace = "") List<WsJmsMessage> messages) throws WsJmsException;
 
 }

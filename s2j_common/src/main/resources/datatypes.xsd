@@ -4,7 +4,6 @@
 	<xsd:element name="retrieveMessages">
 		<xsd:complexType>
 			<xsd:sequence>
-				<xsd:element name="clientIdentifier" type="xsd:string" maxOccurs="1" minOccurs="1" />
 				<xsd:element name="queueName" type="xsd:NCName" />
 				<xsd:element name="filter" type="xsd:string" />
 				<xsd:element name="maxItems" type="xsd:int" />
@@ -34,7 +33,6 @@
 	<xsd:element name="sendMessages">
 		<xsd:complexType>
 			<xsd:sequence maxOccurs="1" minOccurs="1"> 
-				<xsd:element name="clientIdentifier" type="xsd:string" maxOccurs="1" minOccurs="1" />
 				<xsd:element name="queueName" type="xsd:NCName" maxOccurs="1" minOccurs="0" />
 				<xsd:element name="messages" type="cls:wsJmsMessage" maxOccurs="unbounded" minOccurs="1" />
 			</xsd:sequence>
@@ -136,13 +134,23 @@
 			<xsd:element name="originalException" type="xsd:string" maxOccurs="1" minOccurs="0"/>
 			<xsd:element name="jmsCode" type="xsd:string" maxOccurs="1" minOccurs="0"></xsd:element>
 		</xsd:sequence>
-		<xsd:attribute name="code" type="xsd:string" />
-		<xsd:attribute name="exceptionClass">
+		<xsd:attribute name="code">
+			<xsd:annotation>
+				<xsd:documentation>
+					Error code, see StatusCodeEnum for a complete description.
+				</xsd:documentation>
+			</xsd:annotation>
 			<xsd:simpleType>
 				<xsd:restriction base="xsd:string">
-					<xsd:enumeration value="JMS" />
-					<xsd:enumeration value="CONFIGURATION" />
-					<xsd:enumeration value="OTHER" />
+					<xsd:enumeration value="ERR_GENERIC"></xsd:enumeration>
+					<xsd:enumeration
+						value="ERR_INCOMPATIBLE_PROTOCOL">
+					</xsd:enumeration>
+					<xsd:enumeration value="ERR_JMS"></xsd:enumeration>
+					<xsd:enumeration value="ERR_MALFORMED_URL"></xsd:enumeration>
+					<xsd:enumeration value="ERR_NETWORK"></xsd:enumeration>
+					<xsd:enumeration value="ERR_QUEUE_NOT_FOUND"></xsd:enumeration>
+					<xsd:enumeration value="ERR_SERIALIZATION"></xsd:enumeration>
 				</xsd:restriction>
 			</xsd:simpleType>
 		</xsd:attribute>

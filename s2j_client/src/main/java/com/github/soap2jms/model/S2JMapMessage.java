@@ -39,30 +39,6 @@ public class S2JMapMessage extends S2JMessage implements MapMessage {
 		return (T) this.body;
 	}
 
-	@SuppressWarnings("unchecked")
-	protected <T> T getBodyPart(final String name, final Class<T> expectedClass) throws MessageFormatException {
-		if (!this.body.containsKey(name)) {
-			throw new MessageFormatException("property [" + name + "] type " + expectedClass + " not found");
-		}
-
-		final Object propValue = this.body.get(name);
-
-		if (propValue == null) {
-			return null;
-		}
-		T result;
-		if (expectedClass.isInstance(propValue)) {
-			result = (T) propValue;
-		} else if (String.class.equals(expectedClass)) {
-			result = (T) propValue.toString();
-		} else {
-			throw new MessageFormatException("property [" + name + "] of type " + expectedClass.getName()
-					+ " can't be assigned to " + expectedClass);
-		}
-
-		return result;
-	}
-
 	@Override
 	public boolean getBoolean(final String name) throws JMSException {
 		return getNotNullBodyPart(name, Boolean.class);
@@ -107,15 +83,6 @@ public class S2JMapMessage extends S2JMessage implements MapMessage {
 	@Override
 	public Enumeration getMapNames() throws JMSException {
 		return new IteratorEnumeration<>(this.body.keySet().iterator());
-	}
-
-	protected <T> T getNotNullBodyPart(final String name, final Class<T> expectedClass) throws MessageFormatException {
-		final T result = getBodyPart(name, expectedClass);
-
-		if (result == null) {
-			throw new MessageFormatException("property [" + name + "] type " + expectedClass + " null");
-		}
-		return result;
 	}
 
 	@Override
@@ -215,6 +182,39 @@ public class S2JMapMessage extends S2JMessage implements MapMessage {
 	public void setString(final String name, final String value) throws JMSException {
 		this.body.put(name, value);
 
+	}
+
+	@SuppressWarnings("unchecked")
+	protected <T> T getBodyPart(final String name, final Class<T> expectedClass) throws MessageFormatException {
+		if (!this.body.containsKey(name)) {
+			throw new MessageFormatException("property [" + name + "] type " + expectedClass + " not found");
+		}
+
+		final Object propValue = this.body.get(name);
+
+		if (propValue == null) {
+			return null;
+		}
+		T result;
+		if (expectedClass.isInstance(propValue)) {
+			result = (T) propValue;
+		} else if (String.class.equals(expectedClass)) {
+			result = (T) propValue.toString();
+		} else {
+			throw new MessageFormatException("property [" + name + "] of type " + expectedClass.getName()
+					+ " can't be assigned to " + expectedClass);
+		}
+
+		return result;
+	}
+
+	protected <T> T getNotNullBodyPart(final String name, final Class<T> expectedClass) throws MessageFormatException {
+		final T result = getBodyPart(name, expectedClass);
+
+		if (result == null) {
+			throw new MessageFormatException("property [" + name + "] type " + expectedClass + " null");
+		}
+		return result;
 	}
 
 }

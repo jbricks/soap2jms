@@ -18,7 +18,9 @@
 		<wsdl:part name="parameters" element="cls:sendMessagesResponse"></wsdl:part>
 	</wsdl:message>
 	<wsdl:portType name="sender.soap2jms">
+		<wsdl:documentation></wsdl:documentation>
 		<wsdl:operation name="sendMessages">
+			<wsdl:documentation>This operation is to send messages to a JMSqueue</wsdl:documentation>
 			<wsdl:input message="tns:sendMessagesRequest" />
 			<wsdl:output message="tns:sendMessagesResponse" />
 			<wsdl:fault name="wsJmsException" message="tns:wsJmsException" />

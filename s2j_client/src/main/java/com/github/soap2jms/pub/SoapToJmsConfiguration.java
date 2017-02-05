@@ -2,8 +2,8 @@ package com.github.soap2jms.pub;
 
 /**
  * This class is used to provide configuration to SoapToJmsClient.
- * 
- * @author g.Contini
+ *
+ * @author G.Contini
  * @see SoapToJmsClient#SoapToJmsClient(SoapToJmsConfiguration)
  */
 public class SoapToJmsConfiguration {
@@ -19,8 +19,9 @@ public class SoapToJmsConfiguration {
 	}
 
 	/**
-	 * Constructor that allows to specify all the configuration parameters at once.
-	 * 
+	 * Constructor that allows to specify all the configuration parameters at
+	 * once.
+	 *
 	 * @param contextUrl
 	 *            the complete url of the web application where the server is
 	 *            deployed.
@@ -28,8 +29,8 @@ public class SoapToJmsConfiguration {
 	 *            Connection timeout in milliseconds. If null default timeout
 	 *            will be used.
 	 * @param requestTimeout
-	 *            Read timeout in milliseconds. If null default timeout
-	 *            will be used.
+	 *            Read timeout in milliseconds. If null default timeout will be
+	 *            used.
 	 */
 	public SoapToJmsConfiguration(final String contextUrl, final Integer connectionTimeout,
 			final Integer requestTimeout) {

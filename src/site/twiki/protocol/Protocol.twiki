@@ -1,0 +1,20 @@
+---+ Protocol
+This section explains the low level details of the protocol. This is especially useful if you want to integrate 
+the project with a =!.NET= client or build your own client.
+
+Java users should normally use the pre-built client. Please have a look to the [[../user_guide/client_overview.html][user guide]] first.
+
+The wsdl of the web service is available at 
+   * Send message to a queue wsdl: [[https://github.com/jbricks/soap2jms/blob/master/s2j_common/src/main/resources/queueSender.wsdl][queueSender.wsdl]]
+   * Read message from queue wsdl: [[https://github.com/jbricks/soap2jms/blob/master/s2j_common/src/main/resources/queueReader.wsdl][queueReader.wsdl]]
+   * Common data types: [[https://github.com/jbricks/soap2jms/blob/master/s2j_common/src/main/resources/datatypes.xsd][dataTypes.xsd]]
+   
+   
+
+<literal>
+	<p class="block-right">Send Messages
+		<a href="Send_messages.html" >
+			<img src="../img/arrow-right.png" alt="Next"/>
+		</a>	
+	</p>
+</literal>

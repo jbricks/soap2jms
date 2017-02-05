@@ -4,7 +4,6 @@ package com.github.soap2jms.service;
 import javax.xml.ws.WebFault;
 
 import com.github.soap2jms.common.StatusCodeEnum;
-import com.github.soap2jms.common.WsExceptionClass;
 import com.github.soap2jms.common.ws.WsJmsExceptionData;
 
 /**
@@ -32,9 +31,9 @@ public class WsJmsException extends Exception {
 	 * @param message
 	 */
 	public WsJmsException(final String message, final String originalException, final StatusCodeEnum code,
-			final String jmsCode, final WsExceptionClass exceptionType) {
+			final String jmsCode) {
 		super(message);
-		this.faultInfo = new WsJmsExceptionData(code, exceptionType, originalException, jmsCode, null);
+		this.faultInfo = new WsJmsExceptionData(code, originalException, jmsCode, null);
 	}
 
 	/**

@@ -15,7 +15,6 @@ import org.apache.commons.collections4.iterators.IteratorEnumeration;
 
 public abstract class S2JMessage implements Message {
 
-	protected DataHandler body;
 	private final String clientId;
 	private final Map<String, Object> headers;
 	private String jmsCorrelationId;
@@ -24,14 +23,10 @@ public abstract class S2JMessage implements Message {
 	private long jmsExpiration;
 	private String jmsMessageId;
 	private Integer jmsPriority;
-	boolean jmsRedelivered;
 	private long jmsTimestamp;
 	private String jmsType;
-
-	protected S2JMessage(final String clientId, final DataHandler body) {
-		this(null, 0, 0, new HashMap<String, Object>(), clientId, null, 0, false, System.currentTimeMillis(), null,
-				body);
-	}
+	protected DataHandler body;
+	boolean jmsRedelivered;
 
 	public S2JMessage(final String jmsCorrelationId, final int jmsDeliveryMode, final long jmsExpiration,
 			final Map<String, Object> headers, final String clientId, final String jmsMessageId,
@@ -48,6 +43,11 @@ public abstract class S2JMessage implements Message {
 		this.jmsTimestamp = jmsTimestamp;
 		this.jmsType = type;
 		this.body = body;
+	}
+
+	protected S2JMessage(final String clientId, final DataHandler body) {
+		this(null, 0, 0, new HashMap<String, Object>(), clientId, null, 0, false, System.currentTimeMillis(), null,
+				body);
 	}
 
 	@Override
@@ -166,42 +166,9 @@ public abstract class S2JMessage implements Message {
 		return getProperty(name, Long.class);
 	}
 
-	protected <T> T getNotNullProperty(final String name, final Class<T> expectedClass) throws MessageFormatException {
-		final T result = getProperty(name, expectedClass);
-
-		if (result == null) {
-			throw new MessageFormatException("property [" + name + "] type " + expectedClass + " null");
-		}
-		return result;
-	}
-
 	@Override
 	public Object getObjectProperty(final String name) throws JMSException {
 		return this.headers.get(name);
-	}
-
-	@SuppressWarnings("unchecked")
-	protected <T> T getProperty(final String name, final Class<T> expectedClass) throws MessageFormatException {
-		if (!this.headers.containsKey(name)) {
-			throw new MessageFormatException("property [" + name + "] type " + expectedClass + " not found");
-		}
-
-		final Object propValue = this.headers.get(name);
-
-		if (propValue == null) {
-			return null;
-		}
-		T result;
-		if (expectedClass.isInstance(propValue)) {
-			result = (T) propValue;
-		} else if (String.class.equals(expectedClass)) {
-			result = (T) propValue.toString();
-		} else {
-			throw new MessageFormatException("property [" + name + "] of type " + expectedClass.getName()
-					+ " can't be assigned to " + expectedClass);
-		}
-
-		return result;
 	}
 
 	@Override
@@ -338,6 +305,39 @@ public abstract class S2JMessage implements Message {
 	@Override
 	public void setStringProperty(final String name, final String value) throws JMSException {
 		this.headers.put(name, value);
+	}
+
+	protected <T> T getNotNullProperty(final String name, final Class<T> expectedClass) throws MessageFormatException {
+		final T result = getProperty(name, expectedClass);
+
+		if (result == null) {
+			throw new MessageFormatException("property [" + name + "] type " + expectedClass + " null");
+		}
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	protected <T> T getProperty(final String name, final Class<T> expectedClass) throws MessageFormatException {
+		if (!this.headers.containsKey(name)) {
+			throw new MessageFormatException("property [" + name + "] type " + expectedClass + " not found");
+		}
+
+		final Object propValue = this.headers.get(name);
+
+		if (propValue == null) {
+			return null;
+		}
+		T result;
+		if (expectedClass.isInstance(propValue)) {
+			result = (T) propValue;
+		} else if (String.class.equals(expectedClass)) {
+			result = (T) propValue.toString();
+		} else {
+			throw new MessageFormatException("property [" + name + "] of type " + expectedClass.getName()
+					+ " can't be assigned to " + expectedClass);
+		}
+
+		return result;
 	}
 
 }

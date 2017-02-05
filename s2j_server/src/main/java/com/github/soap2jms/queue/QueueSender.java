@@ -29,20 +29,32 @@ import org.slf4j.LoggerFactory;
 import com.github.soap2jms.common.S2JConfigurationException;
 import com.github.soap2jms.common.S2JProviderException;
 import com.github.soap2jms.common.StatusCodeEnum;
-import com.github.soap2jms.common.WsExceptionClass;
 import com.github.soap2jms.common.serialization.JMSMessageFactory;
-import com.github.soap2jms.service.WsJmsException;
 
-public class QueueSender  {
+public class QueueSender {
 	private static final String JNDI_LOCAL = "java:comp/env/";
 	private static final Logger LOGGER = LoggerFactory.getLogger(QueueSender.class);
 
 	@Inject
 	private JMSContext ctx;
 	private InitialContext ictx = null;
+	private String jndiName;
 	private JMSProducer producer = null;
 	private Queue queue = null;
-	private String jndiName;
+
+	public QueueSender() {
+	}
+
+	public void close() {
+		try {
+			this.ictx.close();
+		} catch (final Exception e) {
+			LOGGER.error("error closing context", e);
+		}
+		this.producer = null;
+		this.queue = null;
+		this.ictx = null;
+	}
 
 	public JMSMessageFactory getJmsMessageFactory() {
 		final JMSContext localCopy = this.ctx;
@@ -81,25 +93,21 @@ public class QueueSender  {
 		};
 	}
 
-	public QueueSender() {
-	}
-
-	public void open(String queueName) throws S2JConfigurationException, S2JProviderException {
-		if(this.ctx == null){
-			throw new S2JProviderException(StatusCodeEnum.ERR_JMS,
-					"Initial JMSContext not found", null, null);
+	public void open(final String queueName) throws S2JConfigurationException, S2JProviderException {
+		if (this.ctx == null) {
+			throw new S2JProviderException(StatusCodeEnum.ERR_JMS, "Initial JMSContext not found", null, null);
 		}
-		jndiName = JNDI_LOCAL + queueName;
+		this.jndiName = JNDI_LOCAL + queueName;
 		try {
 			this.ictx = new InitialContext();
-			this.queue = (Queue) ictx.lookup(jndiName);
-			this.producer = ctx.createProducer();
-		} catch (NameNotFoundException e) {
+			this.queue = (Queue) this.ictx.lookup(this.jndiName);
+			this.producer = this.ctx.createProducer();
+		} catch (final NameNotFoundException e) {
 			throw new S2JConfigurationException(StatusCodeEnum.ERR_QUEUE_NOT_FOUND,
 					"Error retrieving queue[" + queueName + "]", e);
-		} catch (NamingException e) {
+		} catch (final NamingException e) {
 			throw new S2JProviderException(StatusCodeEnum.ERR_JMS,
-					"Error retrieving queue[" + queueName + "], jndiName[" + jndiName + "]", null, e);
+					"Error retrieving queue[" + queueName + "], jndiName[" + this.jndiName + "]", null, e);
 		}
 	}
 
@@ -107,51 +115,40 @@ public class QueueSender  {
 		IdAndStatus result;
 
 		try {
-			producer.send(queue, message);
+			this.producer.send(this.queue, message);
 			result = new IdAndStatus(message.getJMSMessageID());
 		} catch (final MessageFormatRuntimeException e) {
-			final String errmessage = "MessageFormat error sending message to " + queue + " jndiName [" + jndiName + "]"
-					+ e;
+			final String errmessage = "MessageFormat error sending message to " + this.queue + " jndiName ["
+					+ this.jndiName + "]" + e;
 			LOGGER.error(errmessage, e);
 			result = new IdAndStatus(StatusCodeEnum.ERR_JMS, e.getErrorCode(), errmessage);
 		} catch (final InvalidDestinationRuntimeException e) {
-			final String errmessage = "Destination " + queue + " is not valid. Name [" + jndiName + "] jndiName ["
-					+ jndiName + "]" + e;
+			final String errmessage = "Destination " + this.queue + " is not valid. Name [" + this.jndiName
+					+ "] jndiName [" + this.jndiName + "]" + e;
 			LOGGER.error(errmessage, e);
 			result = new IdAndStatus(StatusCodeEnum.ERR_QUEUE_NOT_FOUND, e.getErrorCode(), errmessage);
 		} catch (final MessageNotWriteableRuntimeException e) {
-			final String errmessage = "Message is not writeable. " + queue + " jndiName [" + jndiName + "]" + e;
+			final String errmessage = "Message is not writeable. " + this.queue + " jndiName [" + this.jndiName + "]"
+					+ e;
 			LOGGER.error(errmessage, e);
 			result = new IdAndStatus(StatusCodeEnum.ERR_JMS, e.getErrorCode(), errmessage);
 		} catch (final JMSRuntimeException e) {
-			final String errmessage = "Generic jms error sending message to " + queue + " jndiName [" + jndiName + "]"
-					+ e;
+			final String errmessage = "Generic jms error sending message to " + this.queue + " jndiName ["
+					+ this.jndiName + "]" + e;
 			LOGGER.error(errmessage, e);
 			result = new IdAndStatus(StatusCodeEnum.ERR_JMS, e.getErrorCode(), errmessage);
 		} catch (final RuntimeException e) {
-			final String errmessage = "Generic jms error sending message to " + queue + " jndiName [" + jndiName + "]"
-					+ e;
+			final String errmessage = "Generic jms error sending message to " + this.queue + " jndiName ["
+					+ this.jndiName + "]" + e;
 			LOGGER.error(errmessage, e);
 			result = new IdAndStatus(StatusCodeEnum.ERR_JMS, null, errmessage);
 		} catch (final JMSException e) {
-			final String errmessage = "Generic jms error sending message to " + queue + " jndiName [" + jndiName + "]"
-					+ e;
+			final String errmessage = "Generic jms error sending message to " + this.queue + " jndiName ["
+					+ this.jndiName + "]" + e;
 			LOGGER.error(errmessage, e);
 			result = new IdAndStatus(StatusCodeEnum.ERR_JMS, e.getErrorCode(), errmessage);
 		}
 		return result;
-	}
-
-
-	public void close() {
-		try {
-			ictx.close();
-		} catch (Exception e) {
-			LOGGER.error("error closing context", e);
-		}
-		producer = null;
-		queue = null;
-		ictx = null;
 	}
 
 }
